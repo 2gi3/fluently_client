@@ -5,7 +5,7 @@
 -  Node version 20.5.1
 -  npx create-expo-app --template blank-typescript@sdk-49
 -  npx expo install react-native-web@~0.19.6 react-dom@18.2.0
--  add `"bundler": "metro"` in app.json > web
+-  add `"bundler": "metro"` in app.json > expo > web
 
 ## Deployment
 ### Website configutation
