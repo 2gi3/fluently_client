@@ -10,6 +10,15 @@ export const chatStyles = StyleSheet.create({
         borderRadius: S,
         maxWidth: "80%",
         padding: S,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5, // This is for Android shadow
+
 
     },
 
