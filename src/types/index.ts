@@ -1,17 +1,24 @@
-export type User = {
+export type UserT = {
     id: string;
     name: string;
-    image: string;
+    image?: string;
 };
 
-export type Message = {
+export type MessageT = {
     id: string;
     text: string;
     createdAt: string;
 };
 
-export type Chat = {
+export type ChatT = {
     id: string;
-    user: User;
-    lastMessage: Message;
+    user: UserT;
+    lastMessage: MessageT;
+};
+
+export type ChatMessageT = {
+    user: UserT;
+    id: string;
+    text: string;
+    createdAt: string;
 };

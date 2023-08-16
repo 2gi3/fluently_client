@@ -1,19 +1,19 @@
 import React from 'react';
 import { Avatar, ListItem, Divider } from "@rneui/base"
 import { TouchableOpacity, View } from "react-native"
-import { Chat } from "../../types"
+import { ChatT } from "../../types"
 import moment from 'moment';
 
 
 
-const ChatCard = ({ user }: { user: Chat }) => {
+const ChatCard = ({ user }: { user: ChatT }) => {
 
     return (
 
         <TouchableOpacity
             key={user.id}
             onPress={() => console.log(user.user.name)}
-            style={{ maxWidth: 440, maxHeight: 108, minWidth: 300 }}
+            style={{ maxWidth: 440, maxHeight: 108, minWidth: 260 }}
         >
             <ListItem
 

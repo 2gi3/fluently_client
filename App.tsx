@@ -1,23 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import ChatsList from './src/screens/chat/ChatsList';
 import chatsData from './mock_data/chatsData.json'
+import ChatScreen from './src/screens/chat/ChatScreen';
+import { styles } from './src/styles';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <ChatsList chats={chatsData} />
-      <StatusBar style="auto" />
-    </View>
+
+    <SafeAreaView style={styles.wrapper}>
+      {/* <ChatsList chats={chatsData} /> */}
+      <ChatScreen />
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    // alignItems: 'center',
-    // justifyContent: 'center',
-  },
-});
