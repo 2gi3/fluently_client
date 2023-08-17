@@ -1,7 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import ChatsList from "../screens/chat/ChatsList"
 import DeleteMe from "../screens/deleteMe"
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { useCustomTabIcon } from "../functions/hooks/navigation";
+import { sizes } from "../styles/variables/measures";
 
 
 
@@ -9,9 +11,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const Tabs = () => {
     const Tabs = createBottomTabNavigator()
 
-    const renderIcon = (iconName: string) => ({ focused }: { focused: boolean }) => (
-        <MaterialIcons name={iconName} size={25} color={focused ? '#007aff' : '#8e8e8f'} />
-    );
+    // const renderIcon = useCustomTabIcon()
 
     return (
         <Tabs.Navigator
@@ -26,10 +26,22 @@ const Tabs = () => {
         // }}
         >
             <Tabs.Screen
-                name="Chats" component={ChatsList} options={{ tabBarIcon: renderIcon('chat-bubble-outline') }}
+                name="Chats" component={ChatsList} options={({ navigation }) => ({
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble-outline'),
+                    headerRight: () => (
+                        <Entypo
+                            onPress={() => navigation.navigate('Students')}
+                            name="new-message"
+                            size={24}
+                            color={'#8e8e8f'}
+                            style={{ marginRight: sizes.S }} />)
+                })}
+
             />
             <Tabs.Screen
-                name="Community" component={DeleteMe} options={{ tabBarIcon: renderIcon('group-add') }}
+                name="Community" component={DeleteMe} options={{
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'group-add')
+                }}
             />
         </Tabs.Navigator>
     )

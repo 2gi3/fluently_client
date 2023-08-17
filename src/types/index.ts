@@ -27,4 +27,7 @@ export type RootStackParamList = {
     Chat: UserT
     Chats: undefined
     Home: undefined
+    Students: undefined
 };
+
+export type IconLibraryT = 'Entypo' | 'MaterialIcons';
