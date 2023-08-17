@@ -44,7 +44,8 @@ const ChatScreen = () => {
 
     }, [route.params])
     return (
-        <SafeAreaView style={{ paddingBottom: sizes.L }}>
+        // <SafeAreaView style={{ paddingBottom: sizes.L }}>
+        <>
             <FlatList
                 style={{
                     backgroundColor: '#dddddd'
@@ -59,7 +60,8 @@ const ChatScreen = () => {
                 inputValue={inputValue}
                 setInputValue={setInputValue}
             />
-        </SafeAreaView>
+        </>
+        // </SafeAreaView>
     )
 }
 export default ChatScreen

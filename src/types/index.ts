@@ -24,6 +24,7 @@ export type ChatMessageT = {
 };
 
 export type RootStackParamList = {
-    Chat: UserT;
+    Chat: UserT
     Chats: undefined
+    Home: undefined
 };
