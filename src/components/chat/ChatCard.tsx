@@ -1,24 +1,23 @@
 import React from 'react';
 import { Avatar, ListItem, Divider } from "@rneui/base"
-import { TouchableOpacity, View } from "react-native"
+import { TouchableOpacity, View, Pressable } from "react-native"
 import { ChatT } from "../../types"
 import moment from 'moment';
+// import { useNavigation } from '@react-navigation/native'
 
 
 
 const ChatCard = ({ user }: { user: ChatT }) => {
+    // const navigation = useNavigation()
 
     return (
 
-        <TouchableOpacity
-            key={user.id}
-            onPress={() => console.log(user.user.name)}
+        <View
+            key={String(user.id)}
+            // onPress={() => navigation.navigate('Chat')}
             style={{ maxWidth: 440, maxHeight: 108, minWidth: 260 }}
         >
             <ListItem
-
-
-            // containerStyle={{ maxWidth: 440, borderColor: 'rgba(0, 0, 0, 0.07)', backgroundColor: 'red', height: 100, minWidth: 300 }}
             >
                 <View style={{ position: 'relative' }}>
                     <Avatar
@@ -66,7 +65,7 @@ const ChatCard = ({ user }: { user: ChatT }) => {
                 </ListItem.Content>
             </ListItem>
             <Divider style={{ marginLeft: 108 }} />
-        </TouchableOpacity>
+        </View>
     );
 };
 

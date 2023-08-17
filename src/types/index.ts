@@ -13,7 +13,7 @@ export type MessageT = {
 export type ChatT = {
     id: string;
     user: UserT;
-    lastMessage: MessageT;
+    lastMessage?: MessageT;
 };
 
 export type ChatMessageT = {
@@ -21,4 +21,9 @@ export type ChatMessageT = {
     id: string;
     text: string;
     createdAt: string;
+};
+
+export type RootStackParamList = {
+    Chat: UserT;
+    Chats: undefined
 };

@@ -1,0 +1,32 @@
+import { NavigationContainer } from "@react-navigation/native"
+import ChatScreen from "../screens/chat/ChatScreen"
+import { createNativeStackNavigator } from "@react-navigation/native-stack"
+import ChatsList from "../screens/chat/ChatsList"
+import chatsData from '../../mock_data/chatsData.json'
+import { RootStackParamList } from "../types"
+
+
+const Stack = createNativeStackNavigator<RootStackParamList>()
+
+
+const Navigator = () => {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator screenOptions={{
+
+                // headerStyle: {
+                //     backgroundColor: 'lightblue'
+                // },
+                // headerTitleStyle: {
+                // fontWeight: 'bold',
+                // fontSize: 25,
+                // color: 'tomato',
+                // }
+            }}>
+                <Stack.Screen name='Chats' component={ChatsList} />
+                <Stack.Screen name='Chat' component={ChatScreen} />
+            </Stack.Navigator>
+        </NavigationContainer>
+    )
+}
+export default Navigator
