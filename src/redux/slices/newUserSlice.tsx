@@ -3,11 +3,31 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { NewUserT } from '../../types/user';
 
 export interface NewUserState {
-    newUser: NewUserT | null;
+    newUser: {
+        email: string | null;
+        password: string | null;
+        name: string | null;
+        nationality: string | null;
+        country: string | null;
+        native_language: string | null;
+        teaching_language: string | null;
+        learning_language: string | null;
+        device_identifier: string | null;
+    };
 }
 
 const initialState: NewUserState = {
-    newUser: null,
+    newUser: {
+        email: null,
+        password: null,
+        name: null,
+        nationality: null,
+        country: null,
+        native_language: null,
+        teaching_language: null,
+        learning_language: null,
+        device_identifier: null,
+    },
 };
 
 export const newUserSlice = createSlice({
@@ -24,7 +44,17 @@ export const newUserSlice = createSlice({
             }
         },
         clearNewUser: (state) => {
-            state.newUser = null;
+            state.newUser = {
+                email: null,
+                password: null,
+                name: null,
+                nationality: null,
+                country: null,
+                native_language: null,
+                teaching_language: null,
+                learning_language: null,
+                device_identifier: null,
+            };
         },
     },
 });

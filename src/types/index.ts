@@ -29,6 +29,7 @@ export type RootStackParamList = {
     Home: undefined
     Students: undefined
     'Log in': undefined
+    Profile: undefined
 };
 
 export type IconLibraryT = 'Entypo' | 'MaterialIcons';

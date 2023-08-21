@@ -5,6 +5,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import { useCustomTabIcon } from "../functions/hooks/navigation";
 import { sizes } from "../styles/variables/measures";
 import Login from "../screens/Login";
+import Profile from "../screens/profile";
 
 
 
@@ -45,8 +46,8 @@ const Tabs = () => {
                 }}
             />
             <Tabs.Screen
-                name="Log in" component={Login} options={{
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'login')
+                name="Profile" component={Profile} options={{
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'person')
                 }}
             />
         </Tabs.Navigator>
