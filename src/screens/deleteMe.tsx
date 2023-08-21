@@ -1,13 +1,13 @@
 import { View, Text } from 'react-native';
+import Counter from '../components/Counter';
+import ReduxTestComponent from '../components/NewUserRedux';
 
 
 const DeleteMe = () => {
     return (
-        <View>
-            <Text>
-                Hello
-            </Text>
-        </View>
+        // <Counter />
+        <ReduxTestComponent />
+
     )
 }
 

@@ -4,6 +4,7 @@ import DeleteMe from "../screens/deleteMe"
 import Entypo from 'react-native-vector-icons/Entypo';
 import { useCustomTabIcon } from "../functions/hooks/navigation";
 import { sizes } from "../styles/variables/measures";
+import Login from "../screens/Login";
 
 
 
@@ -41,6 +42,11 @@ const Tabs = () => {
             <Tabs.Screen
                 name="Community" component={DeleteMe} options={{
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'group-add')
+                }}
+            />
+            <Tabs.Screen
+                name="Log in" component={Login} options={{
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'login')
                 }}
             />
         </Tabs.Navigator>

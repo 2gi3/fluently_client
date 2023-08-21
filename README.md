@@ -12,10 +12,11 @@
 ### Development approach
 -  Develop one code base which can be deployed on Android, iOS and Web.
 
-- Divide the project in 3 domains:
+- Divide the project in 4 domains:
   -  Live chat
-  -  Posts and questions
-  -  Learning material
+  -  Posts
+  -  Learning
+  -  User
 
 
 ## CI / CD
