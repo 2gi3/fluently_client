@@ -19,7 +19,7 @@
   -  User
 
 
-## CI / CD
+## CI / CD links
 ### development: 
 These are links to the work-in-progress, designed to showcase the ongoing development, to facilitate collaboration and to ensure every commit will work as expected in a production environment.
 
@@ -56,3 +56,23 @@ which includes:
   - `chat.ts` , `posts.ts`, `learning.ts` Files corresponding to major domains of the project, 
   - `/variables` subdirectory for all CSS variables.
  
+## Flows
+### Create new user
+  If there is no user object in the local storage, the app will present a sign up page which takes the email and password, and updates the newUser redux object, then presents a new page where the user has to fill in a few more inputs, said inputs data update the newUser redux object.
+  Finally the user clicks the 'Sign up' button, 
+  this action triggers a fetch request that saves the new user to the database and returns the user object which is saved to the local storage, the the sign up forms are dismounted and the user's dashboard is rendered.
+
+
+ ## Functions
+ '/functions' contains normal functions and the '/hooks' subdirectory
+
+ ### Custom hooks
+ - useLogIn ( /functions/hooks/user.tsx )
+
+   This hook takes the 'user' as a parameter (type UsetT), it saves the user to the local storage, and changes the loggedIn key in the redux 'status' object to true.
+
+ -  useCustomTabIcon ( functions/hooks/navigation.tsx )
+
+     This hook takes the 'library' and the 'name' of the icon as mandatory parameters, and returns the icon object to show in the Tabs, it can also take other parameters which have default values.
+
+

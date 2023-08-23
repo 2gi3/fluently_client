@@ -7,8 +7,10 @@ import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewUser, updateNewUserField } from '../../redux/slices/newUserSlice';
 // import { setUser, updateUserField } from '../../redux/slices/userSlice';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewUserT } from '../../types/user';
+// import { logIn } from '../../redux/slices/statusSlice';
+import { useLogIn } from '../../functions/hooks/user';
 
 
 
@@ -16,6 +18,7 @@ import { NewUserT } from '../../types/user';
 const Signup = () => {
     const dispatch = useDispatch();
     const newUser = useSelector((state: RootState) => state.newUser.newUser);
+    const logIn = useLogIn()
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -62,7 +65,7 @@ const Signup = () => {
                 teaching_language: teachingLanguage,
                 learning_language: learningLanguage,
             };
-            const response = await fetch('http://localhost:3000/api/user/signup', {
+            const response = await fetch('http://192.168.43.235:3000/api/user/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -70,8 +73,7 @@ const Signup = () => {
                 body: JSON.stringify(newUserData),
             });
             const data = await response.json()
-            await AsyncStorage.setItem('@user', JSON.stringify(data.user))
-            // dispatch(setUser(data.user));
+            logIn(data.user)
 
             if (response.ok) {
 

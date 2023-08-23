@@ -3,11 +3,15 @@ import Dashboard from "../../components/user/Dashboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../../types/user";
 import { useEffect, useState } from "react";
+import { RootState } from "../../redux/store";
+import { useDispatch, useSelector } from 'react-redux';
 
 
 
 const Profile = () => {
     const [user, setUser] = useState<UserT | null>(null);
+    const loggedIn = useSelector((state: RootState) => state.status.loggedIn);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,7 +23,7 @@ const Profile = () => {
         };
 
         fetchData();
-    }, []);
+    }, [loggedIn]);
 
     console.log(user);
 
