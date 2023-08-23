@@ -6,6 +6,8 @@ import { sizes } from "../../styles/variables/measures";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { setNewUser, updateNewUserField } from '../../redux/slices/newUserSlice';
+// import { setUser, updateUserField } from '../../redux/slices/userSlice';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewUserT } from '../../types/user';
 
 
@@ -22,7 +24,6 @@ const Signup = () => {
     const [nativeLanguage, setNativeLanguage] = useState('');
     const [teachingLanguage, setTeachingLanguage] = useState('');
     const [learningLanguage, setLearningLanguage] = useState('');
-    const [deviceIdentifier, setDeviceIdentifier] = useState('');
 
     // const handleUpdateField = () => {
     //     // You can update a specific field using the updateNewUserField action
@@ -45,7 +46,6 @@ const Signup = () => {
             native_language: nativeLanguage,
             teaching_language: teachingLanguage,
             learning_language: learningLanguage,
-            device_identifier: deviceIdentifier,
         };
 
         dispatch(setNewUser(newUserData));
@@ -61,19 +61,22 @@ const Signup = () => {
                 native_language: nativeLanguage,
                 teaching_language: teachingLanguage,
                 learning_language: learningLanguage,
-                device_identifier: deviceIdentifier,
             };
-            dispatch(setNewUser(newUserData));
-            const response = await fetch('http://2620:119:35/api/user/signup', {
+            const response = await fetch('http://localhost:3000/api/user/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newUserData),
             });
+            const data = await response.json()
+            await AsyncStorage.setItem('@user', JSON.stringify(data.user))
+            // dispatch(setUser(data.user));
 
             if (response.ok) {
+
                 console.log('User created successfully');
+
             } else {
                 console.error('Failed to create user');
             }
@@ -84,26 +87,14 @@ const Signup = () => {
     };
 
     useEffect(() => {
-        console.log(newUser);
+        // console.log(newUser);
     }, [newUser]);
 
     return (
         <ScrollView style={{
             marginHorizontal: sizes.S
         }}>
-            <View>
-                <Text>hello
-                    {newUser && newUser.toString()}
-                    bye
-                    <View>
-                        {newUser && <View>
-                            <Text>Email: {newUser.email}</Text>
-                            <Text>Password: {newUser.password}</Text>
-                        </View>}
-                    </View>
 
-                </Text>
-            </View>
             <Card containerStyle={{
                 maxWidth: 420,
                 marginHorizontal: 'auto',
@@ -224,16 +215,7 @@ const Signup = () => {
                                 paddingHorizontal: sizes.XS
                             }}
                         />
-                        <Input
-                            placeholder="Device Identifier"
-                            value={deviceIdentifier}
-                            onChangeText={(text) => setDeviceIdentifier(text)}
-                            errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                        />
+
                         <Button
                             // icon={
                             //     <Icon

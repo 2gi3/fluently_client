@@ -32,7 +32,6 @@ const ReduxTestComponent: React.FC = () => {
             native_language: nativeLanguage,
             teaching_language: teachingLanguage,
             learning_language: learningLanguage,
-            device_identifier: deviceIdentifier,
         };
 
         dispatch(setNewUser(newUserData));
@@ -60,7 +59,6 @@ const ReduxTestComponent: React.FC = () => {
                     <Text>Native Language: {newUser.native_language}</Text>
                     <Text>Teaching Language: {newUser.teaching_language}</Text>
                     <Text>Learning Language: {newUser.learning_language}</Text>
-                    <Text>Device Identifier: {newUser.device_identifier}</Text>
                 </View>
             )}
 
@@ -118,11 +116,6 @@ const ReduxTestComponent: React.FC = () => {
                 onChangeText={(text) => setLearningLanguage(text)}
             />
 
-            <TextInput
-                placeholder="Device Identifier"
-                value={deviceIdentifier}
-                onChangeText={(text) => setDeviceIdentifier(text)}
-            />
 
             <Button title="Set New User" onPress={handleSetNewUser} />
 

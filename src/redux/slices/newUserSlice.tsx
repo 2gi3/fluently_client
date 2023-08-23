@@ -12,7 +12,6 @@ export interface NewUserState {
         native_language: string | null;
         teaching_language: string | null;
         learning_language: string | null;
-        device_identifier: string | null;
     };
 }
 
@@ -26,7 +25,6 @@ const initialState: NewUserState = {
         native_language: null,
         teaching_language: null,
         learning_language: null,
-        device_identifier: null,
     },
 };
 
@@ -53,7 +51,6 @@ export const newUserSlice = createSlice({
                 native_language: null,
                 teaching_language: null,
                 learning_language: null,
-                device_identifier: null,
             };
         },
     },
