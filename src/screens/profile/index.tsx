@@ -5,10 +5,12 @@ import { UserT } from "../../types/user";
 import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
+import { clearNewUser } from "../../redux/slices/newUserSlice";
 
 
 
 const Profile = () => {
+    const dispatch = useDispatch();
     const [user, setUser] = useState<UserT | null>(null);
     const loggedIn = useSelector((state: RootState) => state.status.loggedIn);
 
@@ -19,6 +21,9 @@ const Profile = () => {
             if (data) {
                 const parsedUser: UserT = JSON.parse(data);
                 setUser(parsedUser);
+            } else {
+                setUser(null)
+                dispatch(clearNewUser());
             }
         };
 

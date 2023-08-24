@@ -6,6 +6,7 @@ import { useCustomTabIcon } from "../functions/hooks/navigation";
 import { sizes } from "../styles/variables/measures";
 import Login from "../screens/Login";
 import Profile from "../screens/profile";
+import LogoutButton from "../components/user/logOutButton";
 
 
 
@@ -46,9 +47,12 @@ const Tabs = () => {
                 }}
             />
             <Tabs.Screen
-                name="Profile" component={Profile} options={{
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'person')
-                }}
+                name="Profile" component={Profile} options={({ navigation }) => ({
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
+                    headerRight: () => (
+                        <LogoutButton style={{ marginRight: sizes.S }} />
+                    )
+                })}
             />
         </Tabs.Navigator>
     )

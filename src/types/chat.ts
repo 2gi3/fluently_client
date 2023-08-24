@@ -24,3 +24,16 @@ export type ChatMessageT = {
     text: string;
     createdAt: string;
 };
+export type MockChatType = {
+    id: string;
+    user: {
+        id: string;
+        name: string;
+        image: string;
+    };
+    lastMessage: {
+        id: string;
+        text: string;
+        createdAt: string;
+    };
+};

@@ -5,7 +5,7 @@ import { SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
 import { sizes } from "../../styles/variables/measures";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
-import { setNewUser, updateNewUserField } from '../../redux/slices/newUserSlice';
+import { clearNewUser, setNewUser, updateNewUserField } from '../../redux/slices/newUserSlice';
 // import { setUser, updateUserField } from '../../redux/slices/userSlice';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewUserT } from '../../types/user';
@@ -74,6 +74,7 @@ const Signup = () => {
             });
             const data = await response.json()
             logIn(data.user)
+            dispatch(clearNewUser());
 
             if (response.ok) {
 
@@ -85,6 +86,7 @@ const Signup = () => {
         } catch (error) {
             console.error('An error occurred while creating the user:', error);
         } finally {
+
         }
     };
 

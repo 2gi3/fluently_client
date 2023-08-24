@@ -1,10 +1,11 @@
 import React from 'react';
 import { FlatList, TouchableOpacity, Pressable } from 'react-native';
-import { ChatT } from '../../types';
+// import { ChatT } from '../../types';
 import ChatCard from '../../components/chat/ChatCard';
 import { Divider } from '@rneui/themed';
 import chatsData from '../../../mock_data/chatsData.json'
 import { useNavigation } from '@react-navigation/native'
+import { ChatT, MockChatType } from '../../types/chat';
 
 
 
@@ -15,7 +16,7 @@ const ChatsList = (
     const navigation = useNavigation()
 
 
-    const renderItem = ({ item }: { item: ChatT }) => (
+    const renderItem = ({ item }: { item: MockChatType }) => (
         <Pressable
             // @ts-ignore
             onPress={() => navigation.navigate('Chat', { id: item.id.toString(), name: item.user.name })}
