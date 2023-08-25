@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, Icon, Text } from "@rneui/base";
+import { Button, Card, Icon, Skeleton, Text } from "@rneui/base";
 import { Input } from "@rneui/themed";
 import { SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
 import { sizes } from "../../styles/variables/measures";
@@ -10,12 +10,14 @@ import { clearNewUser, setNewUser, updateNewUserField } from '../../redux/slices
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewUserT } from '../../types/user';
 // import { logIn } from '../../redux/slices/statusSlice';
-import { useLogIn } from '../../functions/hooks/user';
+import { useLocation, useLogIn } from '../../functions/hooks/user';
 
 
 
 
 const Signup = () => {
+
+    const [city, country, loading, error] = useLocation()
     const dispatch = useDispatch();
     const newUser = useSelector((state: RootState) => state.newUser.newUser);
     const logIn = useLogIn()
@@ -23,10 +25,10 @@ const Signup = () => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [nationality, setNationality] = useState('');
-    const [country, setCountry] = useState('');
     const [nativeLanguage, setNativeLanguage] = useState('');
     const [teachingLanguage, setTeachingLanguage] = useState('');
     const [learningLanguage, setLearningLanguage] = useState('');
+    console.log(loading)
 
     // const handleUpdateField = () => {
     //     // You can update a specific field using the updateNewUserField action
@@ -45,7 +47,7 @@ const Signup = () => {
             password,
             name,
             nationality,
-            country,
+            country: `${city}, ${country}`,
             native_language: nativeLanguage,
             teaching_language: teachingLanguage,
             learning_language: learningLanguage,
@@ -60,7 +62,7 @@ const Signup = () => {
                 password,
                 name,
                 nationality,
-                country,
+                country: `${city}, ${country}`,
                 native_language: nativeLanguage,
                 teaching_language: teachingLanguage,
                 learning_language: learningLanguage,
@@ -90,15 +92,14 @@ const Signup = () => {
         }
     };
 
-    useEffect(() => {
-        // console.log(newUser);
-    }, [newUser]);
+    // useEffect(() => {
+
+    // }, []);
 
     return (
         <ScrollView style={{
             marginHorizontal: sizes.S
         }}>
-
             <Card containerStyle={{
                 maxWidth: 420,
                 marginHorizontal: 'auto',
@@ -117,7 +118,7 @@ const Signup = () => {
                             value={email}
                             onChangeText={(text) => setEmail(text)}
                             errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
+                            // errorMessage='ENTER A VALID ERROR HERE'
                             style={{
                                 paddingHorizontal: sizes.XS
                             }}
@@ -128,117 +129,138 @@ const Signup = () => {
 
                         <Input
                             placeholder="Password"
+                            secureTextEntry={true}
                             value={password}
                             onChangeText={(text) => setPassword(text)}
                             errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
+                            // errorMessage='ENTER A VALID ERROR HERE'
                             style={{
                                 paddingHorizontal: sizes.XS
                             }}
                         />
                         <Button
-                            // icon={
-                            //     <Icon
-                            //         name="code"
-                            //         color="#ffffff"
-                            //         iconStyle={{ marginRight: 10 }}
-                            //     />
-                            // }
+                            iconRight
+                            icon={
+                                <Icon
+                                    name="navigate-next"
+                                    color="#ffffff"
+                                    iconStyle={{ marginLeft: 10, marginBottom: -1 }}
+                                />
+                            }
                             buttonStyle={{
                                 borderRadius: 0,
                                 marginLeft: 0,
                                 marginRight: 0,
                                 marginBottom: 0,
+                                marginTop: sizes.M
                             }}
-                            title="Log in"
+                            title="Next"
                             onPress={handleSetNewUser}
                         />
                     </View>
-                    : <>
-                        <Input
-                            placeholder="Name"
-                            value={name}
-                            onChangeText={(text) => setName(text)}
-                            errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                            containerStyle={{
-                                marginBottom: sizes.M,
-                            }}
-                        />
+                    : loading ?
+                        <View style={{ flexDirection: 'column', gap: sizes.S }} >
+                            <Skeleton animation="wave" width={180} height={60} />
+                            <Skeleton animation="wave" width={180} height={60} />
+                            <Skeleton animation="wave" width={180} height={60} />
+                        </View> : <>
+                            <Input
+                                placeholder="Name"
+                                value={name}
+                                onChangeText={(text) => setName(text)}
+                                errorStyle={{ color: 'red' }}
+                                // errorMessage='ENTER A VALID ERROR HERE'
+                                style={{
+                                    paddingHorizontal: sizes.XS
+                                }}
+                                containerStyle={{
+                                    marginBottom: sizes.M,
+                                }}
+                            />
 
-                        <Input
-                            placeholder="Nationality"
-                            value={nationality}
-                            onChangeText={(text) => setNationality(text)}
-                            errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                        />
-                        <Input
+                            <Input
+                                placeholder="Nationality"
+                                value={nationality}
+                                onChangeText={(text) => setNationality(text)}
+                                errorStyle={{ color: 'red' }}
+                                // errorMessage='ENTER A VALID ERROR HERE'
+                                style={{
+                                    paddingHorizontal: sizes.XS
+                                }}
+                                containerStyle={{
+                                    marginBottom: sizes.M,
+                                }}
+                            />
+                            {/* <Input
                             placeholder="Country"
                             value={country}
                             onChangeText={(text) => setCountry(text)}
                             errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
+                            // errorMessage='ENTER A VALID ERROR HERE'
                             style={{
                                 paddingHorizontal: sizes.XS
                             }}
-                        />
-                        <Input
-                            placeholder="Native Language"
-                            value={nativeLanguage}
-                            onChangeText={(text) => setNativeLanguage(text)}
-                            errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                        />
-                        <Input
-                            placeholder="Teaching Language"
-                            value={teachingLanguage}
-                            onChangeText={(text) => setTeachingLanguage(text)}
-                            errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                        />
-                        <Input
-                            placeholder="Learning Language"
-                            value={learningLanguage}
-                            onChangeText={(text) => setLearningLanguage(text)}
-                            errorStyle={{ color: 'red' }}
-                            errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                        />
+                        /> */}
+                            <Input
+                                placeholder="Native Language"
+                                value={nativeLanguage}
+                                onChangeText={(text) => setNativeLanguage(text)}
+                                errorStyle={{ color: 'red' }}
+                                // errorMessage='ENTER A VALID ERROR HERE'
+                                style={{
+                                    paddingHorizontal: sizes.XS
+                                }}
+                                containerStyle={{
+                                    marginBottom: sizes.M,
+                                }}
+                            />
+                            <Input
+                                placeholder="Teaching Language"
+                                value={teachingLanguage}
+                                onChangeText={(text) => setTeachingLanguage(text)}
+                                errorStyle={{ color: 'red' }}
+                                // errorMessage='ENTER A VALID ERROR HERE'
+                                style={{
+                                    paddingHorizontal: sizes.XS
+                                }}
+                                containerStyle={{
+                                    marginBottom: sizes.M,
+                                }}
+                            />
+                            <Input
+                                placeholder="Learning Language"
+                                value={learningLanguage}
+                                onChangeText={(text) => setLearningLanguage(text)}
+                                errorStyle={{ color: 'red' }}
+                                // errorMessage='ENTER A VALID ERROR HERE'
+                                style={{
+                                    paddingHorizontal: sizes.XS
+                                }}
+                                containerStyle={{
+                                    marginBottom: sizes.M,
+                                }}
+                            />
 
-                        <Button
-                            // icon={
-                            //     <Icon
-                            //         name="code"
-                            //         color="#ffffff"
-                            //         iconStyle={{ marginRight: 10 }}
-                            //     />
-                            // }
-                            buttonStyle={{
-                                borderRadius: 0,
-                                marginLeft: 0,
-                                marginRight: 0,
-                                marginBottom: 0,
-                            }}
-                            title="Log in"
-                            onPress={createUser}
-                        />
+                            <Button
+                                // icon={
+                                //     <Icon
+                                //         name="code"
+                                //         color="#ffffff"
+                                //         iconStyle={{ marginRight: 10 }}
+                                //     />
+                                // }
+                                buttonStyle={{
+                                    borderRadius: 0,
+                                    marginLeft: 0,
+                                    marginRight: 0,
+                                    marginBottom: 0,
+                                    marginTop: sizes.M
+                                }}
+                                title="Create your account"
+                                onPress={createUser}
+                            />
 
-                    </>}
+                        </>}
 
 
 

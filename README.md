@@ -49,6 +49,7 @@ These are links to the work-in-progress, designed to showcase the ongoing develo
 
 ## UI Styling / CSS
 - UI components library: [React Native Elements](https://reactnativeelements.com/)
+- [Icons explorer](https://icons.expo.fyi/Index)
 
 - Custom CSS is the `/styles` directory, 
 which includes:
@@ -67,12 +68,28 @@ which includes:
  '/functions' contains normal functions and the '/hooks' subdirectory
 
  ### Custom hooks
- - useLogIn ( /functions/hooks/user.tsx )
+ -  useLogIn ( /functions/hooks/user.tsx )
 
-   This hook takes the 'user' as a parameter (type UsetT), it saves the user to the local storage, and changes the loggedIn key in the redux 'status' object to true.
+     This hook takes the 'user' as a parameter (type UsetT), it saves the user to the local storage, and changes the loggedIn value in the redux 'status' object to true.
 
- -  useCustomTabIcon ( functions/hooks/navigation.tsx )
+-  useLogOut (/functions/hooks/user.tsx)
+   This hook clears the local storage and updates the state of the user in the 'useUserData' hook
+
+- useUserData() (/functions/hooks/user.tsx)
+
+  - Usage 
+    Use this hook anywher as follows: `const user = useUserData();`
+
+  - Description
+    This hook gets the user data from the local storage and updates it's state automatically when the user from local storage is added or deleted.
+
+- useLocation() (/functions/hooks/user.tsx)
+  - environment variable: WEATHER_API_KEY
+  - use:     const [city, country, loading, error] = useLocation()
+  - This hook uses the `expo-location` library to get the user's latitude and longhitude, then uses the [open weather API](https://openweathermap.org/api) to obtail the city and the country.
+  -  The weather API has been chosen because it takes no credit card to subscribe and offers enouth free calls per day.
+
+      
+-  useCustomTabIcon ( functions/hooks/navigation.tsx )
 
      This hook takes the 'library' and the 'name' of the icon as mandatory parameters, and returns the icon object to show in the Tabs, it can also take other parameters which have default values.
-
-

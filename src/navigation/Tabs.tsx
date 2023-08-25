@@ -7,12 +7,14 @@ import { sizes } from "../styles/variables/measures";
 import Login from "../screens/Login";
 import Profile from "../screens/profile";
 import LogoutButton from "../components/user/logOutButton";
+import { useUserData } from "../functions/hooks/user";
 
 
 
 
 const Tabs = () => {
     const Tabs = createBottomTabNavigator()
+    const user = useUserData()
 
     // const renderIcon = useCustomTabIcon()
 
@@ -50,7 +52,7 @@ const Tabs = () => {
                 name="Profile" component={Profile} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
                     headerRight: () => (
-                        <LogoutButton style={{ marginRight: sizes.S }} />
+                        user ? <LogoutButton style={{ marginRight: sizes.S }} /> : null
                     )
                 })}
             />
