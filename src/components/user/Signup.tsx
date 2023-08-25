@@ -30,16 +30,7 @@ const Signup = () => {
     const [learningLanguage, setLearningLanguage] = useState('');
     console.log(loading)
 
-    // const handleUpdateField = () => {
-    //     // You can update a specific field using the updateNewUserField action
-    //     dispatch(updateNewUserField({ key: 'email', value: email }));
-    //     dispatch(updateNewUserField({ key: 'password', value: password }));
-    //     // console.log(email)
-    //     // console.log(password)
-    //     // console.log(newUser)
 
-
-    // };
 
     const handleSetNewUser = () => {
         const newUserData: NewUserT = {
