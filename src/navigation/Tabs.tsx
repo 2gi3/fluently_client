@@ -2,12 +2,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import ChatsList from "../screens/chat/ChatsList"
 import DeleteMe from "../screens/deleteMe"
 import Entypo from 'react-native-vector-icons/Entypo';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useCustomTabIcon } from "../functions/hooks/navigation";
 import { sizes } from "../styles/variables/measures";
-import Login from "../screens/Login";
 import Profile from "../screens/profile";
 import LogoutButton from "../components/user/logOutButton";
 import { useUserData } from "../functions/hooks/user";
+import { Text, View, } from "react-native"
+import { Button } from "@rneui/base";
+
 
 
 
@@ -20,7 +23,7 @@ const Tabs = () => {
 
     return (
         <Tabs.Navigator
-            initialRouteName="Chats"
+            initialRouteName="Profile"
         // screenOptions={{
         //     headerStyle:{
 
@@ -34,12 +37,21 @@ const Tabs = () => {
                 name="Chats" component={ChatsList} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble-outline'),
                     headerRight: () => (
-                        <Entypo
+                        <Button
+                            type="outline"
                             onPress={() => navigation.navigate('Students')}
-                            name="new-message"
-                            size={24}
-                            color={'#8e8e8f'}
-                            style={{ marginRight: sizes.S }} />)
+                            style={{ marginRight: sizes.S, display: 'flex', alignItems: 'center' }}
+                        ><Text >Find a partner
+
+                            </Text>
+                            <MaterialCommunityIcons
+                                name="handshake-outline"
+                                size={24}
+                                color={'#8e8e8f'}
+                                style={{ marginLeft: sizes.XS }}
+
+                            />
+                        </Button>)
                 })}
 
             />
@@ -52,7 +64,17 @@ const Tabs = () => {
                 name="Profile" component={Profile} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
                     headerRight: () => (
-                        user ? <LogoutButton style={{ marginRight: sizes.S }} /> : null
+                        user ? <LogoutButton style={{ marginRight: sizes.S }} />
+                            : null
+                        //  (<Button onPress={() => navigation.navigate('Login')}
+                        // ><Text>Log in
+                        //         <Entypo
+                        //             name="login"
+                        //             size={24}
+                        //             color={'#8e8e8f'}
+                        //             style={{ marginRight: sizes.S }} />
+                        //     </Text>
+                        // </Button>)
                     )
                 })}
             />

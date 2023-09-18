@@ -15,7 +15,7 @@ import { useLocation, useLogIn } from '../../functions/hooks/user';
 
 
 
-const Signup = () => {
+const Signup = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
 
     const [city, country, loading, error] = useLocation()
     const dispatch = useDispatch();
@@ -28,7 +28,6 @@ const Signup = () => {
     const [nativeLanguage, setNativeLanguage] = useState('');
     const [teachingLanguage, setTeachingLanguage] = useState('');
     const [learningLanguage, setLearningLanguage] = useState('');
-    console.log(loading)
 
 
 
@@ -142,12 +141,24 @@ const Signup = () => {
                                 borderRadius: 0,
                                 marginLeft: 0,
                                 marginRight: 0,
-                                marginBottom: 0,
+                                marginBottom: sizes.M,
                                 marginTop: sizes.M
                             }}
-                            title="Next"
+                            title="Create account"
                             onPress={handleSetNewUser}
                         />
+                        <Card.Divider style={{
+                            marginBottom: sizes.M,
+                        }} />
+                        <Text style={{
+                            marginBottom: sizes.S,
+                        }} >You already have an account?</Text>
+
+                        <Button size="sm" type="outline" onPress={() => toggleLoginState(true)}>
+                            Log in
+                        </Button>
+
+
                     </View>
                     : loading ?
                         <View style={{ flexDirection: 'column', gap: sizes.S }} >
@@ -252,9 +263,6 @@ const Signup = () => {
                             />
 
                         </>}
-
-
-
 
             </Card>
         </ScrollView>

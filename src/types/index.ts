@@ -5,8 +5,9 @@ export type RootStackParamList = {
     Chats: undefined
     Home: undefined
     Students: undefined
-    'Log in': undefined
+    'Login': undefined
     Profile: undefined
+    'Profile/Login': undefined
 };
 
 export type IconLibraryT = 'Entypo' | 'MaterialIcons';

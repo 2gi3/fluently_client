@@ -6,6 +6,7 @@ import StudentsList from "../screens/chat/StudentsList"
 import chatsData from '../../mock_data/chatsData.json'
 import { RootStackParamList } from "../types"
 import Tabs from "./Tabs"
+import Login from "../screens/profile/Login"
 
 
 
@@ -28,6 +29,7 @@ const Navigator = () => {
                 <Stack.Screen name='Home' component={Tabs} options={{ headerShown: false }} />
                 <Stack.Screen name='Chat' component={ChatScreen} />
                 <Stack.Screen name='Students' component={StudentsList} />
+                {/* <Stack.Screen name='Login' component={Login} /> */}
             </Stack.Navigator>
         </NavigationContainer>
     )

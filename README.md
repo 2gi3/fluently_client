@@ -93,3 +93,11 @@ which includes:
 -  useCustomTabIcon ( functions/hooks/navigation.tsx )
 
      This hook takes the 'library' and the 'name' of the icon as mandatory parameters, and returns the icon object to show in the Tabs, it can also take other parameters which have default values.
+
+
+
+## Environment variables
+
+# Run project locally
+
+- Run the back-end on localhost:3000
