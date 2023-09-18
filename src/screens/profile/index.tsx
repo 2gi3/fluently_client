@@ -1,13 +1,9 @@
-import Signup from "../../components/user/Signup"
+import Signup from "../../components/user/SignupForm"
 import Dashboard from "../../components/user/Dashboard";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { UserT } from "../../types/user";
-import { useEffect, useState } from "react";
-import { RootState } from "../../redux/store";
-import { useDispatch, useSelector } from 'react-redux';
-import { clearNewUser } from "../../redux/slices/newUserSlice";
+import { useState } from "react";
 import { useUserData } from "../../functions/hooks/user";
-import Login from "./Login";
+import LoginForm from "../../components/user/LoginForm";
+import SignupForm from "../../components/user/SignupForm";
 
 
 
@@ -21,9 +17,9 @@ const Profile = () => {
 
     if (!user) {
         if (login) {
-            return <Login toggleLoginState={toggleLoginState} />
+            return <LoginForm toggleLoginState={toggleLoginState} />
         } else {
-            return <Signup toggleLoginState={toggleLoginState} />;
+            return <SignupForm toggleLoginState={toggleLoginState} />;
         }
     } else {
         return <Dashboard user={user} />;

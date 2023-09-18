@@ -15,7 +15,7 @@ import { useLocation, useLogIn } from '../../functions/hooks/user';
 
 
 
-const Signup = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
+const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
 
     const [city, country, loading, error] = useLocation()
     const dispatch = useDispatch();
@@ -271,5 +271,5 @@ const Signup = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolea
 
     )
 }
-export default Signup
+export default SignupForm
 

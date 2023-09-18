@@ -6,7 +6,7 @@ import StudentsList from "../screens/chat/StudentsList"
 import chatsData from '../../mock_data/chatsData.json'
 import { RootStackParamList } from "../types"
 import Tabs from "./Tabs"
-import Login from "../screens/profile/Login"
+import Login from "../components/user/LoginForm"
 
 
 
