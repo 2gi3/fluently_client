@@ -13,7 +13,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useLocation, useLogIn } from '../../functions/hooks/user';
 import { emailRegex, passwordRegex } from '../../regex';
 import AuthInput from './AuthInput';
-import LanguagePicker from '../LanguagePicker';
+import LanguagePicker from './LanguagePicker';
+import NationalityPicker from './NationalityPicker';
 
 
 
@@ -213,8 +214,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                     marginBottom: sizes.M,
                                 }}
                             />
-
-                            <Input
+                            <NationalityPicker />
+                            {/* <Input
                                 placeholder="Nationality"
                                 value={nationality}
                                 onChangeText={(text) => setNationality(text)}
@@ -226,7 +227,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 containerStyle={{
                                     marginBottom: sizes.M,
                                 }}
-                            />
+                            /> */}
                             {/* <Input
                                 placeholder="Native Language"
                                 value={nativeLanguage}

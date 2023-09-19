@@ -1,11 +1,12 @@
-import { ListItem } from "@rneui/base";
-import { worldLanguages } from "../data/worldLanguages"
-import { useState } from 'react'
+import { Input, ListItem } from "@rneui/base";
+import { worldLanguages } from "../../data/worldLanguages"
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { updateNewUserField } from "../redux/slices/newUserSlice";
-import { sizes } from "../styles/variables/measures";
-import { RootState } from "../redux/store";
+import { updateNewUserField } from "../../redux/slices/newUserSlice";
+import { sizes } from "../../styles/variables/measures";
+import { RootState } from "../../redux/store";
 import { View, Text } from "react-native"
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 
@@ -13,6 +14,8 @@ const LanguagePicker = () => {
   const newUser = useSelector((state: RootState) => state.newUser.newUser);
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
+  const [src, setSrc] = useState("");
+
 
 
   return (
@@ -24,7 +27,7 @@ const LanguagePicker = () => {
         borderBottomColor: 'rgb(134, 147, 158)',
         borderStyle: 'solid',
         paddingHorizontal: 0,
-        padding: sizes.XS
+        padding: sizes.XS,
       }}
       content={
         <>
@@ -45,9 +48,41 @@ const LanguagePicker = () => {
       isExpanded={expanded}
       onPress={() => {
         setExpanded(!expanded);
+        setSrc('')
       }}
     >
-      {worldLanguages.map((language: string, i: number) => {
+      {
+        expanded && (
+          <Input
+            placeholder="filter"
+            value={src}
+            onChangeText={(text) => setSrc(text)}
+            errorStyle={{ color: 'red' }}
+            // errorMessage='ENTER A VALID ERROR HERE'
+            style={{
+              paddingHorizontal: sizes.XS
+            }}
+            containerStyle={{
+              marginBottom: sizes.S,
+            }}
+            rightIcon={(
+              <MaterialCommunityIcons
+                name="text-search"
+                size={24}
+                color={'#8e8e8f'}
+                style={{ marginLeft: 8 }}
+              />
+            )}
+          />
+        )
+      }
+      {worldLanguages.filter((language) => {
+        if (src === "") {
+          return language;
+        } else if (language.toLowerCase().includes(src.toLocaleLowerCase())) {
+          return language;
+        }
+      }).map((language: string, i: number) => {
 
         return (<>
           <ListItem key={i}
