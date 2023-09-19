@@ -24,6 +24,9 @@ const AuthInput = ({
         value={value}
         onChangeText={onChangeText}
         onBlur={onBlur}
+        style={{
+          paddingHorizontal: sizes.XS
+        }}
         errorStyle={{ color: 'red', display: errorMessage ? 'flex' : 'none' }}
         errorMessage={errorMessage}
         secureTextEntry={secureTextEntry ? hideText : false}

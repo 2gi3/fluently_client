@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, Icon, Overlay, Skeleton, Text } from "@rneui/base";
+import { Button, Card, Divider, Icon, Overlay, Skeleton, Text } from "@rneui/base";
 import { Input } from "@rneui/themed";
 import { SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
 import { sizes } from "../../styles/variables/measures";
@@ -13,6 +13,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useLocation, useLogIn } from '../../functions/hooks/user';
 import { emailRegex, passwordRegex } from '../../regex';
 import AuthInput from './AuthInput';
+import LanguagePicker from '../LanguagePicker';
 
 
 
@@ -45,18 +46,22 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
 
 
     const handleSetNewUser = async () => {
-        const newUserData: NewUserT = {
-            email,
-            password,
-            name,
-            nationality,
-            country: `${city}, ${country}`,
-            native_language: nativeLanguage,
-            teaching_language: teachingLanguage,
-            learning_language: learningLanguage,
-        };
+        if (emailRegex.test(email) && passwordRegex.test(password)) {
+            const newUserData: NewUserT = {
+                email,
+                password,
+                name,
+                nationality,
+                country: `${city}, ${country}`,
+                native_language: nativeLanguage,
+                teaching_language: teachingLanguage,
+                learning_language: learningLanguage,
+            };
 
-        dispatch(setNewUser(newUserData));
+            dispatch(setNewUser(newUserData));
+        } else {
+            setDispleyEmailErrors(true)
+        }
 
     };
     const createUser = async () => {
@@ -223,16 +228,6 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 }}
                             />
                             {/* <Input
-                            placeholder="Country"
-                            value={country}
-                            onChangeText={(text) => setCountry(text)}
-                            errorStyle={{ color: 'red' }}
-                            // errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                        /> */}
-                            <Input
                                 placeholder="Native Language"
                                 value={nativeLanguage}
                                 onChangeText={(text) => setNativeLanguage(text)}
@@ -244,7 +239,9 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 containerStyle={{
                                     marginBottom: sizes.M,
                                 }}
-                            />
+                            /> */}
+                            <LanguagePicker />
+
                             <Input
                                 placeholder="Teaching Language"
                                 value={teachingLanguage}
