@@ -198,7 +198,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                             <Skeleton animation="wave" width={180} height={60} />
                             <Skeleton animation="wave" width={180} height={60} />
                             <Skeleton animation="wave" width={180} height={60} />
-                        </View> : <>
+                        </View> : <View style={{ paddingTop: sizes.M }}>
                             <AuthInput
                                 autoFocus={true}
                                 placeholder="Name"
@@ -251,7 +251,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 onPress={createUser}
                             />
 
-                        </>}
+                        </View>}
 
             </Card>
         </ScrollView>

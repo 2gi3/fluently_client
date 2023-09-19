@@ -60,10 +60,11 @@ const LanguagePicker = () => {
             errorStyle={{ color: 'red' }}
             // errorMessage='ENTER A VALID ERROR HERE'
             style={{
-              paddingHorizontal: sizes.XS
+              paddingHorizontal: sizes.XS,
             }}
+            inputContainerStyle={{ borderWidth: 1, borderTopWidth: 0 }}
             containerStyle={{
-              marginBottom: sizes.S,
+              marginTop: -sizes.M,
             }}
             rightIcon={(
               <MaterialCommunityIcons
