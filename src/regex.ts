@@ -10,3 +10,10 @@ export const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 // Minimum eight characters, at least one uppercase letter, one lowercase letter, 
 // one number and one special character:
 export const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+
+
+//studentName
+//Allows: Latin or Thai characters, hyphen, apostrophe, and whitespace
+//Must have a minimum of 2 characters and a maximum of 20 characters.
+// export const studentName = /^[\p{Latin}\p{Thai}'\-\s]{2,20}$/
+export const studentName = /^[\p{L}ก-๏'’\-\s]{2,20}$/u;

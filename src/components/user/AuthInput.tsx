@@ -27,7 +27,7 @@ const AuthInput = ({
         style={{
           paddingHorizontal: sizes.XS
         }}
-        errorStyle={{ color: 'red', display: errorMessage ? 'flex' : 'none' }}
+        errorStyle={{ color: 'red', display: errorMessage ? 'flex' : 'none', maxWidth: 220, margin: 'auto', marginTop: sizes.S }}
         errorMessage={errorMessage}
         secureTextEntry={secureTextEntry ? hideText : false}
         containerStyle={{

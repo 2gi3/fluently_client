@@ -6,15 +6,13 @@ import { sizes } from "../../styles/variables/measures";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { clearNewUser, setNewUser, updateNewUserField } from '../../redux/slices/newUserSlice';
-// import { setUser, updateUserField } from '../../redux/slices/userSlice';
-// import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewUserT } from '../../types/user';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useLocation, useLogIn } from '../../functions/hooks/user';
-import { emailRegex, passwordRegex } from '../../regex';
+import { emailRegex, passwordRegex, studentName } from '../../regex';
 import AuthInput from './AuthInput';
 import LanguagePicker from './LanguagePicker';
 import NationalityPicker from './NationalityPicker';
+import LearnLanguageSelector from './LearnLanguageSelector';
 
 
 
@@ -39,6 +37,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [hideText, setHideText] = useState(true)
     const [displeyEmailErrors, setDispleyEmailErrors] = useState(false)
     const [displeyPasswordErrors, setDispleyPasswordErrors] = useState(false)
+    const [displeyNameErrors, setDispleyNameErrors] = useState(false)
     const toggleOverlay = () => {
         setErrorMessage(null)
         setVisible(!visible);
@@ -71,11 +70,11 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 email: email.trim(),
                 password: password.trim(),
                 name,
-                nationality,
+                nationality: newUser.nationality,
                 country: `${city}, ${country}`,
-                native_language: nativeLanguage,
+                native_language: newUser.native_language,
                 teaching_language: teachingLanguage,
-                learning_language: learningLanguage,
+                learning_language: newUser.learning_language,
             };
             const response = await fetch('http://192.168.43.235:3000/api/user/signup', {
                 method: 'POST',
@@ -200,7 +199,15 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                             <Skeleton animation="wave" width={180} height={60} />
                             <Skeleton animation="wave" width={180} height={60} />
                         </View> : <>
-                            <Input
+                            <AuthInput
+                                autoFocus={true}
+                                placeholder="Name"
+                                value={name}
+                                onChangeText={(text) => setName(text)}
+                                onBlur={() => setDispleyNameErrors(true)}
+                                errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 4 characters'}
+                            />
+                            {/* <Input
                                 autoFocus={true}
                                 placeholder="Name"
                                 value={name}
@@ -213,37 +220,11 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 containerStyle={{
                                     marginBottom: sizes.M,
                                 }}
-                            />
+                            /> */}
                             <NationalityPicker />
-                            {/* <Input
-                                placeholder="Nationality"
-                                value={nationality}
-                                onChangeText={(text) => setNationality(text)}
-                                errorStyle={{ color: 'red' }}
-                                // errorMessage='ENTER A VALID ERROR HERE'
-                                style={{
-                                    paddingHorizontal: sizes.XS
-                                }}
-                                containerStyle={{
-                                    marginBottom: sizes.M,
-                                }}
-                            /> */}
-                            {/* <Input
-                                placeholder="Native Language"
-                                value={nativeLanguage}
-                                onChangeText={(text) => setNativeLanguage(text)}
-                                errorStyle={{ color: 'red' }}
-                                // errorMessage='ENTER A VALID ERROR HERE'
-                                style={{
-                                    paddingHorizontal: sizes.XS
-                                }}
-                                containerStyle={{
-                                    marginBottom: sizes.M,
-                                }}
-                            /> */}
                             <LanguagePicker />
 
-                            <Input
+                            {/* <Input
                                 placeholder="Teaching Language"
                                 value={teachingLanguage}
                                 onChangeText={(text) => setTeachingLanguage(text)}
@@ -255,34 +236,15 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 containerStyle={{
                                     marginBottom: sizes.M,
                                 }}
-                            />
-                            <Input
-                                placeholder="Learning Language"
-                                value={learningLanguage}
-                                onChangeText={(text) => setLearningLanguage(text)}
-                                errorStyle={{ color: 'red' }}
-                                // errorMessage='ENTER A VALID ERROR HERE'
-                                style={{
-                                    paddingHorizontal: sizes.XS
-                                }}
-                                containerStyle={{
-                                    marginBottom: sizes.M,
-                                }}
-                            />
+                            /> */}
+                            <LearnLanguageSelector />
 
                             <Button
-                                // icon={
-                                //     <Icon
-                                //         name="code"
-                                //         color="#ffffff"
-                                //         iconStyle={{ marginRight: 10 }}
-                                //     />
-                                // }
                                 buttonStyle={{
                                     borderRadius: 0,
                                     marginLeft: 0,
                                     marginRight: 0,
-                                    marginBottom: 0,
+                                    marginBottom: sizes.M,
                                     marginTop: sizes.M
                                 }}
                                 title="Create your account"
