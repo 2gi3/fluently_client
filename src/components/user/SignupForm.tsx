@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Card, Icon, Skeleton, Text } from "@rneui/base";
+import { Button, Card, Icon, Overlay, Skeleton, Text } from "@rneui/base";
 import { Input } from "@rneui/themed";
 import { SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
 import { sizes } from "../../styles/variables/measures";
@@ -9,8 +9,10 @@ import { clearNewUser, setNewUser, updateNewUserField } from '../../redux/slices
 // import { setUser, updateUserField } from '../../redux/slices/userSlice';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NewUserT } from '../../types/user';
-// import { logIn } from '../../redux/slices/statusSlice';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useLocation, useLogIn } from '../../functions/hooks/user';
+import { emailRegex, passwordRegex } from '../../regex';
+import AuthInput from './AuthInput';
 
 
 
@@ -28,10 +30,21 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [nativeLanguage, setNativeLanguage] = useState('');
     const [teachingLanguage, setTeachingLanguage] = useState('');
     const [learningLanguage, setLearningLanguage] = useState('');
+    const [header, setHeader] = useState('Start learning')
+
+    const [visible, setVisible] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>()
+    const [hideText, setHideText] = useState(true)
+    const [displeyEmailErrors, setDispleyEmailErrors] = useState(false)
+    const [displeyPasswordErrors, setDispleyPasswordErrors] = useState(false)
+    const toggleOverlay = () => {
+        setErrorMessage(null)
+        setVisible(!visible);
+
+    };
 
 
-
-    const handleSetNewUser = () => {
+    const handleSetNewUser = async () => {
         const newUserData: NewUserT = {
             email,
             password,
@@ -44,12 +57,13 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
         };
 
         dispatch(setNewUser(newUserData));
+
     };
     const createUser = async () => {
         try {
             const newUserData = {
-                email,
-                password,
+                email: email.trim(),
+                password: password.trim(),
                 name,
                 nationality,
                 country: `${city}, ${country}`,
@@ -82,9 +96,12 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
         }
     };
 
-    // useEffect(() => {
+    useEffect(() => {
+        if (newUser.email && newUser.password) {
+            setHeader('About yourself')
+        }
 
-    // }, []);
+    }, [newUser.email, newUser.password]);
 
     return (
         <ScrollView style={{
@@ -95,7 +112,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 marginHorizontal: 'auto',
                 marginVertical: sizes.L,
             }}>
-                <Card.Title h3>Start learning</Card.Title>
+                <Card.Title h3>{header}</Card.Title>
                 <Card.Divider />
 
                 {!newUser.email && !newUser.password ?
@@ -103,30 +120,21 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                         marginVertical: sizes.M,
                     }}>
 
-                        <Input
-                            placeholder='Email'
+                        <AuthInput
+                            autoFocus={true}
+                            placeholder="Email"
                             value={email}
                             onChangeText={(text) => setEmail(text)}
-                            errorStyle={{ color: 'red' }}
-                            // errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
-                            containerStyle={{
-                                marginBottom: sizes.M,
-                            }}
+                            onBlur={() => setDispleyEmailErrors(true)}
+                            errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
                         />
-
-                        <Input
+                        <AuthInput
                             placeholder="Password"
-                            secureTextEntry={true}
                             value={password}
                             onChangeText={(text) => setPassword(text)}
-                            errorStyle={{ color: 'red' }}
-                            // errorMessage='ENTER A VALID ERROR HERE'
-                            style={{
-                                paddingHorizontal: sizes.XS
-                            }}
+                            onBlur={() => setDispleyPasswordErrors(true)}
+                            errorMessage={passwordRegex.test(password) || password === '' || !displeyPasswordErrors ? undefined : 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'}
+                            secureTextEntry={true}
                         />
                         <Button
                             iconRight
@@ -142,7 +150,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 marginLeft: 0,
                                 marginRight: 0,
                                 marginBottom: sizes.M,
-                                marginTop: sizes.M
+                                marginTop: 0
                             }}
                             title="Create account"
                             onPress={handleSetNewUser}
@@ -157,7 +165,27 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                         <Button size="sm" type="outline" onPress={() => toggleLoginState(true)}>
                             Log in
                         </Button>
+                        <Overlay isVisible={visible} onBackdropPress={toggleOverlay}
+                            overlayStyle={{ backgroundColor: 'white', padding: sizes.M }}>
+                            <Text style={{ marginVertical: sizes.M }} >{errorMessage}</Text>
 
+
+                            <Button
+                                icon={
+                                    <Icon
+                                        name="close"
+                                        type="material-icons"
+                                        color="white"
+                                        size={25}
+                                    // iconStyle={}
+                                    />
+                                }
+                                // title="Try again"
+                                onPress={toggleOverlay}
+                                buttonStyle={{ width: 'auto', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+
+                            />
+                        </Overlay>
 
                     </View>
                     : loading ?
@@ -167,6 +195,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                             <Skeleton animation="wave" width={180} height={60} />
                         </View> : <>
                             <Input
+                                autoFocus={true}
                                 placeholder="Name"
                                 value={name}
                                 onChangeText={(text) => setName(text)}

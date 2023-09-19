@@ -47,25 +47,33 @@ export const useLogOut = () => {
 export const useUserData = () => {
     const dispatch = useDispatch();
     const [user, setUser] = useState<UserT | null>(null);
+    const [loading, setLoading] = useState(true)
     const loggedIn = useSelector((state: RootState) => state.status.loggedIn);
 
     useEffect(() => {
         const fetchData = async () => {
-            const data = await AsyncStorage.getItem('@user');
-            if (data) {
-                const parsedUser: UserT = JSON.parse(data);
-                setUser(parsedUser);
-            } else {
-                setUser(null)
-                dispatch(clearNewUser());
+            try {
+                const data = await AsyncStorage.getItem('@user');
+                if (data) {
+                    const parsedUser: UserT = JSON.parse(data);
+                    setUser(parsedUser);
+                } else {
+                    setUser(null);
+                    dispatch(clearNewUser());
+                }
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            } finally {
+                setLoading(false);
             }
         };
 
         fetchData();
     }, [loggedIn, dispatch]);
 
-    return user;
+    return { user, loading };
 };
+
 
 
 export const useLocation = () => {

@@ -7,6 +7,7 @@ import { clearNewUser } from "../../redux/slices/newUserSlice"
 import { useDispatch, useSelector } from 'react-redux';
 import { emailRegex, passwordRegex } from "../../regex"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import AuthInput from "./AuthInput"
 
 
 
@@ -44,7 +45,10 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ email, password }),
+                    body: JSON.stringify({
+                        email: email.trim(),
+                        password: password.trim()
+                    }),
                 });
                 const user = await response.json()
                 console.log(user)
@@ -89,43 +93,21 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     marginVertical: sizes.M,
                 }}>
 
-                    <Input
-                        placeholder='Email'
+                    <AuthInput
+                        autoFocus={true}
+                        placeholder="Email"
                         value={email}
                         onChangeText={(text) => setEmail(text)}
                         onBlur={() => setDispleyEmailErrors(true)}
-                        errorStyle={displeyEmailErrors ? { color: 'red' } : { display: 'none' }}
-                        errorMessage={emailRegex.test(email) || email === '' ? undefined : 'Please provide a valid email'}
-                        style={{
-                            paddingHorizontal: sizes.XS
-                        }}
-                        containerStyle={{
-                            marginBottom: sizes.M,
-                        }}
+                        errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
                     />
-
-                    <Input
+                    <AuthInput
                         placeholder="Password"
-                        secureTextEntry={hideText}
-                        rightIcon={<MaterialCommunityIcons
-                            onPress={() => { setHideText(!hideText) }}
-                            name={hideText ? "eye-outline" : "eye-off-outline"}
-                            size={24}
-                            color={'#8e8e8f'}
-                            style={{ marginLeft: sizes.XS }}
-
-                        />
-
-                        }
                         value={password}
                         onChangeText={(text) => setPassword(text)}
                         onBlur={() => setDispleyPasswordErrors(true)}
-                        errorStyle={displeyPasswordErrors ? { color: 'red' } : { display: 'none' }}
-                        errorMessage={passwordRegex.test(password) || password === '' ? undefined
-                            : 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:'}
-                        style={{
-                            paddingHorizontal: sizes.XS
-                        }}
+                        errorMessage={passwordRegex.test(password) || password === '' || !displeyPasswordErrors ? undefined : 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'}
+                        secureTextEntry={true}
                     />
                     <Button
                         iconRight
@@ -141,7 +123,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                             marginLeft: 0,
                             marginRight: 0,
                             marginBottom: sizes.M,
-                            marginTop: sizes.M
+                            marginTop: 0
                         }}
                         title="Log in"
                         onPress={handleLogin}

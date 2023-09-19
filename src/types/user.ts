@@ -24,3 +24,13 @@ export enum Gender {
     Female = 'female',
     Other = 'other',
 }
+
+export interface AuthInputProps {
+    autoFocus?: boolean
+    placeholder: string;
+    value: string;
+    onChangeText: (text: string) => void;
+    onBlur?: () => void;
+    errorMessage?: string | undefined;
+    secureTextEntry?: boolean;
+}

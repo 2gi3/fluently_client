@@ -1,14 +1,39 @@
-import { Avatar, Divider, ListItem, Text, color } from "@rneui/base"
+import { Avatar, Button, Divider, Icon, Input, ListItem, Overlay, Text, color } from "@rneui/base"
 import { ScrollView, View } from "react-native"
 import { RootState } from "../../redux/store";
 import { useSelector } from 'react-redux';
 import { UserT } from "../../types/user";
 import { sizes } from "../../styles/variables/measures";
+import { useState } from "react";
 
 const Dashboard = ({ user }: { user: UserT }) => {
     // const user = useSelector((state: RootState) => state.user.user);
     // console.log(user)
     const { XS, S, M, L, XL } = sizes
+
+    const [overlayVisible, setOverlayVisible] = useState(false);
+    const confirmationSentence: string = 'delete'
+    const [confirmationInput, setConfirmationInput] = useState('')
+    const [inputError, setInputError] = useState<string | undefined>()
+
+
+    const handleDeleteAccount = () => {
+        if (confirmationSentence === confirmationInput.trim().toLocaleLowerCase()) {
+            try {
+                console.log('account deleted')
+
+
+            } catch {
+
+            } finally {
+
+            }
+        } else {
+            console.log('the words do not match')
+        }
+
+        // setOverlayVisible(!overlayVisible)
+    }
 
     return (
         <ScrollView>
@@ -70,6 +95,79 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     <ListItem.Subtitle style={{ marginTop: 5 }}>Native Language: <Text style={{ color: '#666666' }}>{user.native_language}</Text></ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>
+            <Button
+                size="md"
+                type="outline"
+                onPress={() => setOverlayVisible(!overlayVisible)}
+                titleStyle={{ color: 'red' }}
+                buttonStyle={{ borderColor: 'red', marginVertical: sizes.M, margin: 'auto', backgroundColor: '#ffffff' }}
+            >Delete your profile</Button>
+            <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(!overlayVisible)}
+                overlayStyle={{ backgroundColor: 'white', padding: sizes.M }}>
+                <Text style={{ marginBottom: sizes.M }} >
+                    ⚠️ Warning: This action is irreversible!
+                </Text>
+                <Text style={{ marginBottom: sizes.M }} >
+
+                    If you want to proceed, type <Text style={{ fontWeight: 'bold' }}>&apos;&nbsp;{confirmationSentence}&nbsp;&apos; </Text> in the input below:
+                </Text>
+                <Input
+                    autoFocus={true}
+                    placeholder="Type here"
+                    value={confirmationInput}
+                    onChangeText={(text) => {
+                        setConfirmationInput(text);
+                        if (confirmationSentence === confirmationInput.toLocaleLowerCase()) {
+                            setInputError(undefined)
+                        }
+                    }}
+                    errorStyle={{ color: 'red' }}
+                    onBlur={() => {
+                        if (confirmationSentence !== confirmationInput.toLocaleLowerCase()) {
+                            setInputError(`Type the word: '${confirmationSentence}' in the input above`)
+                        } else {
+                            setInputError(undefined)
+                        }
+                    }}
+                    errorMessage={inputError}
+                    style={{
+                        paddingHorizontal: sizes.XS
+                    }}
+                    containerStyle={{
+                        marginBottom: sizes.M,
+                    }}
+                />
+                <View style={{ display: 'flex', gap: sizes.M, flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between' }}>
+                    <Button
+                        type="outline"
+                        icon={
+                            <Icon
+                                name="close"
+                                type="material-icons"
+                                color="rgb(32, 137, 220)"
+                                size={25}
+                            // iconStyle={}
+                            />
+                        }
+                        // title="Try again"
+                        onPress={() => {
+                            setOverlayVisible(!overlayVisible);
+                            setInputError(undefined);
+                            setConfirmationInput('')
+                        }}
+                        buttonStyle={{ width: 'auto', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+
+                    />
+
+                    <Button
+                        title="Delete account"
+                        buttonStyle={{ backgroundColor: 'red' }}
+                        titleStyle={{ color: 'white' }}
+                        onPress={() => handleDeleteAccount()}
+
+                    />
+                </View>
+            </Overlay>
         </ScrollView>
     )
 }
