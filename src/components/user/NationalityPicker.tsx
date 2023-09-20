@@ -57,6 +57,7 @@ const NationalityPicker = () => {
                 expanded && (
                     <Input
                         placeholder="filter"
+                        autoFocus={expanded}
                         value={src}
                         onChangeText={(text) => setSrc(text)}
                         errorStyle={{ color: 'red' }}

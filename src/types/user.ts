@@ -2,6 +2,8 @@ export interface NewUserT {
     email: string;
     password: string;
     name: string;
+    age?: number | null;
+    gender?: Gender | null;
     nationality: string;
     country: string;
     native_language: string;
@@ -12,9 +14,7 @@ export interface NewUserT {
 
 export interface UserT extends NewUserT {
     id: number;
-    age?: number | null;
     image?: string | null;
-    gender?: Gender | null;
     description?: string | null;
     banned?: boolean | null;
 }

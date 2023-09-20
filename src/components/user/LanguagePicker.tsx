@@ -54,6 +54,7 @@ const LanguagePicker = () => {
       {
         expanded && (
           <Input
+            autoFocus={expanded}
             placeholder="filter"
             value={src}
             onChangeText={(text) => setSrc(text)}

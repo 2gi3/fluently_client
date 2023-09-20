@@ -5,10 +5,11 @@ import { useSelector } from 'react-redux';
 import { UserT } from "../../types/user";
 import { sizes } from "../../styles/variables/measures";
 import { useState } from "react";
+import { useLogOut } from "../../functions/hooks/user";
 
 const Dashboard = ({ user }: { user: UserT }) => {
     // const user = useSelector((state: RootState) => state.user.user);
-    // console.log(user)
+    const logOut = useLogOut();
     const { XS, S, M, L, XL } = sizes
 
     const [overlayVisible, setOverlayVisible] = useState(false);
@@ -17,14 +18,29 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const [inputError, setInputError] = useState<string | undefined>()
 
 
-    const handleDeleteAccount = () => {
+    const handleDeleteAccount = async () => {
         if (confirmationSentence === confirmationInput.trim().toLocaleLowerCase()) {
+            console.log(user.id)
             try {
-                console.log('account deleted')
+                const response = await fetch(`http://192.168.43.235:3000/api/user/${user.id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                console.log(response)
 
+                if (response.status === 200) {
+                    console.log('Account deleted successfully');
+                    logOut();
+                    setOverlayVisible(!overlayVisible);
 
-            } catch {
+                } else {
+                    console.error('Failed to delete account');
+                }
 
+            } catch (error) {
+                console.error('Error:', error);
             } finally {
 
             }
@@ -67,12 +83,12 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 </ListItem>
 
 
-                <ListItem>
+                {/* <ListItem>
                     <ListItem.Content>
                         <ListItem.Title>You are helping with</ListItem.Title>
                         <ListItem.Subtitle style={{ marginTop: 5 }}>{user.teaching_language}</ListItem.Subtitle>
                     </ListItem.Content>
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem>
                     <ListItem.Content style={{ paddingBottom: M }}>

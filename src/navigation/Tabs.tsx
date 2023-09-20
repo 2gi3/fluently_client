@@ -10,6 +10,8 @@ import LogoutButton from "../components/user/logOutButton";
 import { useUserData } from "../functions/hooks/user";
 import { Text, View, } from "react-native"
 import { Button } from "@rneui/base";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 
 
@@ -18,6 +20,8 @@ import { Button } from "@rneui/base";
 const Tabs = () => {
     const Tabs = createBottomTabNavigator()
     const user = useUserData()
+    const loggedIn = useSelector((state: RootState) => state.status.loggedIn);
+
 
     // const renderIcon = useCustomTabIcon()
 
@@ -64,7 +68,7 @@ const Tabs = () => {
                 name="Profile" component={Profile} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
                     headerRight: () => (
-                        user ? <LogoutButton style={{ marginRight: sizes.S }} />
+                        user && loggedIn ? <LogoutButton style={{ marginRight: sizes.S }} />
                             : null
                         //  (<Button onPress={() => navigation.navigate('Login')}
                         // ><Text>Log in
