@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { RootState } from './yourRootReducer'; // Import your root reducer
 
 import { setNewUser, updateNewUserField, clearNewUser } from '../redux/slices/newUserSlice';
-import { NewUserT } from '../types/user';
+import { Gender, NewUserT } from '../types/user';
 import { RootState } from '../redux/store';
 
 const ReduxTestComponent: React.FC = () => {
@@ -15,6 +15,8 @@ const ReduxTestComponent: React.FC = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [age, setAge] = useState(0);
+    const [gender, setGender] = useState<Gender | null>(null);
     const [nationality, setNationality] = useState('');
     const [country, setCountry] = useState('');
     const [nativeLanguage, setNativeLanguage] = useState('');
@@ -27,6 +29,8 @@ const ReduxTestComponent: React.FC = () => {
             email,
             password,
             name,
+            age,
+            gender,
             nationality,
             country,
             native_language: nativeLanguage,
@@ -54,6 +58,8 @@ const ReduxTestComponent: React.FC = () => {
                     <Text>Email: {newUser.email}</Text>
                     <Text>Password: {newUser.password}</Text>
                     <Text>Name: {newUser.name}</Text>
+                    <Text>gender: {newUser.gender}</Text>
+                    <Text>age: {newUser.age}</Text>
                     <Text>Nationality: {newUser.nationality}</Text>
                     <Text>Country: {newUser.country}</Text>
                     <Text>Native Language: {newUser.native_language}</Text>
@@ -86,7 +92,16 @@ const ReduxTestComponent: React.FC = () => {
                 value={name}
                 onChangeText={(text) => setName(text)}
             />
-
+            <TextInput
+                placeholder="Gge"
+                value={name}
+                onChangeText={(text) => setAge(Number(text))}
+            />
+            <TextInput
+                placeholder="Gender"
+                value={gender || ''}
+                onChangeText={(text) => setGender(text as Gender)}
+            />
             <TextInput
                 placeholder="Nationality"
                 value={nationality}

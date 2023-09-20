@@ -6,13 +6,15 @@ import { sizes } from "../../styles/variables/measures";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { clearNewUser, setNewUser, updateNewUserField } from '../../redux/slices/newUserSlice';
-import { NewUserT } from '../../types/user';
+import { Gender, NewUserT } from '../../types/user';
 import { useLocation, useLogIn } from '../../functions/hooks/user';
 import { emailRegex, passwordRegex, studentName } from '../../regex';
 import AuthInput from './AuthInput';
 import LanguagePicker from './LanguagePicker';
 import NationalityPicker from './NationalityPicker';
 import LearnLanguageSelector from './LearnLanguageSelector';
+import GenderSelector from './GenderSelector';
+import DateOfBirthSelector from './DateOfBirthSelector';
 
 
 
@@ -26,6 +28,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
+    const [age, setAge] = useState(0);
+    const [gender, setGender] = useState<Gender | null>(null)
     const [nationality, setNationality] = useState('');
     const [nativeLanguage, setNativeLanguage] = useState('');
     const [teachingLanguage, setTeachingLanguage] = useState('');
@@ -51,6 +55,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 email,
                 password,
                 name,
+                age,
+                gender,
                 nationality,
                 country: `${city}, ${country}`,
                 native_language: nativeLanguage,
@@ -70,6 +76,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 email: email.trim(),
                 password: password.trim(),
                 name,
+                age: newUser.age,
+                gender: newUser.gender,
                 nationality: newUser.nationality,
                 country: `${city}, ${country}`,
                 native_language: newUser.native_language,
@@ -238,6 +246,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 }}
                             /> */}
                             <LearnLanguageSelector />
+                            <GenderSelector />
+                            <DateOfBirthSelector />
 
                             <Button
                                 buttonStyle={{

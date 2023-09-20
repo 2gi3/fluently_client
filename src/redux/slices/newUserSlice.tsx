@@ -1,12 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { NewUserT } from '../../types/user';
+import { Gender, NewUserT } from '../../types/user';
 
 export interface NewUserState {
     newUser: {
         email: string | null;
         password: string | null;
         name: string | null;
+        age: number | null;
+        gender: Gender | null;
         nationality: string | null;
         country: string | null;
         native_language: string | null;
@@ -20,6 +22,8 @@ const initialState: NewUserState = {
         email: null,
         password: null,
         name: null,
+        age: null,
+        gender: null,
         nationality: null,
         country: null,
         native_language: null,
@@ -46,6 +50,8 @@ export const newUserSlice = createSlice({
                 email: null,
                 password: null,
                 name: null,
+                age: null,
+                gender: null,
                 nationality: null,
                 country: null,
                 native_language: null,

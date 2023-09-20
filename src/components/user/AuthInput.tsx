@@ -33,15 +33,15 @@ const AuthInput = ({
         containerStyle={{
           marginBottom: sizes.M
         }}
-        rightIcon={secureTextEntry && (
-          <MaterialCommunityIcons
-            onPress={() => setHideText(!hideText)}
-            name={hideText ? "eye-outline" : "eye-off-outline"}
-            size={24}
-            color={'#8e8e8f'}
-            style={{ marginLeft: 8 }}
-          />
-        )}
+      // rightIcon={secureTextEntry && (
+      //   <MaterialCommunityIcons
+      //     onPress={() => setHideText(!hideText)}
+      //     name={hideText ? "eye-outline" : "eye-off-outline"}
+      //     size={24}
+      //     color={'#8e8e8f'}
+      //     style={{ marginLeft: 8 }}
+      //   />
+      // )}
       />
     </>
   );

@@ -2,8 +2,8 @@ export interface NewUserT {
     email: string;
     password: string;
     name: string;
-    age?: number | null;
-    gender?: Gender | null;
+    age: number | null;
+    gender: Gender | null;
     nationality: string;
     country: string;
     native_language: string;

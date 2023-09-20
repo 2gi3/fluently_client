@@ -69,14 +69,14 @@ const NationalityPicker = () => {
                         containerStyle={{
                             marginTop: -sizes.M,
                         }}
-                        rightIcon={(
-                            <MaterialCommunityIcons
-                                name="text-search"
-                                size={24}
-                                color={'#8e8e8f'}
-                                style={{ marginLeft: 8 }}
-                            />
-                        )}
+                    // rightIcon={(
+                    //     <MaterialCommunityIcons
+                    //         name="text-search"
+                    //         size={24}
+                    //         color={'#8e8e8f'}
+                    //         style={{ marginLeft: 8 }}
+                    //     />
+                    // )}
                     />
                 )
             }

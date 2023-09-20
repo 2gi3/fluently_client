@@ -15,7 +15,7 @@ const LearnLanguageSelector = () => {
             <Text style={{ marginBottom: sizes.S, paddingHorizontal: sizes.XS, fontSize: 18, color: '#86939e' }}>
                 Which language are you learning?
             </Text>
-            <View style={{ display: 'flex', gap: sizes.M, flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between', paddingHorizontal: sizes.XS }}>
+            <View style={{ display: 'flex', gap: sizes.S, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: sizes.XS }}>
                 <Button
                     type={learningLanguage === 'Thai' ? 'solid' : 'outline'}
                     title="Thai"
