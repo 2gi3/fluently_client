@@ -6,6 +6,7 @@ import { UserT } from "../../types/user";
 import { sizes } from "../../styles/variables/measures";
 import { useState } from "react";
 import { useLogOut } from "../../functions/hooks/user";
+import { updateUser } from "../../functions/user";
 
 const Dashboard = ({ user }: { user: UserT }) => {
     // const user = useSelector((state: RootState) => state.user.user);
@@ -65,7 +66,18 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         title="Bj"
                         containerStyle={{ backgroundColor: 'grey' }}
                     >
-                        <Avatar.Accessory size={23} />
+                        <Avatar.Accessory
+                            onPress={() => {
+                                const updatedUserData: Partial<UserT> = {
+                                    image: 'https://randomuser.me/api/portraits/lego/2.jpg',
+                                    name: 'BlackLegoMan'
+                                };
+
+                                const updateUserEndpoint = `http://192.168.43.235:3000/api/user/${user.id}`
+
+                                updateUser(updatedUserData, updateUserEndpoint);
+                            }}
+                            size={23} />
                     </Avatar>
                     <View>
                         <Text h3 style={{ marginTop: S }}>{user.name}</Text>
