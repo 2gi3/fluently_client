@@ -213,7 +213,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 value={name}
                                 onChangeText={(text) => setName(text)}
                                 onBlur={() => setDispleyNameErrors(true)}
-                                errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 4 characters'}
+                                errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
                             />
                             {/* <Input
                                 autoFocus={true}

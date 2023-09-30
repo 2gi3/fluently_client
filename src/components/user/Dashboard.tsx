@@ -1,5 +1,5 @@
 import { Avatar, Button, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, color } from "@rneui/base"
-import { Image, ScrollView, View } from "react-native"
+import { Image, ScrollView, TextInput, View } from "react-native"
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { UserT } from "../../types/user";
@@ -11,6 +11,8 @@ import ImagePickerExample from "./ImagePicker";
 import * as ImagePicker from 'expo-image-picker';
 import { updateNewUserField } from "../../redux/slices/newUserSlice";
 import { manipulateAsync } from "expo-image-manipulator";
+import AuthInput from "./AuthInput";
+import { studentName } from "../../regex";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
@@ -25,7 +27,13 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const [confirmationInput, setConfirmationInput] = useState('')
     const [inputError, setInputError] = useState<string | undefined>()
     const [visible, setVisible] = useState(false);
+    const [nameVisible, setNameVisible] = useState(false);
+
     const [image, setImage] = useState<any>();
+    const [displeyNameErrors, setDispleyNameErrors] = useState(false)
+
+    const [introduction, setIntroduction] = useState<string | null>()
+    const [name, setName] = useState<string>('')
     const updateUserEndpoint = `http://192.168.43.235:3000/api/user/${user.id}`
 
 
@@ -114,7 +122,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         size={XL}
                         rounded
                         source={{ uri: image }}
-                        title="Bj"
+                        title="Hi"
                         containerStyle={{ backgroundColor: 'grey' }}
                     >
                         <Avatar.Accessory
@@ -132,41 +140,57 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             user['image'] = data.image
                             logIn(user)
                             setVisible(false)
+                        }}
+                        containerStyle={{ marginTop: 25 }}
 
-                        }} />
-                        // <Dialog
-                        //     isVisible={visible}
-                        //     onBackdropPress={() => setVisible(!visible)}
-                        // >
-                        //     <Dialog.Title title="Confirm the new image" />
+                    />
 
-                        //     {/* <Text>Dialog body text. Add relevant information here.</Text> */}
-                        //     <Dialog.Actions>
-                        //         <Dialog.Button title="Upload photo" onPress={async () => {
-                        //             console.log(await updateUser(updatedUserData, updateUserEndpoint));
-                        //             setVisible(false)
-
-
-                        //         }} />
-
-                        //     </Dialog.Actions>
-                        // </Dialog>
                     }
                     <View>
-                        <Text h3 style={{ marginTop: S }}>{user.name}</Text>
+                        <View>
+                            <Text h3 style={{ marginTop: S }}>{user.name}</Text>
+                            <Avatar.Accessory
+                                size={18}
+                                onPress={() => {
+                                    setNameVisible(!nameVisible)
+                                }} />
+                            <Dialog
+                                isVisible={nameVisible}
+                                onBackdropPress={() => setNameVisible(!nameVisible)}
+                                overlayStyle={{ backgroundColor: '#ffffff', width: 'auto' }}
+                            >
+
+                                {/* <TextInput
+                                    autoFocus={true}
+                                    placeholder="Share about your Job or studies, hobbies, future goals and personal interests"
+                                    multiline={false}
+                                    // numberOfLines={8}
+                                    style={{ padding: sizes.XS }}
+                                    onChangeText={value => setName(value)}
+                                /> */}
+                                <AuthInput
+                                    autoFocus={true}
+                                    placeholder="Name"
+                                    value={name}
+                                    onChangeText={(text) => setName(text)}
+                                    onBlur={() => setDispleyNameErrors(true)}
+                                    errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
+                                />
+                                <Dialog.Actions>
+                                    <Dialog.Button title="Upload name" onPress={async () => {
+                                        const data: any = await updateUser({ name: name }, updateUserEndpoint);
+                                        logIn(data.updatedUser)
+                                        setNameVisible(false)
+                                    }} />
+                                </Dialog.Actions>
+                            </Dialog>
+                        </View>
                         <Text>{user.country}</Text>
                     </View>
                 </ListItem.Content>
             </ListItem>
             <Divider />
             <View style={{ marginVertical: M }}>
-                <ListItem >
-                    <ListItem.Content style={{ paddingTop: M }}>
-                        <ListItem.Title>You are learning</ListItem.Title>
-                        <ListItem.Subtitle style={{ marginTop: 5 }}>{user.learning_language}</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem>
-
 
                 {/* <ListItem>
                     <ListItem.Content>
@@ -178,10 +202,41 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 <ListItem>
                     <ListItem.Content style={{ paddingBottom: M }}>
                         <ListItem.Title>About yourself</ListItem.Title>
-                        <Avatar.Accessory size={23} />
+                        <Avatar.Accessory
+                            size={23}
+                            onPress={() => {
+                                setVisible(!visible)
+                            }} />
+                        <Dialog
+                            isVisible={visible}
+                            onBackdropPress={() => setVisible(!visible)}
+                            overlayStyle={{ backgroundColor: '#ffffff' }}
+                        >
+
+                            <TextInput
+                                autoFocus={true}
+                                placeholder="Share about your Job or studies, hobbies, future goals and personal interests"
+
+                                multiline={true}
+                                numberOfLines={8}
+                                style={{ padding: sizes.XS }}
+                                onChangeText={value => setIntroduction(value)}
+                            />
+                            <Dialog.Actions>
+                                <Dialog.Button title="Upload description" onPress={async () => {
+                                    const data: any = await updateUser({ description: introduction }, updateUserEndpoint);
+                                    logIn(data.updatedUser)
+                                    setVisible(false)
+                                }} />
+                            </Dialog.Actions>
+                        </Dialog>
                         {user.description ?
                             <ListItem.Subtitle style={{ marginTop: 5 }}>{user.description}</ListItem.Subtitle>
-                            : <ListItem.Subtitle style={{ color: '#666666', marginTop: 5 }}>Tell us about yourself, how can you help people improve their language, and how would you like to be helped</ListItem.Subtitle>
+                            : <ListItem.Subtitle style={{ color: '#ff6666', marginTop: 5 }}>
+                                To practice by having good conversations, write a good self introduction 😊
+
+                            </ListItem.Subtitle>
+
 
                         }
                     </ListItem.Content>
@@ -194,6 +249,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     <ListItem.Subtitle style={{ marginTop: 5 }}>Email: <Text style={{ color: '#666666' }}>{user.email}</Text> </ListItem.Subtitle>
                     <ListItem.Subtitle style={{ marginTop: 5 }}>Nationality: <Text style={{ color: '#666666' }}>{user.nationality}</Text></ListItem.Subtitle>
                     <ListItem.Subtitle style={{ marginTop: 5 }}>Native Language: <Text style={{ color: '#666666' }}>{user.native_language}</Text></ListItem.Subtitle>
+                    <ListItem.Subtitle style={{ marginTop: 5 }}>You are learning: {user.learning_language}</ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>
             <Button
