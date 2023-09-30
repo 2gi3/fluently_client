@@ -1,15 +1,22 @@
-import { Avatar, Button, Divider, Icon, Input, ListItem, Overlay, Text, color } from "@rneui/base"
-import { ScrollView, View } from "react-native"
+import { Avatar, Button, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, color } from "@rneui/base"
+import { Image, ScrollView, View } from "react-native"
 import { RootState } from "../../redux/store";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { UserT } from "../../types/user";
 import { sizes } from "../../styles/variables/measures";
-import { useState } from "react";
-import { useLogOut } from "../../functions/hooks/user";
+import { useEffect, useState } from "react";
+import { useLogIn, useLogOut } from "../../functions/hooks/user";
 import { updateUser } from "../../functions/user";
+import ImagePickerExample from "./ImagePicker";
+import * as ImagePicker from 'expo-image-picker';
+import { updateNewUserField } from "../../redux/slices/newUserSlice";
+import { manipulateAsync } from "expo-image-manipulator";
+
 
 const Dashboard = ({ user }: { user: UserT }) => {
     // const user = useSelector((state: RootState) => state.user.user);
+    const dispatch = useDispatch();
+    const logIn = useLogIn()
     const logOut = useLogOut();
     const { XS, S, M, L, XL } = sizes
 
@@ -17,6 +24,40 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const confirmationSentence: string = 'delete'
     const [confirmationInput, setConfirmationInput] = useState('')
     const [inputError, setInputError] = useState<string | undefined>()
+    const [visible, setVisible] = useState(false);
+    const [image, setImage] = useState<any>();
+    const updateUserEndpoint = `http://192.168.43.235:3000/api/user/${user.id}`
+
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        // console.log(result);
+
+        if (!result.canceled) {
+            if (result.assets && result.assets.length > 0) {
+                setVisible(true)
+                // The Back-End accepts images ok max 100KB ( Back-End can be modified )
+                const manipResult = await manipulateAsync(
+                    result.assets[0].uri,
+                    [{ resize: { width: 150 } }],
+                    { compress: 1 }
+                )
+                setImage(manipResult.uri);
+            }
+        }
+
+    };
+
+
+
+
+
 
 
     const handleDeleteAccount = async () => {
@@ -52,6 +93,16 @@ const Dashboard = ({ user }: { user: UserT }) => {
         // setOverlayVisible(!overlayVisible)
     }
 
+    useEffect(() => {
+        if (user.image) {
+            setImage(user.image)
+        } else {
+            setImage('https://randomuser.me/api/portraits/lego/2.jpg')
+        }
+
+        // console.log(image)
+    }, [])
+
     return (
         <ScrollView>
             <ListItem>
@@ -62,23 +113,45 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     <Avatar
                         size={XL}
                         rounded
-                        source={{ uri: 'https://randomuser.me/api/portraits/lego/1.jpg' }}
+                        source={{ uri: image }}
                         title="Bj"
                         containerStyle={{ backgroundColor: 'grey' }}
                     >
                         <Avatar.Accessory
                             onPress={() => {
-                                const updatedUserData: Partial<UserT> = {
-                                    image: 'https://randomuser.me/api/portraits/lego/2.jpg',
-                                    name: 'BlackLegoMan'
-                                };
-
-                                const updateUserEndpoint = `http://192.168.43.235:3000/api/user/${user.id}`
-
-                                updateUser(updatedUserData, updateUserEndpoint);
-                            }}
+                                pickImage()
+                            }
+                            }
                             size={23} />
                     </Avatar>
+
+                    {visible && <Button
+                        title="Confirm new picture"
+                        onPress={async () => {
+                            const data: any = await updateUser({ imageFile: image }, updateUserEndpoint);
+                            user['image'] = data.image
+                            logIn(user)
+                            setVisible(false)
+
+                        }} />
+                        // <Dialog
+                        //     isVisible={visible}
+                        //     onBackdropPress={() => setVisible(!visible)}
+                        // >
+                        //     <Dialog.Title title="Confirm the new image" />
+
+                        //     {/* <Text>Dialog body text. Add relevant information here.</Text> */}
+                        //     <Dialog.Actions>
+                        //         <Dialog.Button title="Upload photo" onPress={async () => {
+                        //             console.log(await updateUser(updatedUserData, updateUserEndpoint));
+                        //             setVisible(false)
+
+
+                        //         }} />
+
+                        //     </Dialog.Actions>
+                        // </Dialog>
+                    }
                     <View>
                         <Text h3 style={{ marginTop: S }}>{user.name}</Text>
                         <Text>{user.country}</Text>
