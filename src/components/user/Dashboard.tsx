@@ -27,6 +27,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const [confirmationInput, setConfirmationInput] = useState('')
     const [inputError, setInputError] = useState<string | undefined>()
     const [visible, setVisible] = useState(false);
+    const [descriptionVisible, setDescriptionVisible] = useState(false);
     const [nameVisible, setNameVisible] = useState(false);
 
     const [image, setImage] = useState<any>();
@@ -205,11 +206,11 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         <Avatar.Accessory
                             size={23}
                             onPress={() => {
-                                setVisible(!visible)
+                                setDescriptionVisible(!descriptionVisible)
                             }} />
                         <Dialog
-                            isVisible={visible}
-                            onBackdropPress={() => setVisible(!visible)}
+                            isVisible={descriptionVisible}
+                            onBackdropPress={() => setDescriptionVisible(!descriptionVisible)}
                             overlayStyle={{ backgroundColor: '#ffffff' }}
                         >
 
@@ -226,7 +227,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                                 <Dialog.Button title="Upload description" onPress={async () => {
                                     const data: any = await updateUser({ description: introduction }, updateUserEndpoint);
                                     logIn(data.updatedUser)
-                                    setVisible(false)
+                                    setDescriptionVisible(false)
                                 }} />
                             </Dialog.Actions>
                         </Dialog>
