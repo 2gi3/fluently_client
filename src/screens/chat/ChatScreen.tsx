@@ -1,6 +1,6 @@
 import { View, FlatList, SafeAreaView, Text } from "react-native"
 import Message from "../../components/chat/Message"
-import { ChatMessageT } from "../../types"
+// import { ChatMessageT } from "../../types"
 import chatData from "../../../mock_data/chatsData.json"
 import { sizes } from "../../styles/variables/measures";
 import ChatInput from "../../components/chat/ChatInput";
@@ -34,13 +34,13 @@ const ChatScreen = () => {
 
 
 
-    const renderItem = ({ item }: { item: ChatMessageT }) => (
+    const renderItem = ({ item }: { item: any }) => (
         <Message message={item} />
     );
 
     useEffect(() => {
         // @ts-ignore
-        navigation.setOptions({ title: route.params?.name })
+        navigation.setOptions({ title: route.params?.name, headerTitleAlign: 'center' })
 
     }, [route.params])
     return (

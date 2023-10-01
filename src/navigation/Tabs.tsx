@@ -10,6 +10,7 @@ import LogoutButton from "../components/user/logOutButton";
 import { useUserData } from "../functions/hooks/user";
 import { Text, View, } from "react-native"
 import { Button } from "@rneui/base";
+import TopTabButton from "../components/navigation/TopTabButton";
 
 
 
@@ -37,21 +38,12 @@ const Tabs = () => {
                 name="Chats" component={ChatsList} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble-outline'),
                     headerRight: () => (
-                        <Button
-                            type="outline"
+                        <TopTabButton
                             onPress={() => navigation.navigate('Students')}
-                            style={{ marginRight: sizes.S, display: 'flex', alignItems: 'center' }}
-                        ><Text >Find a partner
-
-                            </Text>
-                            <MaterialCommunityIcons
-                                name="handshake-outline"
-                                size={24}
-                                color={'#8e8e8f'}
-                                style={{ marginLeft: sizes.XS }}
-
-                            />
-                        </Button>)
+                            iconName="handshake-outline"
+                            label="Find a partner"
+                        />
+                    )
                 })}
 
             />

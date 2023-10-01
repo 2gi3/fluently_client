@@ -117,7 +117,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
             <ListItem>
                 <ListItem.Content style={{
                     alignItems: 'center',
-                    paddingVertical: M
+                    paddingVertical: S
                 }}>
                     <Avatar
                         size={XL}
@@ -245,7 +245,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 <Divider />
             </View>
             <ListItem>
-                <ListItem.Content style={{ paddingVertical: M }}>
+                <ListItem.Content style={{ paddingVertical: S }}>
                     <ListItem.Title>Personal details:</ListItem.Title>
                     <ListItem.Subtitle style={{ marginTop: 5 }}>Email: <Text style={{ color: '#666666' }}>{user.email}</Text> </ListItem.Subtitle>
                     <ListItem.Subtitle style={{ marginTop: 5 }}>Nationality: <Text style={{ color: '#666666' }}>{user.nationality}</Text></ListItem.Subtitle>
