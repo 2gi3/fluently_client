@@ -35,7 +35,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
 
     const [introduction, setIntroduction] = useState<string | null>()
     const [name, setName] = useState<string>('')
-    const updateUserEndpoint = `http://192.168.43.235:3000/api/user/${user.id}`
+    //@ts-ignore
+    const updateUserEndpoint = `${process.env.SERVER_URL}/api/user/${user.id}`
 
 
     const pickImage = async () => {
@@ -73,7 +74,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
         if (confirmationSentence === confirmationInput.trim().toLocaleLowerCase()) {
             console.log(user.id)
             try {
-                const response = await fetch(`http://192.168.43.235:3000/api/user/${user.id}`, {
+                //@ts-ignore
+                const response = await fetch(`${process.env.SERVER_URL}/api/user/${user.id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

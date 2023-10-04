@@ -39,8 +39,8 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
         } else {
 
             try {
-
-                const response = await fetch('http://192.168.43.235:3000/api/user/login', {
+                //@ts-ignore
+                const response = await fetch(`${process.env.SERVER_URL}/api/user/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

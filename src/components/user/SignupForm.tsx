@@ -84,7 +84,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 teaching_language: teachingLanguage,
                 learning_language: newUser.learning_language,
             };
-            const response = await fetch('http://192.168.43.235:3000/api/user/signup', {
+            //@ts-ignore
+            const response = await fetch(`${process.env.SERVER_URL}/api/user/signup`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

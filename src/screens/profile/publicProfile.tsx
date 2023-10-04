@@ -10,7 +10,7 @@ const PublicProfile = () => {
     const navigation = useNavigation()
 
     const { XS, S, M, L, XL } = sizes
-    const studentId = route.params?.id;
+    const studentId = (route.params as { id?: string })?.id;
 
     if (!studentId) {
         console.log('waiting for id')
@@ -41,10 +41,10 @@ const PublicProfile = () => {
                 <Skeleton animation="wave" width={220} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
             </View> :
             <ScrollView>
-                <ListItem containerStyle={{ marginBottom: M, padding: 0 }}>
+                <ListItem containerStyle={{ marginBottom: M }}>
                     <ListItem.Content style={{
                         alignItems: 'center',
-                        paddingVertical: M
+                        paddingVertical: S
                     }}>
                         <Avatar
                             size={XL}
@@ -66,7 +66,7 @@ const PublicProfile = () => {
                 </ListItem>
 
                 <ListItem containerStyle={{ marginBottom: M }}>
-                    <ListItem.Content style={{ paddingBottom: M }}>
+                    <ListItem.Content style={{ paddingBottom: S }}>
                         {/* <ListItem.Title>About yourself</ListItem.Title> */}
 
                         {users.description ?
