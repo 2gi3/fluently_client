@@ -1,0 +1,262 @@
+[
+    {
+        "id": "1",
+        "user": {
+            "id": "u9",
+            "name": "Alina",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m1",
+            "text": "Here is a message for you, the latest one!",
+            "createdAt": "2020-09-27T15:40:00.000Z"
+        }
+    },
+    {
+        "id": "2",
+        "user": {
+            "id": "u14",
+            "name": "Ben",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m2",
+            "text": "Hey there! Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed viverra tellus vitae lectus consequat, id aliquam libero sagittis. Fusce nec luctus quam. Proin ac tortor nec risus dictum tempus. Suspen",
+            "createdAt": "2021-03-12T10:20:00.000Z"
+        }
+    },
+    {
+        "id": "3",
+        "user": {
+            "id": "u9",
+            "name": "Catherine",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m3",
+            "text": "Good morning! Suspendisse consectetur, justo eu tincidunt tristique, sem purus volutpat ligula, non interdum erat sapien a tellus.",
+            "createdAt": "2022-01-05T08:15:00.000Z"
+        }
+    },
+    {
+        "id": "4",
+        "user": {
+            "id": "u21",
+            "name": "David",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m4",
+            "text": "What's up?",
+            "createdAt": "2023-05-20T14:30:00.000Z"
+        }
+    },
+    {
+        "id": "5",
+        "user": {
+            "id": "u15",
+            "name": "Ella",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m5",
+            "text": "How are you? Integer euismod purus vitae sem bibendum cursus. Sed varius, ipsum ut vestibulum varius, metus quam lacinia dui, vel efficitur ex lectus et ante. Nunc vel neque eget nisi hendrerit hendrerit.",
+            "createdAt": "2022-11-18T19:05:00.000Z"
+        }
+    },
+    {
+        "id": "6",
+        "user": {
+            "id": "u9",
+            "name": "Frank",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m6",
+            "text": "Long time no see!  Curabitur nec ultrices justo. Aenean nec mi nec purus eleifend tincidunt. In hac habitasse platea dictumst. Curabitur et vestibulum urna",
+            "createdAt": "2021-07-09T09:45:00.000Z"
+        }
+    },
+    {
+        "id": "7",
+        "user": {
+            "id": "u17",
+            "name": "Grace",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m7",
+            "text": "Catch up soon?",
+            "createdAt": "2023-02-28T17:55:00.000Z"
+        }
+    },
+    {
+        "id": "8",
+        "user": {
+            "id": "u9",
+            "name": "Henry",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m8",
+            "text": "Let's hang out! Praesent euismod hendrerit dolor",
+            "createdAt": "2021-09-08T22:10:00.000Z"
+        }
+    },
+    {
+        "id": "9",
+        "user": {
+            "id": "u9",
+            "name": "Isabel",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m9",
+            "text": "Miss you! ac condimentum nisl mollis eget. Aenean eu arcu nec nunc lacinia posuere eu non sem",
+            "createdAt": "2023-06-15T11:20:00.000Z"
+        }
+    },
+    {
+        "id": "10",
+        "user": {
+            "id": "u6",
+            "name": "Jack",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m10",
+            "text": "Got any plans? Praesent euismod hendrerit dolor, ac condimentum nisl mollis eget. Aenean eu arcu nec nunc lacinia posuere eu non sem. Cras in eros ipsum. Maecenas tincidunt sem id massa volutpat, non pharetra est convallis. Nullam consectetur, ante sed bibendum consectetur, purus libero ultrices neque, at bibendum ipsum velit at dui. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+            "createdAt": "2022-04-02T08:40:00.000Z"
+        }
+    },
+    {
+        "id": "11",
+        "user": {
+            "id": "u9",
+            "name": "Kelly",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m11",
+            "text": "Thinking of you! Praesent euismod hendrerit dolor, ac condimentum nisl mollis eget. Aenean eu arcu nec nunc lacinia posuere eu non sem. Cras in eros ipsum. Maecenas tincidunt sem id massa volutpat, non pharetra est convallis. Nullam consectetur, ante sed bibendum consectetur, purus libero ultrices neque, at bibendum ipsum velit at dui. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+            "createdAt": "2022-08-27T16:55:00.000Z"
+        }
+    },
+    {
+        "id": "12",
+        "user": {
+            "id": "u10",
+            "name": "Liam",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m12",
+            "text": "How's life?",
+            "createdAt": "2023-03-10T12:25:00.000Z"
+        }
+    },
+    {
+        "id": "13",
+        "user": {
+            "id": "u9",
+            "name": "Mia",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m13",
+            "text": "I have news!",
+            "createdAt": "2021-12-15T09:30:00.000Z"
+        }
+    },
+    {
+        "id": "14",
+        "user": {
+            "id": "u5",
+            "name": "Noah",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m14",
+            "text": "Let's catch up.",
+            "createdAt": "2023-07-05T14:15:00.000Z"
+        }
+    },
+    {
+        "id": "15",
+        "user": {
+            "id": "u13",
+            "name": "Olivia",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m15",
+            "text": "Happy birthday!",
+            "createdAt": "2022-10-10T06:40:00.000Z"
+        }
+    },
+    {
+        "id": "16",
+        "user": {
+            "id": "u20",
+            "name": "Patrick",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m16",
+            "text": "Let's grab coffee.",
+            "createdAt": "2021-08-20T17:20:00.000Z"
+        }
+    },
+    {
+        "id": "17",
+        "user": {
+            "id": "u11",
+            "name": "Quinn",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m17",
+            "text": "Can you help me?",
+            "createdAt": "2023-04-28T09:50:00.000Z"
+        }
+    },
+    {
+        "id": "18",
+        "user": {
+            "id": "u22",
+            "name": "Ryan",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m18",
+            "text": "Let's plan a trip!",
+            "createdAt": "2022-02-15T15:30:00.000Z"
+        }
+    },
+    {
+        "id": "19",
+        "user": {
+            "id": "u16",
+            "name": "Sophia",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m19",
+            "text": "Miss you a lot. ",
+            "createdAt": "2023-01-08T11:05:00.000Z"
+        }
+    },
+    {
+        "id": "20",
+        "user": {
+            "id": "u24",
+            "name": "Thomas",
+            "image": "https://res.cloudinary.com/gippolito/image/upload/v1656134282/ylzsiss7oojzk2gmtyur.webp"
+        },
+        "lastMessage": {
+            "id": "m20",
+            "text": "Have a great day!",
+            "createdAt": "2021-11-05T07:30:00.000Z"
+        }
+    }
+]

@@ -3,7 +3,6 @@ import { FlatList, TouchableOpacity, Pressable, View, Text } from 'react-native'
 import chatsData from '../../../mock_data/chatsData.json'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import StudentCard from '../../components/chat/StudentCard';
-import { ChatT, MockChatType } from '../../types/chat';
 import { useGetUsers } from '../../functions/hooks/user';
 import { UserT } from '../../types/user';
 import { Skeleton } from '@rneui/base';

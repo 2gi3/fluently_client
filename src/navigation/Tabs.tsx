@@ -49,12 +49,12 @@ const Tabs = () => {
             />
             <Tabs.Screen
                 name="Community" component={DeleteMe} options={{
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'group-add')
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'people-outline')
                 }}
             />
             <Tabs.Screen
                 name="Profile" component={Profile} options={({ navigation }) => ({
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'person-outline'),
                     headerRight: () => (
                         user.user?.id ? <LogoutButton style={{ marginRight: sizes.S }} />
                             : null

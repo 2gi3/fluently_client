@@ -8,16 +8,25 @@ import { useState, useEffect } from "react";
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 
+// const messages = chatData.map(chat => ({
+//     user: {
+//         id: chat.user.id,
+//         name: chat.user.name
+//     },
+//     id: chat.lastMessage.id,
+//     text: chat.lastMessage.text,
+//     createdAt: chat.lastMessage.createdAt,
+// }));
+
 const messages = chatData.map(chat => ({
     user: {
-        id: chat.user.id,
-        name: chat.user.name
+        id: chat.user2Id,
+        name: chat.user1Id
     },
-    id: chat.lastMessage.id,
-    text: chat.lastMessage.text,
-    createdAt: chat.lastMessage.createdAt,
+    id: 3,
+    text: 'kjhkhj',
+    createdAt: '2023-09-27 14:36:57 ',
 }));
-
 const ChatScreen = () => {
 
     const route = useRoute()

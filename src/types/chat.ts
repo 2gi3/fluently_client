@@ -12,11 +12,18 @@ export type MessageT = {
     createdAt: string;
 };
 
-export type ChatT = {
-    id: string;
-    user: UserT;
-    lastMessage?: MessageT;
-};
+// export type ChatT = {
+//     id: string;
+//     user: UserT;
+//     lastMessage?: MessageT;
+// };
+
+export interface ChatroomT {
+    id?: number;
+    user1Id: number;
+    user2Id: number;
+    last_message_id?: number;
+}
 
 export type ChatMessageT = {
     user: UserT;

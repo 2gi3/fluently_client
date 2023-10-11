@@ -108,7 +108,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
         if (user.image) {
             setImage(user.image)
         } else {
-            setImage('https://randomuser.me/api/portraits/lego/2.jpg')
+            setImage('https://res.cloudinary.com/gippolito/image/upload/v1697039397/profilePlaceholder_ytrsld.webp')
         }
 
         // console.log(image)

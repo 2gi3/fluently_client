@@ -1,13 +1,16 @@
-import { Avatar, ListItem, Skeleton, Text } from "@rneui/base"
+import { Avatar, Button, Icon, ListItem, Skeleton, Text } from "@rneui/base"
 import { ScrollView, View } from "react-native"
 import { sizes } from "../../styles/variables/measures"
-import { useGetUsers } from "../../functions/hooks/user"
+import { useGetUsers, useUserData } from "../../functions/hooks/user"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { useEffect } from "react"
+import { createNewChatroom } from "../../functions/chat"
 
 const PublicProfile = () => {
     const route = useRoute()
     const navigation = useNavigation()
+    const { user: user1, loading: loading1 } = useUserData();
+
 
     const { XS, S, M, L, XL } = sizes
     const studentId = (route.params as { id?: string })?.id;
@@ -20,8 +23,7 @@ const PublicProfile = () => {
     const url = `${process.env.SERVER_URL}/api/user/${studentId}`
 
     const { loading, error, users, refreshData, isValidating } = useGetUsers(url);
-    console.log(loading)
-    console.log(users)
+
 
 
     useEffect(() => {
@@ -32,7 +34,7 @@ const PublicProfile = () => {
 
 
     return (
-        loading ?
+        loading || loading1 ?
             <View style={{ flexDirection: 'column', gap: sizes.S }} >
                 <Skeleton animation="wave" width={220} height={80} style={{ marginTop: sizes.M, marginBottom: sizes.XS, marginLeft: sizes.M }} />
                 <Skeleton animation="wave" width={220} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
@@ -62,6 +64,7 @@ const PublicProfile = () => {
                             </View>
                             <Text>{users.country}</Text>
                         </View>
+
                     </ListItem.Content>
                 </ListItem>
 
@@ -71,8 +74,8 @@ const PublicProfile = () => {
 
                         {users.description ?
                             <ListItem.Subtitle style={{ marginTop: 5 }}>{users.description}</ListItem.Subtitle>
-                            : <ListItem.Subtitle style={{ color: '#ff6666', marginTop: 5 }}>
-                                {users.name} has not uploadet an introduction yet.
+                            : <ListItem.Subtitle style={{ color: '#505050', marginTop: 5 }}>
+                                {users.name} has no introduction yet.
 
                             </ListItem.Subtitle>
 
@@ -80,6 +83,30 @@ const PublicProfile = () => {
                         }
                     </ListItem.Content>
                 </ListItem>
+
+
+                <Button
+                    iconRight
+                    // icon={
+                    //     <Icon
+                    //         name="chat-bubble-outline"
+                    //         color="#ffffff"
+                    //         iconStyle={{ marginLeft: 10, marginBottom: -1 }}
+                    //     />
+                    // }
+                    buttonStyle={{
+                        borderRadius: 0,
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginBottom: sizes.M,
+                        marginTop: 0
+                    }}
+                    title="Exchange language"
+                    //@ts-ignore
+                    onPress={() => createNewChatroom(`${process.env.SERVER_URL}/api/chat`, user1?.id, users.id)}
+                />
+
+
             </ScrollView>
 
     )
