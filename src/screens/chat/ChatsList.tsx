@@ -20,7 +20,7 @@ const ChatsList = (
     const navigation = useNavigation()
 
     const { loading, error, cahtrooms, refreshData, isValidating } = useGetChats();
-    console.log({ isValidating: isValidating })
+    // console.log({ isValidating: isValidating })
 
 
 
@@ -31,7 +31,7 @@ const ChatsList = (
             // @ts-ignore
             onPress={() => navigation.navigate('Chat', {
                 id: item.id!.toString(),
-                //   name: item.user.name 
+                user2id: item.user2Id
             })}
             style={{ maxWidth: 440, maxHeight: 108, minWidth: 300 }}
         >

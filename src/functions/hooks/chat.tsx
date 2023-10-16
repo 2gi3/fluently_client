@@ -3,7 +3,8 @@ import useSWR, { mutate } from "swr";
 import { RootState } from "../../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../../types/user";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { MessageT } from "../../types/chat";
 
 
 export const useGetChats = () => {
@@ -30,3 +31,49 @@ export const useGetChats = () => {
 
     return { loading: !cahtrooms && !error, error, cahtrooms, refreshData, isValidating };
 };
+
+
+
+export const useCreateMessage = ({ chatId, userId, text, status }: MessageT) => {
+    const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState(null);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const createMessage = async () => {
+            setLoading(true);
+            try {
+                //@ts-ignore
+                const response = await fetch(`${process.env.SERVER_URL}/api/message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chatId,
+                        userId,
+                        text,
+                        status
+                    }),
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setMessage(data);
+                    console.log('Message created successfully');
+                } else {
+                    setError('Failed to create chatroom');
+                }
+            } catch (error: any) {
+                setError(`An error occurred while creating the chatroom: ${error.message}`);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        createMessage();
+    }, []);
+
+    return { message, loading, error };
+};
+

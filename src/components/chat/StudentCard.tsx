@@ -1,8 +1,9 @@
 import React from 'react';
 import { Avatar, ListItem, Divider, Badge } from "@rneui/base"
 import { TouchableOpacity, View, Pressable } from "react-native"
-import { ChatT, UserT } from "../../types"
+// import { ChatT, UserT } from "../../types"
 import moment from 'moment';
+import { UserT } from '../../types/user';
 // import { useNavigation } from '@react-navigation/native'
 
 
@@ -13,7 +14,7 @@ const StudentCard = ({ user }: { user: UserT }) => {
     return (
 
         <View
-            key={String(user.id)}
+            key={String(`${user.id}#User`)}
             // onPress={() => navigation.navigate('Chat')}
             style={{ maxWidth: 440, maxHeight: 108, minWidth: 260 }}
         >
@@ -23,7 +24,7 @@ const StudentCard = ({ user }: { user: UserT }) => {
                     <Avatar
                         rounded
                         source={{
-                            uri: user.image,
+                            uri: user.image || 'https://res.cloudinary.com/gippolito/image/upload/v1697039397/profilePlaceholder_ytrsld.webp',
                         }}
                         size="large"
                     />

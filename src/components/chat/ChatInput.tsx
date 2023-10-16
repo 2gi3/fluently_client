@@ -1,5 +1,4 @@
 import { View, TextInput } from "react-native"
-import { ChatMessageT, MessageT } from "../../types"
 import { Button } from '@rneui/themed';
 import { sizes } from "../../styles/variables/measures";
 import { ChatInputProps } from "../../types/chat";

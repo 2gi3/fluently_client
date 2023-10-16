@@ -7,9 +7,12 @@ export interface ChatInputProps {
 }
 
 export type MessageT = {
-    id: string;
+    id?: string;
+    chatId: string | number;
+    userId: string | number;
     text: string;
-    createdAt: string;
+    status: string;
+    createdAt?: string;
 };
 
 // export type ChatT = {

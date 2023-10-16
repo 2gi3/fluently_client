@@ -13,11 +13,9 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     // const navigation = useNavigation()
     // @ts-ignore
     const url = `${process.env.SERVER_URL}/api/user/${chatroom.user2Id}`
-    console.log(url)
 
 
     const { loading, error, users: user2, refreshData, isValidating } = useGetUsers(url);
-    console.log(user2)
 
     const lastMessage = 'hello last message :)'
 
@@ -38,7 +36,7 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
         return (
 
             <View
-                key={String(chatroom.id)}
+                key={String(`${chatroom.id}-Chatroom`)}
                 // onPress={() => navigation.navigate('Chat')}
                 style={{ maxWidth: 440, maxHeight: 108, minWidth: 260 }}
             >

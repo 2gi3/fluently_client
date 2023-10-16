@@ -6,6 +6,9 @@ import { sizes } from "../../styles/variables/measures";
 import ChatInput from "../../components/chat/ChatInput";
 import { useState, useEffect } from "react";
 import { useNavigation, useRoute } from '@react-navigation/native'
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
+import { createMessage } from "../../functions/chat";
 
 
 // const messages = chatData.map(chat => ({
@@ -18,34 +21,44 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 //     createdAt: chat.lastMessage.createdAt,
 // }));
 
+
 const messages = chatData.map(chat => ({
     user: {
         id: chat.user2Id,
         name: chat.user1Id
     },
-    id: 3,
+    id: chat.last_message_id,
     text: 'kjhkhj',
     createdAt: '2023-09-27 14:36:57 ',
 }));
 const ChatScreen = () => {
 
-    const route = useRoute()
+    const route: any = useRoute()
     const navigation = useNavigation()
+    const user = useSelector((state: RootState) => state.user.user);
 
-    console.log(route)
+
+    console.log({ route: route })
 
 
     const [inputValue, setInputValue] = useState("");
 
-    const handleSend = (message: string) => {
-        console.log("Sending message:", message);
-    };
+    const handleSend = (messageText: string) => {
+        createMessage({
+            chatId: route.params!.id,
+            userId: `${user.id}`,
+            text: messageText,
+            status: 'sent',
+        });
+    }
 
 
 
     const renderItem = ({ item }: { item: any }) => (
         <Message message={item} />
     );
+
+
 
     useEffect(() => {
         // @ts-ignore
