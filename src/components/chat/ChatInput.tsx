@@ -7,7 +7,7 @@ import { ChatInputProps } from "../../types/chat";
 
 const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
 
-    const handleSend = () => {
+    const handleSend = async () => {
         if (inputValue.trim() !== "") {
             onSend(inputValue);
             setInputValue("");

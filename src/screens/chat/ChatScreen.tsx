@@ -4,7 +4,7 @@ import Message from "../../components/chat/Message"
 import chatData from "../../../mock_data/chatsData.json"
 import { sizes } from "../../styles/variables/measures";
 import ChatInput from "../../components/chat/ChatInput";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -22,34 +22,49 @@ import { createMessage } from "../../functions/chat";
 // }));
 
 
-const messages = chatData.map(chat => ({
-    user: {
-        id: chat.user2Id,
-        name: chat.user1Id
-    },
-    id: chat.last_message_id,
+const messagesDB = chatData.map((chat, i) => ({
+    userId: 765,
+    id: i,
     text: 'kjhkhj',
-    createdAt: '2023-09-27 14:36:57 ',
+    createdAt: `2023-09-27 14:36:${i}`,
 }));
 const ChatScreen = () => {
-
+    const flatListRef = useRef<any>(null);
     const route: any = useRoute()
     const navigation = useNavigation()
     const user = useSelector((state: RootState) => state.user.user);
 
+    const [messages, setMessages] = useState(messagesDB);
 
-    console.log({ route: route })
+
+    console.log({ user: user })
 
 
     const [inputValue, setInputValue] = useState("");
 
-    const handleSend = (messageText: string) => {
-        createMessage({
+    const handleSend = async () => {
+
+        const { newMessage } = await createMessage({
             chatId: route.params!.id,
             userId: `${user.id}`,
-            text: messageText,
+            text: inputValue,
             status: 'sent',
         });
+
+        setMessages((prevMessages) => [
+            ...prevMessages,
+            newMessage
+        ]);
+
+        if (flatListRef.current) {
+            const newIndex = messages.length - 1;
+            flatListRef.current.scrollToItem({
+                animated: true,
+                item: messages[newIndex],
+                viewPosition: 1,
+            });
+        }
+
     }
 
 
@@ -63,27 +78,42 @@ const ChatScreen = () => {
     useEffect(() => {
         // @ts-ignore
         navigation.setOptions({ title: route.params?.name, headerTitleAlign: 'center' })
+        console.log({ messages: messages })
 
-    }, [route.params])
-    return (
-        // <SafeAreaView style={{ paddingBottom: sizes.L }}>
-        <>
-            <FlatList
-                style={{
-                    backgroundColor: '#dddddd'
-                }}
-                data={messages}
-                renderItem={renderItem}
-                inverted
-                keyExtractor={(item) => item.id.toString()}
-            />
-            <ChatInput
-                onSend={handleSend}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-            />
-        </>
-        // </SafeAreaView>
-    )
+    }, [route.params, messages])
+    if (messages) {
+        return (
+            // <SafeAreaView style={{ paddingBottom: sizes.L }}>
+            <>
+                <FlatList
+                    ref={flatListRef}
+                    style={{
+                        backgroundColor: '#dddddd'
+                    }}
+                    data={messages}
+                    renderItem={renderItem}
+                    // inverted
+                    keyExtractor={(item) => (item.id ? item.id.toString() : item.createdAt)}
+                    onContentSizeChange={() => {
+                        flatListRef.current?.scrollToEnd({ animated: true });
+                    }}
+                />
+                <ChatInput
+                    onSend={handleSend}
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
+                />
+            </>
+            // </SafeAreaView>
+        )
+    } else {
+        return (
+            <View>
+                <Text>
+                    {`Say hello to ${route.params?.name} to start a language exchange`}
+                </Text>
+            </View>
+        )
+    }
 }
 export default ChatScreen

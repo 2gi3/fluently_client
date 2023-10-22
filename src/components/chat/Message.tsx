@@ -9,13 +9,24 @@ import { RootState } from "../../redux/store";
 
 
 
-const Message = ({ message }: { message: ChatMessageT }) => {
+const Message = ({ message }: { message: MessageT }) => {
     const user = useSelector((state: RootState) => state.user.user);
+    // console.log({ message: message })
+    // console.log({ 'user.id': user.id })
+
+    // console.log({ 'message.userId': message.userId })
 
 
     const isMyMessage = () => {
-        return message.user.id === user.id
+        if (user.id) {
+            const result = message.userId.toString() === user.id.toString();
+            console.log(result); // Log the result for debugging
+            return result;
+        } else {
+            return false
+        }
     }
+
     return (
         <View
             key={`${message.id}_${message.text}`}
