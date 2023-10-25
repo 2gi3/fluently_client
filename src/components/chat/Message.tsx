@@ -20,7 +20,7 @@ const Message = ({ message }: { message: MessageT }) => {
     const isMyMessage = () => {
         if (user.id) {
             const result = message.userId.toString() === user.id.toString();
-            console.log(result); // Log the result for debugging
+            // console.log(result); // Log the result for debugging
             return result;
         } else {
             return false
@@ -44,7 +44,7 @@ const Message = ({ message }: { message: MessageT }) => {
                 fontSize: 12,
                 color: 'grey',
                 alignSelf: isMyMessage() ? 'flex-end' : 'flex-start'
-            }}>{moment(message.createdAt).fromNow()}</Text>
+            }}>{moment(message.created_at).fromNow()}</Text>
         </View>
     )
 }

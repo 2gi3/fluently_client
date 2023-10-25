@@ -9,35 +9,28 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { createMessage } from "../../functions/chat";
+import { useGetMessages } from "../../functions/hooks/chat";
 
 
-// const messages = chatData.map(chat => ({
-//     user: {
-//         id: chat.user.id,
-//         name: chat.user.name
-//     },
-//     id: chat.lastMessage.id,
-//     text: chat.lastMessage.text,
-//     createdAt: chat.lastMessage.createdAt,
+
+// const messagesDB = chatData.map((chat, i) => ({
+//     userId: 765,
+//     id: i,
+//     text: 'kjhkhj',
+//     created_at: `2023-09-27 14:36:${i}`,
 // }));
-
-
-const messagesDB = chatData.map((chat, i) => ({
-    userId: 765,
-    id: i,
-    text: 'kjhkhj',
-    createdAt: `2023-09-27 14:36:${i}`,
-}));
+// {"id":6,"chatId":5,"userId":6,"text":"stk","status":"sent"}
 const ChatScreen = () => {
-    const flatListRef = useRef<any>(null);
     const route: any = useRoute()
     const navigation = useNavigation()
+    const { loading, error, messages: messagesDB, refreshData, isValidating } = useGetMessages(route.params.id);
+
+    const flatListRef = useRef<any>(null);
+
     const user = useSelector((state: RootState) => state.user.user);
 
-    const [messages, setMessages] = useState(messagesDB);
+    const [messages, setMessages] = useState(messagesDB || []);
 
-
-    console.log({ user: user })
 
 
     const [inputValue, setInputValue] = useState("");
@@ -51,7 +44,7 @@ const ChatScreen = () => {
             status: 'sent',
         });
 
-        setMessages((prevMessages) => [
+        setMessages((prevMessages: any) => [
             ...prevMessages,
             newMessage
         ]);
@@ -78,10 +71,17 @@ const ChatScreen = () => {
     useEffect(() => {
         // @ts-ignore
         navigation.setOptions({ title: route.params?.name, headerTitleAlign: 'center' })
-        console.log({ messages: messages })
+        setMessages(messagesDB)
 
-    }, [route.params, messages])
+
+    }, [route.params, messagesDB])
+
     if (messages) {
+        // setMessages(messagesDB)
+        console.log({ messagesx: messages })
+
+
+
         return (
             // <SafeAreaView style={{ paddingBottom: sizes.L }}>
             <>
@@ -93,7 +93,7 @@ const ChatScreen = () => {
                     data={messages}
                     renderItem={renderItem}
                     // inverted
-                    keyExtractor={(item) => (item.id ? item.id.toString() : item.createdAt)}
+                    keyExtractor={(item) => (item.id ? item.id.toString() : item.created_at)}
                     onContentSizeChange={() => {
                         flatListRef.current?.scrollToEnd({ animated: true });
                     }}

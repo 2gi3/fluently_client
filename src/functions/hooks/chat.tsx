@@ -32,6 +32,31 @@ export const useGetChats = () => {
     return { loading: !cahtrooms && !error, error, cahtrooms, refreshData, isValidating };
 };
 
+export const useGetMessages = (chatId: string | number) => {
+    const user = useSelector((state: RootState) => state.user.user);
+    //@ts-ignore
+    const url = `${process.env.SERVER_URL}/api/chat/message/${chatId}`
+
+    const fetcher = async () => {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Failed to fetch messages');
+        }
+        const data = await response.json();
+        return data;
+    };
+
+    const { data: messages, error, isValidating } = useSWR(url, fetcher, {
+        revalidateOnMount: true
+    });
+
+    const refreshData = () => {
+        mutate(url);
+    };
+
+    return { loading: !messages && !error, error, messages, refreshData, isValidating };
+};
+
 
 
 // export const useCreateMessage = ({ chatId, userId, text, status }: MessageT) => {

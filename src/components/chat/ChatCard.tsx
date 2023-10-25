@@ -3,21 +3,31 @@ import { Avatar, ListItem, Divider, Skeleton } from "@rneui/base"
 import { TouchableOpacity, View, Pressable } from "react-native"
 import moment from 'moment';
 import { ChatroomT } from '../../types/chat';
-import { useGetUsers } from '../../functions/hooks/user';
+import { useGetUsers, useUserData } from '../../functions/hooks/user';
 import { sizes } from '../../styles/variables/measures';
+import { RootState } from '../../redux/store';
+import { useSelector } from 'react-redux';
 // import { useNavigation } from '@react-navigation/native'
 
 
 
 const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     // const navigation = useNavigation()
+    const user = useSelector((state: RootState) => state.user.user);
+    console.log({ user: user.id })
     // @ts-ignore
-    const url = `${process.env.SERVER_URL}/api/user/${chatroom.user2Id}`
+    // const url = `${process.env.SERVER_URL}/api/user/${chatroom.user2Id}`
+
+    const url = `${process.env.SERVER_URL}/api/user/${user.id == chatroom.user1Id ?
+        chatroom.user2Id
+        : chatroom.user1Id
+        }`
 
 
     const { loading, error, users: user2, refreshData, isValidating } = useGetUsers(url);
 
     const lastMessage = 'hello last message :)'
+    console.log({ chatroomA: chatroom })
 
 
 
@@ -83,7 +93,6 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                             gap: 8,
                         }}
                     >
-                        {/* <ListItem.Subtitle right>{moment(lastMessage.createdAt).fromNow()}</ListItem.Subtitle> */}
 
                     </ListItem.Content>
                 </ListItem>

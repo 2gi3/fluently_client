@@ -102,8 +102,15 @@ const PublicProfile = () => {
                         marginTop: 0
                     }}
                     title="Exchange language"
-                    //@ts-ignore
-                    onPress={() => createNewChatroom(`${process.env.SERVER_URL}/api/chat`, user1?.id, users.id)}
+                    onPress={async () => {
+                        //@ts-ignore
+                        const newChatroom = await createNewChatroom(`${process.env.SERVER_URL}/api/chat`, user1?.id, users.id);
+                        // @ts-ignore
+                        navigation.navigate('Chat', {
+                            id: newChatroom.newChatroom.id!.toString(),
+                            user2id: newChatroom.newChatroom.user2Id
+                        })
+                    }}
                 />
 
 

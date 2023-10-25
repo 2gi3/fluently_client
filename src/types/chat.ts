@@ -12,7 +12,7 @@ export type MessageT = {
     userId: string | number;
     text: string;
     status: string;
-    createdAt?: string;
+    created_at?: string;
 };
 
 // export type ChatT = {
@@ -32,7 +32,7 @@ export type ChatMessageT = {
     user: UserT;
     id: string;
     text: string;
-    createdAt: string;
+    created_at: string;
 };
 export type MockChatType = {
     id: string;
@@ -44,6 +44,6 @@ export type MockChatType = {
     lastMessage: {
         id: string;
         text: string;
-        createdAt: string;
+        created_at: string;
     };
 };

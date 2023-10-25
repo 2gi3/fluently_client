@@ -62,7 +62,6 @@ const StudentCard = ({ user }: { user: UserT }) => {
                     }}
                 >
                     <Badge status="success" />
-                    {/* <ListItem.Subtitle right>{moment(user.lastMessage?.createdAt).fromNow()}</ListItem.Subtitle> */}
 
                 </ListItem.Content>
             </ListItem>
