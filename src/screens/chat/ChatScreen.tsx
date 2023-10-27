@@ -13,13 +13,7 @@ import { useGetMessages } from "../../functions/hooks/chat";
 
 
 
-// const messagesDB = chatData.map((chat, i) => ({
-//     userId: 765,
-//     id: i,
-//     text: 'kjhkhj',
-//     created_at: `2023-09-27 14:36:${i}`,
-// }));
-// {"id":6,"chatId":5,"userId":6,"text":"stk","status":"sent"}
+
 const ChatScreen = () => {
     const route: any = useRoute()
     const navigation = useNavigation()
@@ -72,8 +66,6 @@ const ChatScreen = () => {
         // @ts-ignore
         navigation.setOptions({ title: route.params?.name, headerTitleAlign: 'center' })
         setMessages(messagesDB)
-
-
     }, [route.params, messagesDB])
 
     if (messages) {
