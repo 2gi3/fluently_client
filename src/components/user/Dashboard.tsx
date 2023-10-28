@@ -107,7 +107,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
     }
 
     useEffect(() => {
-        console.log(socketUrl)
         if (user.image) {
             setImage(user.image)
         } else {

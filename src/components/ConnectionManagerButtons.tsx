@@ -17,7 +17,7 @@ export function ConnectionManagerButtons() {
         }
 
         const newSocketUrl = replaceHttpWithWs(serverUrl);
-        dispatch(setSocketUrl('ws:localhost:3000'));
+        dispatch(setSocketUrl(newSocketUrl));
     };
 
     const disconnectSocket = () => {
