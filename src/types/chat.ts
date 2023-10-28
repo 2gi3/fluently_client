@@ -47,3 +47,6 @@ export type MockChatType = {
         created_at: string;
     };
 };
+export interface SocketState {
+    url: string | null;
+}

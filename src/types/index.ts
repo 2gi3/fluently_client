@@ -5,4 +5,5 @@ export type IconLibraryT = 'Entypo' | 'MaterialIcons';
 export interface StatusState {
     loggedIn: boolean;
     connected: boolean;
+    socketUrl: string | null;
 }

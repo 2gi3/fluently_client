@@ -13,10 +13,12 @@ import { updateNewUserField } from "../../redux/slices/newUserSlice";
 import { manipulateAsync } from "expo-image-manipulator";
 import AuthInput from "./AuthInput";
 import { studentName } from "../../regex";
+import { ConnectionManagerButtons } from "../ConnectionManagerButtons";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
     // const user = useSelector((state: RootState) => state.user.user);
+    const socketUrl = useSelector((state: RootState) => state.status.socketUrl)
     const dispatch = useDispatch();
     const logIn = useLogIn()
     const logOut = useLogOut();
@@ -105,6 +107,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
     }
 
     useEffect(() => {
+        console.log(socketUrl)
         if (user.image) {
             setImage(user.image)
         } else {
@@ -112,7 +115,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
         }
 
         // console.log(image)
-    }, [])
+    }, [socketUrl])
 
     return (
         <ScrollView>
@@ -318,7 +321,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         buttonStyle={{ width: 'auto', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
 
                     />
-
                     <Button
                         title="Delete account"
                         buttonStyle={{ backgroundColor: 'red' }}
@@ -328,6 +330,9 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     />
                 </View>
             </Overlay>
+            <View>
+                <ConnectionManagerButtons />
+            </View>
         </ScrollView>
     )
 }
