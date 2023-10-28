@@ -8,7 +8,7 @@ export function ConnectionManagerButtons() {
     const dispatch = useDispatch();
     const socketUrl = useSelector((state: RootState) => state.status.socketUrl);
     //@ts-ignore
-    const serverUrl = process.env.SERVER_URL
+    const socketUrlVar = process.env.WEB_SOCKET_URL
 
     const connectSocket = () => {
         if (socketUrl) {
@@ -16,8 +16,8 @@ export function ConnectionManagerButtons() {
             return;
         }
 
-        const newSocketUrl = replaceHttpWithWs(serverUrl);
-        dispatch(setSocketUrl(newSocketUrl));
+        // const newSocketUrl = replaceHttpWithWs(serverUrl);
+        dispatch(setSocketUrl(socketUrlVar));
     };
 
     const disconnectSocket = () => {
