@@ -6,10 +6,11 @@ import { sizes } from "../../styles/variables/measures";
 import ChatInput from "../../components/chat/ChatInput";
 import { useState, useEffect, useRef } from "react";
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { createMessage } from "../../functions/chat";
 import { useGetMessages } from "../../functions/hooks/chat";
+import { sendMessage } from "../../redux/slices/webSocketSlice";
 
 
 
@@ -17,6 +18,7 @@ import { useGetMessages } from "../../functions/hooks/chat";
 const ChatScreen = () => {
     const route: any = useRoute()
     const navigation = useNavigation()
+    const dispatch = useDispatch()
     const { loading, error, messages: messagesDB, refreshData, isValidating } = useGetMessages(route.params.id);
 
     const flatListRef = useRef<any>(null);
@@ -25,7 +27,12 @@ const ChatScreen = () => {
 
     const [messages, setMessages] = useState(messagesDB || []);
 
+    const socket = useSelector((state: RootState) => state.webSocket.socket);
 
+
+    if (socket) {
+        console.log(socket)
+    }
 
     const [inputValue, setInputValue] = useState("");
 
@@ -42,6 +49,14 @@ const ChatScreen = () => {
             ...prevMessages,
             newMessage
         ]);
+
+        if (socket) {
+            dispatch(sendMessage(JSON.stringify({
+                type: 'chatMessage',
+                content: newMessage,
+            }))
+            )
+        }
 
         if (flatListRef.current) {
             const newIndex = messages.length - 1;

@@ -10,7 +10,8 @@ import { MessageT } from "../../types/chat";
 export const useGetChats = () => {
     const user = useSelector((state: RootState) => state.user.user);
     //@ts-ignore
-    const url = `${process.env.SERVER_URL}/api/chat/${user.id}`
+    const baseUrl = `${process.env.SERVER_URL}`
+    const url = `${baseUrl}/api/chat/${user.id}`
 
     const fetcher = async () => {
         const response = await fetch(url);
@@ -35,7 +36,8 @@ export const useGetChats = () => {
 export const useGetMessages = (chatId: string | number) => {
     const user = useSelector((state: RootState) => state.user.user);
     //@ts-ignore
-    const url = `${process.env.SERVER_URL}/api/chat/message/${chatId}`
+    const baseUrl = process.env.SERVER_URL
+    const url = `${baseUrl}/api/chat/message/${chatId}`
 
     const fetcher = async () => {
         const response = await fetch(url);
@@ -58,6 +60,20 @@ export const useGetMessages = (chatId: string | number) => {
 };
 
 
+// To send a message to a specific user with a known user ID
+// function sendMessageToUser(userId, message) {
+//     const ws = userSockets.get(userId);
+
+//     if (ws) {
+//         ws.send(JSON.stringify(message));
+//         console.log(`Message sent to user ${userId}: ${JSON.stringify(message)}`);
+//     } else {
+//         console.log(`User ${userId} not found`);
+//     }
+// }
+
+// Example usage:
+//sendMessageToUser('userId123', { text: 'Hello, user!' });
 
 // export const useCreateMessage = ({ chatId, userId, text, status }: MessageT) => {
 //     const [loading, setLoading] = useState(false);

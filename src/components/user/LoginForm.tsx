@@ -30,6 +30,8 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
         setVisible(!visible);
 
     };
+    //@ts-ignore
+    const baseUrl = process.env.SERVER_URL
 
 
     const handleLogin = async () => {
@@ -39,8 +41,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
         } else {
 
             try {
-                //@ts-ignore
-                const response = await fetch(`${process.env.SERVER_URL}/api/user/login`, {
+                const response = await fetch(`${baseUrl}/api/user/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -14,11 +14,11 @@ import { useSelector } from 'react-redux';
 const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     // const navigation = useNavigation()
     const user = useSelector((state: RootState) => state.user.user);
-    console.log({ user: user.id })
     // @ts-ignore
+    const baseUrl = process.env.SERVER_URL
     // const url = `${process.env.SERVER_URL}/api/user/${chatroom.user2Id}`
 
-    const url = `${process.env.SERVER_URL}/api/user/${user.id == chatroom.user1Id ?
+    const url = `${baseUrl}/api/user/${user.id == chatroom.user1Id ?
         chatroom.user2Id
         : chatroom.user1Id
         }`
@@ -27,7 +27,6 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     const { loading, error, users: user2, refreshData, isValidating } = useGetUsers(url);
 
     const lastMessage = 'hello last message :)'
-    console.log({ chatroomA: chatroom })
 
 
 

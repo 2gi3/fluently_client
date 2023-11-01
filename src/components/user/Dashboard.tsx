@@ -38,7 +38,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const [introduction, setIntroduction] = useState<string | null>()
     const [name, setName] = useState<string>('')
     //@ts-ignore
-    const updateUserEndpoint = `${process.env.SERVER_URL}/api/user/${user.id}`
+    const baseUrl = process.env.SERVER_URL
+    const updateUserEndpoint = `${baseUrl}/api/user/${user.id}`
 
 
     const pickImage = async () => {
@@ -77,7 +78,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
             console.log(user.id)
             try {
                 //@ts-ignore
-                const response = await fetch(`${process.env.SERVER_URL}/api/user/${user.id}`, {
+                const response = await fetch(`${baseUrl}/api/user/${user.id}`, {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',

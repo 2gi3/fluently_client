@@ -4,12 +4,13 @@ import { TouchableOpacity, View, Pressable } from "react-native"
 // import { ChatT, UserT } from "../../types"
 import moment from 'moment';
 import { UserT } from '../../types/user';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 // import { useNavigation } from '@react-navigation/native'
 
 
 
-const StudentCard = ({ user }: { user: UserT }) => {
-    // const navigation = useNavigation()
+const StudentCard = ({ user, isConnected }: { user: UserT, isConnected: boolean }) => {
 
     return (
 
@@ -61,7 +62,7 @@ const StudentCard = ({ user }: { user: UserT }) => {
                         gap: 8,
                     }}
                 >
-                    <Badge status="success" />
+                    {isConnected && <Badge status="success" />}
 
                 </ListItem.Content>
             </ListItem>

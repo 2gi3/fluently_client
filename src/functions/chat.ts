@@ -28,10 +28,11 @@ export const createNewChatroom = async (endpoint: string, user1Id: number, user2
 }
 
 export const createMessage = async ({ chatId, userId, text, status }: MessageT) => {
+    //@ts-ignore
+    const baseUlr = process.env.SERVER_URL
 
     try {
-        //@ts-ignore
-        const response = await fetch(`${process.env.SERVER_URL}/api/chat/message`, {
+        const response = await fetch(`${baseUlr}/api/chat/message`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

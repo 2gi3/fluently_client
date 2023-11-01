@@ -20,7 +20,6 @@ const ChatsList = (
     const navigation = useNavigation()
 
     const { loading, error, cahtrooms, refreshData, isValidating } = useGetChats();
-    console.log({ cahtroomsL: cahtrooms })
 
 
 

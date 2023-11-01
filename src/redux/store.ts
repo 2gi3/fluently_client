@@ -3,6 +3,7 @@ import counterReducer from './slices/counterSlice'
 import newUserReducer from './slices/newUserSlice'
 import userReducer from './slices/userSlice'
 import statusReducer from './slices/statusSlice'
+import webSocketReducer from './slices/webSocketSlice'
 // import userReducer from './slices/userSlice'
 
 
@@ -11,7 +12,8 @@ export const store = configureStore({
     counter: counterReducer,
     newUser: newUserReducer,
     user: userReducer,
-    status: statusReducer
+    status: statusReducer,
+    webSocket: webSocketReducer
   },
 })
 

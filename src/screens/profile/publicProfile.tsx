@@ -20,9 +20,11 @@ const PublicProfile = () => {
     }
 
     //@ts-ignore
-    const url = `${process.env.SERVER_URL}/api/user/${studentId}`
+    const url = process.env.SERVER_URL
 
-    const { loading, error, users, refreshData, isValidating } = useGetUsers(url);
+    // const url = `${process.env.SERVER_URL}/api/user/${studentId}`
+
+    const { loading, error, users, refreshData, isValidating } = useGetUsers(`${url}/api/user/${studentId}`);
 
 
 
@@ -104,7 +106,7 @@ const PublicProfile = () => {
                     title="Exchange language"
                     onPress={async () => {
                         //@ts-ignore
-                        const newChatroom = await createNewChatroom(`${process.env.SERVER_URL}/api/chat`, user1?.id, users.id);
+                        const newChatroom = await createNewChatroom(`${url}/api/chat`, user1?.id, users.id);
                         // @ts-ignore
                         navigation.navigate('Chat', {
                             id: newChatroom.newChatroom.id!.toString(),

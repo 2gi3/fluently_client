@@ -13,7 +13,7 @@ export interface NewUserT {
 }
 
 export interface UserT extends NewUserT {
-    id: number;
+    id: number | string;
     image?: string | null;
     description?: string | null;
     banned?: boolean | null;
