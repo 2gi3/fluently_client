@@ -110,7 +110,8 @@ const PublicProfile = () => {
                         // @ts-ignore
                         navigation.navigate('Chat', {
                             id: newChatroom.newChatroom.id!.toString(),
-                            user2id: newChatroom.newChatroom.user2Id
+                            user2id: newChatroom.newChatroom.user2Id,
+                            user2name: users.name
                         })
                     }}
                 />

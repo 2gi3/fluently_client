@@ -11,6 +11,7 @@ import { RootState } from "../../redux/store";
 import { createMessage } from "../../functions/chat";
 import { useGetMessages } from "../../functions/hooks/chat";
 import { sendMessage } from "../../redux/slices/webSocketSlice";
+import { useGetUsers } from "../../functions/hooks/user";
 
 
 
@@ -20,7 +21,6 @@ const ChatScreen = () => {
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const { loading, error, messages: messagesDB, refreshData, isValidating } = useGetMessages(route.params.id);
-
     const flatListRef = useRef<any>(null);
 
     const user = useSelector((state: RootState) => state.user.user);
@@ -30,9 +30,10 @@ const ChatScreen = () => {
     const socket = useSelector((state: RootState) => state.webSocket.socket);
 
 
-    if (socket) {
-        console.log(socket)
-    }
+    //@ts-ignore
+    const baseUrl = process.env.SERVER_URL
+    const url = `${baseUrl}/api/user/${route.params.user2id}`
+    const { users: user2 } = useGetUsers(url);
 
     const [inputValue, setInputValue] = useState("");
 
@@ -49,10 +50,17 @@ const ChatScreen = () => {
             ...prevMessages,
             newMessage
         ]);
-
+        console.log({
+            sending: {
+                type: 'chatMessage',
+                recipient: route.params.user2id,
+                content: newMessage
+            }
+        })
         if (socket) {
             dispatch(sendMessage(JSON.stringify({
                 type: 'chatMessage',
+                recipient: route.params.user2id,
                 content: newMessage,
             }))
             )
@@ -79,13 +87,13 @@ const ChatScreen = () => {
 
     useEffect(() => {
         // @ts-ignore
-        navigation.setOptions({ title: route.params?.name, headerTitleAlign: 'center' })
+        navigation.setOptions({ title: user2.name, headerTitleAlign: 'center' })
         setMessages(messagesDB)
-    }, [route.params, messagesDB])
+    }, [route.params, messagesDB, user2.name])
 
     if (messages) {
         // setMessages(messagesDB)
-        console.log({ messagesx: messages })
+        // console.log({ messagesx: messages })
 
 
 

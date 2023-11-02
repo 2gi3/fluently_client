@@ -4,6 +4,7 @@ import newUserReducer from './slices/newUserSlice'
 import userReducer from './slices/userSlice'
 import statusReducer from './slices/statusSlice'
 import webSocketReducer from './slices/webSocketSlice'
+import chatReducer from './slices/chatSlice'
 // import userReducer from './slices/userSlice'
 
 
@@ -13,7 +14,8 @@ export const store = configureStore({
     newUser: newUserReducer,
     user: userReducer,
     status: statusReducer,
-    webSocket: webSocketReducer
+    webSocket: webSocketReducer,
+    chat: chatReducer
   },
 })
 

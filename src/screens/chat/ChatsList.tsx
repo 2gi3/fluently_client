@@ -10,6 +10,8 @@ import { useGetChats } from '../../functions/hooks/chat';
 import { useUserData } from '../../functions/hooks/user';
 import { Skeleton } from '@rneui/base';
 import { sizes } from '../../styles/variables/measures';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
 
 
 
@@ -18,6 +20,8 @@ const ChatsList = (
 ) => {
     // console.log(chats);
     const navigation = useNavigation()
+    const user = useSelector((state: RootState) => state.user.user);
+
 
     const { loading, error, cahtrooms, refreshData, isValidating } = useGetChats();
 
@@ -30,7 +34,7 @@ const ChatsList = (
             // @ts-ignore
             onPress={() => navigation.navigate('Chat', {
                 id: item.id!.toString(),
-                user2id: item.user2Id
+                user2id: user.id == item.user2Id ? item.user1Id : item.user2Id,
             })}
             style={{ maxWidth: 440, maxHeight: 108, minWidth: 300 }}
         >
