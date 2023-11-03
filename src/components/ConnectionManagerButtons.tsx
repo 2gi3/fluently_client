@@ -31,8 +31,8 @@ export function ConnectionManagerButtons() {
 
     return (
         <>
-            <Button title='Connect' onPress={() => connectSocket()} />
-            <Button title='Disconnect' onPress={() => disconnectSocket()} />
+            {socketUrl ? <Button title='Disconnect' onPress={() => disconnectSocket()} />
+                : <Button title='Connect' onPress={() => connectSocket()} />}
         </>
     );
 }

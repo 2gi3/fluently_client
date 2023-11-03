@@ -12,6 +12,7 @@ import { createMessage } from "../../functions/chat";
 import { useGetMessages } from "../../functions/hooks/chat";
 import { sendMessage } from "../../redux/slices/webSocketSlice";
 import { useGetUsers } from "../../functions/hooks/user";
+import { addMessage, clearActiveChats, clearChatMessages, setActiveChat } from "../../redux/slices/chatSlice";
 
 
 
@@ -28,6 +29,8 @@ const ChatScreen = () => {
     const [messages, setMessages] = useState(messagesDB || []);
 
     const socket = useSelector((state: RootState) => state.webSocket.socket);
+    const localMessages = useSelector((state: RootState) => state.chat.chatMessages);
+    const activeChat = useSelector((state: RootState) => state.chat.activeChat)
 
 
     //@ts-ignore
@@ -45,18 +48,14 @@ const ChatScreen = () => {
             text: inputValue,
             status: 'sent',
         });
+        dispatch(addMessage(newMessage))
+        console.log({ ...newMessage })
 
         setMessages((prevMessages: any) => [
             ...prevMessages,
             newMessage
         ]);
-        console.log({
-            sending: {
-                type: 'chatMessage',
-                recipient: route.params.user2id,
-                content: newMessage
-            }
-        })
+
         if (socket) {
             dispatch(sendMessage(JSON.stringify({
                 type: 'chatMessage',
@@ -65,6 +64,7 @@ const ChatScreen = () => {
             }))
             )
         }
+        // console.log({ localMessages })
 
         if (flatListRef.current) {
             const newIndex = messages.length - 1;
@@ -88,8 +88,29 @@ const ChatScreen = () => {
     useEffect(() => {
         // @ts-ignore
         navigation.setOptions({ title: user2.name, headerTitleAlign: 'center' })
+        dispatch(setActiveChat(route.params.id))
         setMessages(messagesDB)
+        console.log({ params: route.params.id })
+
+
+        return () => {
+            dispatch(clearChatMessages());
+            dispatch(clearActiveChats())
+        };
     }, [route.params, messagesDB, user2.name])
+
+    useEffect(() => {
+        console.log({ activeChatInRoom: activeChat })
+
+        if (localMessages.length > 0) {
+            setMessages((prevMessages: any) => [
+                ...messagesDB,
+                ...localMessages
+            ]);
+        }
+        console.log({ ...localMessages })
+
+    }, [localMessages])
 
     if (messages) {
         // setMessages(messagesDB)

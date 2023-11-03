@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useSWR, { mutate } from "swr";
 import { RootState } from "../../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../../types/user";
 import { useState, useEffect } from "react";
 import { MessageT } from "../../types/chat";
+import { clearChatMessages } from "../../redux/slices/chatSlice";
 
 
 export const useGetChats = () => {
@@ -34,6 +35,7 @@ export const useGetChats = () => {
 };
 
 export const useGetMessages = (chatId: string | number) => {
+    const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.user.user);
     //@ts-ignore
     const baseUrl = process.env.SERVER_URL
@@ -45,6 +47,7 @@ export const useGetMessages = (chatId: string | number) => {
             throw new Error('Failed to fetch messages');
         }
         const data = await response.json();
+        dispatch(clearChatMessages());
         return data;
     };
 

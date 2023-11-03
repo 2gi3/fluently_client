@@ -1,16 +1,28 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSocketUrl, clearSocketUrl, setConnected } from '../redux/slices/statusSlice';
 import { clearSocket, setConnectedUsers, setSocket } from '../redux/slices/webSocketSlice';
 import { RootState } from '../redux/store';
+import { addMessage } from '../redux/slices/chatSlice';
 
 export function ConnectionManagerAuto() {
   const dispatch = useDispatch();
   const socketUrl = useSelector(selectSocketUrl);
   const user = useSelector((state: RootState) => state.user.user);
+  const activeChat = useSelector((state: RootState) => state.chat.activeChat)
+  const activeChatRef = useRef<string | number | null>(null);
+
 
 
   useEffect(() => {
+    if (activeChat) {
+      activeChatRef.current = activeChat;
+    }
+  }, [activeChat]);
+
+
+  useEffect(() => {
+
     if (socketUrl && user) {
       const newSocket = new WebSocket(socketUrl);
 
@@ -23,23 +35,32 @@ export function ConnectionManagerAuto() {
 
       newSocket.onmessage = (event) => {
         const message = event.data;
-        console.log(message)
+        // console.log(message)
         if (message instanceof Blob) {
           // Handle Blob messages (similar to the previous example)
           const reader = new FileReader();
 
           reader.onload = function () {
             const blobData: any = reader.result;
-            console.log('Received a Blob: ', blobData);
+            // console.log('Received a Blob: ', blobData);
 
             // You can process the binary data here, e.g., convert it to a string
             const textData = new TextDecoder().decode(blobData);
-            console.log('Decoded Blob as text: ', textData);
+            // console.log('Decoded Blob as text: ', textData);
 
             // If the message is expected to be JSON, you can parse it
             try {
               const parsedObject = JSON.parse(textData);
-              console.log('Parsed JSON object: ', parsedObject);
+              console.log({ activeChat2: activeChat })
+
+              if (parsedObject.type === 'chatMessage' && activeChatRef.current === parsedObject.content.chatId) {
+
+                dispatch(addMessage(parsedObject.content))
+
+              } else {
+                console.log({ 'Parsed JSON object: ': parsedObject });
+
+              }
             } catch (error) {
               console.error('Error parsing JSON:', error);
             }
