@@ -53,13 +53,17 @@ export function ConnectionManagerAuto() {
               const parsedObject = JSON.parse(textData);
               console.log({ activeChat2: activeChat })
 
-              if (parsedObject.type === 'chatMessage' && activeChatRef.current === parsedObject.content.chatId) {
+              if (parsedObject.type === 'chatMessage') {
+                if (activeChatRef.current === parsedObject.content.chatId) {
 
-                dispatch(addMessage(parsedObject.content))
+                  dispatch(addMessage(parsedObject.content))
 
-              } else {
-                console.log({ 'Parsed JSON object: ': parsedObject });
+                } else if (activeChatRef.current !== parsedObject.content.chatId) {
+                  //If the message belongs to an inactive chat, then manage the logic here
+                } else {
+                  console.log({ 'Parsed JSON object: ': parsedObject });
 
+                }
               }
             } catch (error) {
               console.error('Error parsing JSON:', error);

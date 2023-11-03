@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar, ListItem, Divider, Skeleton } from "@rneui/base"
+import { Avatar, ListItem, Divider, Skeleton, Badge } from "@rneui/base"
 import { TouchableOpacity, View, Pressable } from "react-native"
 import moment from 'moment';
 import { ChatroomT } from '../../types/chat';
@@ -7,6 +7,7 @@ import { useGetUsers, useUserData } from '../../functions/hooks/user';
 import { sizes } from '../../styles/variables/measures';
 import { RootState } from '../../redux/store';
 import { useSelector } from 'react-redux';
+import { useGetLastMessage } from '../../functions/hooks/chat';
 // import { useNavigation } from '@react-navigation/native'
 
 
@@ -16,8 +17,6 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     const user = useSelector((state: RootState) => state.user.user);
     // @ts-ignore
     const baseUrl = process.env.SERVER_URL
-    // const url = `${process.env.SERVER_URL}/api/user/${chatroom.user2Id}`
-
     const url = `${baseUrl}/api/user/${user.id == chatroom.user1Id ?
         chatroom.user2Id
         : chatroom.user1Id
@@ -25,12 +24,14 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
 
 
     const { loading, error, users: user2, refreshData, isValidating } = useGetUsers(url);
-
-    const lastMessage = 'hello last message :)'
-
+    const { loading: loadingLastMessage, error: errorLastMessage, lastMessage, refreshData: refreshLastMessage, isValidating: isValidatingLastMessage } = useGetLastMessage(chatroom.id!);
 
 
-    if (loading) {
+    // const lastMessage = 'hello last message :)'
+
+
+
+    if (loading || loadingLastMessage) {
         return (
             <View style={{
                 //  flexDirection: 'column',
@@ -78,20 +79,24 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                         <ListItem.Title>
                             {user2.name}
                         </ListItem.Title>
-                        <ListItem.Subtitle>{lastMessage}</ListItem.Subtitle>
+                        <ListItem.Subtitle>{lastMessage.text}</ListItem.Subtitle>
                     </ListItem.Content>
                     <ListItem.Content
                         style={{
                             maxWidth: 74,
-                            // marginTop: -27,
+                            marginTop: 7,
                             display: 'flex',
                             flexWrap: 'nowrap',
-                            flexDirection: 'row',
                             alignItems: 'baseline',
                             justifyContent: 'flex-end',
-                            gap: 8,
+                            gap: 17,
                         }}
-                    >
+                    >                    {lastMessage.status === 'sent' && <Badge status="success" />}
+
+                        <ListItem.Subtitle style={{
+                            fontSize: 12,
+                            color: '8e8e8f'
+                        }}>{moment(lastMessage.created_at).fromNow()}</ListItem.Subtitle>
 
                     </ListItem.Content>
                 </ListItem>

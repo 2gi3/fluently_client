@@ -62,6 +62,31 @@ export const useGetMessages = (chatId: string | number) => {
     return { loading: !messages && !error, error, messages, refreshData, isValidating };
 };
 
+export const useGetLastMessage = (chatId: string | number) => {
+    const user = useSelector((state: RootState) => state.user.user);
+    //@ts-ignore
+    const baseUrl = process.env.SERVER_URL
+    const url = `${baseUrl}/api/chat/last_message/${chatId}`
+
+    const fetcher = async () => {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error('Failed to fetch messages');
+        }
+        const data = await response.json();
+        return data;
+    };
+
+    const { data: lastMessage, error, isValidating } = useSWR(url, fetcher, {
+        revalidateOnMount: true
+    });
+
+    const refreshData = () => {
+        mutate(url);
+    };
+
+    return { loading: !lastMessage && !error, error, lastMessage, refreshData, isValidating };
+};
 
 // To send a message to a specific user with a known user ID
 // function sendMessageToUser(userId, message) {

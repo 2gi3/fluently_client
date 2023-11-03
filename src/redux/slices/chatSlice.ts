@@ -7,6 +7,7 @@ const chatSlice = createSlice({
     name: 'chat',
     initialState: {
         activeChat: null as string | number | null,
+        // pendingChats:[] as string[] | number[],
         chatMessages: [] as MessageT[]
     },
     reducers: {

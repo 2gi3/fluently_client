@@ -9,7 +9,7 @@ import { RootState } from "../../redux/store";
 
 
 
-const Message = ({ message }: { message: MessageT }) => {
+const Message = ({ message, messageRead }: { message: MessageT, messageRead: string }) => {
     const user = useSelector((state: RootState) => state.user.user);
     // console.log({ message: message })
     // console.log({ 'user.id': user.id })

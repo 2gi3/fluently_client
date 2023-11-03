@@ -80,7 +80,7 @@ const ChatScreen = () => {
 
 
     const renderItem = ({ item }: { item: any }) => (
-        <Message message={item} />
+        <Message message={item} messageRead='true' />
     );
 
 
