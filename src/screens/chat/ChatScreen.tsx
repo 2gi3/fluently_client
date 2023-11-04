@@ -79,9 +79,13 @@ const ChatScreen = () => {
 
 
 
-    const renderItem = ({ item }: { item: any }) => (
-        <Message message={item} messageRead='true' />
-    );
+    const renderItem = ({ item, index }: { item: any, index: number }) => {
+        const isLastMessage = index === messages.length - 1;
+
+        return (
+            <Message message={item} messageRead={true} isLastMessage={isLastMessage} />
+        );
+    };
 
 
 

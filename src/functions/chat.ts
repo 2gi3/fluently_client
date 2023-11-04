@@ -60,3 +60,29 @@ export const createMessage = async ({ chatId, userId, text, status }: MessageT) 
 
 
 };
+
+export const updateMessageStatus = async (messageId: string | number, newStatus: string = 'read') => {
+    //@ts-ignore
+    const baseUrl = process.env.SERVER_URL
+    const url = `${baseUrl}/api/chat/message/${messageId}`
+    try {
+        const response = await fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status: newStatus }),
+        });
+
+        if (response.ok) {
+            console.log('Message status updated successfully');
+            return response
+        } else {
+            console.error('Failed to update message status');
+            return response
+        }
+    } catch (error) {
+        console.error('Error updating message status:', error);
+    }
+
+}
