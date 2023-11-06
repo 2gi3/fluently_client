@@ -14,6 +14,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, messageRead: boolean, isLastMessage: boolean }) => {
     const user = useSelector((state: RootState) => state.user.user);
+    const activeChat = useSelector((state: RootState) => state.chat.activeChat);
+
 
     const isMyMessage = () => {
         if (user.id) {

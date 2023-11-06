@@ -5,6 +5,7 @@ import { useGetUsers, useUserData } from "../../functions/hooks/user"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import { useEffect } from "react"
 import { createNewChatroom } from "../../functions/chat"
+import { ChatroomT } from "../../types/chat"
 
 const PublicProfile = () => {
     const route = useRoute()
@@ -107,12 +108,38 @@ const PublicProfile = () => {
                     onPress={async () => {
                         //@ts-ignore
                         const newChatroom = await createNewChatroom(`${url}/api/chat`, user1?.id, users.id);
-                        // @ts-ignore
-                        navigation.navigate('Chat', {
-                            id: newChatroom.newChatroom.id!.toString(),
-                            user2id: newChatroom.newChatroom.user2Id,
-                            user2name: users.name
-                        })
+                        if (newChatroom.message === "Chatroom already exists") {
+                            console.log({ newChatroom: newChatroom.chatroom })
+                            // 'newChatroom.chatroom': {
+                            //     "id": 35,
+                            //     "user1Id": 23,
+                            //     "user2Id": 18,
+                            //     "last_message_id": null
+                            // }
+                            // @ts-ignore
+                            if (user1?.id === newChatroom?.chatroom?.user1Id) {
+                                // @ts-ignore
+                                navigation.navigate('Chat', {
+                                    id: newChatroom?.chatroom?.id?.toString(),
+                                    user2id: newChatroom?.chatroom?.user2Id
+                                });
+                            } else {
+                                // @ts-ignore
+                                navigation.navigate('Chat', {
+                                    id: newChatroom?.chatroom?.id?.toString(),
+                                    user2id: newChatroom?.chatroom?.user1Id
+                                });
+                            }
+
+
+                        } else {
+                            // @ts-ignore
+                            navigation.navigate('Chat', {
+                                id: newChatroom.newChatroom.id!.toString(),
+                                user2id: newChatroom.newChatroom.user2Id,
+                                // user2name: users.name
+                            })
+                        }
                     }}
                 />
 

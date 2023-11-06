@@ -23,7 +23,7 @@ export const useGetChats = () => {
         return data;
     };
 
-    const { data: cahtrooms, error, isValidating } = useSWR(url, fetcher, {
+    const { data: chatrooms, error, isValidating } = useSWR(url, fetcher, {
         revalidateOnMount: true
     });
 
@@ -31,7 +31,7 @@ export const useGetChats = () => {
         mutate(url);
     };
 
-    return { loading: !cahtrooms && !error, error, cahtrooms, refreshData, isValidating };
+    return { loading: !chatrooms && !error, error, chatrooms, refreshData, isValidating };
 };
 
 export const useGetMessages = (chatId: string | number) => {

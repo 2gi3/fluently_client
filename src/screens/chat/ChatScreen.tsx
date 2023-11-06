@@ -12,7 +12,7 @@ import { createMessage } from "../../functions/chat";
 import { useGetMessages } from "../../functions/hooks/chat";
 import { sendMessage } from "../../redux/slices/webSocketSlice";
 import { useGetUsers } from "../../functions/hooks/user";
-import { addMessage, clearActiveChats, clearChatMessages, setActiveChat } from "../../redux/slices/chatSlice";
+import { addMessage, clearActiveChats, clearChatMessages, removeFromPendingChats, setActiveChat } from "../../redux/slices/chatSlice";
 
 
 
@@ -49,7 +49,6 @@ const ChatScreen = () => {
             status: 'sent',
         });
         dispatch(addMessage(newMessage))
-        console.log({ ...newMessage })
 
         setMessages((prevMessages: any) => [
             ...prevMessages,
@@ -64,7 +63,6 @@ const ChatScreen = () => {
             }))
             )
         }
-        // console.log({ localMessages })
 
         if (flatListRef.current) {
             const newIndex = messages.length - 1;
@@ -90,21 +88,22 @@ const ChatScreen = () => {
 
 
     useEffect(() => {
-        // @ts-ignore
-        navigation.setOptions({ title: user2.name, headerTitleAlign: 'center' })
-        dispatch(setActiveChat(route.params.id))
-        setMessages(messagesDB)
-        console.log({ params: route.params.id })
+        console.log({ chatId: route.params!.id })
+        if (user2) {// @ts-ignore
+            navigation.setOptions({ title: user2.name, headerTitleAlign: 'center' })
+            dispatch(setActiveChat(route.params.id))
+            setMessages(messagesDB)
+            dispatch(removeFromPendingChats(route.params.id))
+        }
 
 
         return () => {
             dispatch(clearChatMessages());
             dispatch(clearActiveChats())
         };
-    }, [route.params, messagesDB, user2.name])
+    }, [route.params, messagesDB, user2])
 
     useEffect(() => {
-        console.log({ activeChatInRoom: activeChat })
 
         if (localMessages.length > 0) {
             setMessages((prevMessages: any) => [
@@ -112,13 +111,11 @@ const ChatScreen = () => {
                 ...localMessages
             ]);
         }
-        console.log({ ...localMessages })
 
     }, [localMessages])
 
     if (messages) {
         // setMessages(messagesDB)
-        // console.log({ messagesx: messages })
 
 
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Avatar, ListItem, Divider, Skeleton, Badge } from "@rneui/base"
 import { TouchableOpacity, View, Pressable } from "react-native"
 import moment from 'moment';
@@ -6,14 +6,15 @@ import { ChatroomT } from '../../types/chat';
 import { useGetUsers, useUserData } from '../../functions/hooks/user';
 import { sizes } from '../../styles/variables/measures';
 import { RootState } from '../../redux/store';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useGetLastMessage } from '../../functions/hooks/chat';
+import { addToPendingChats } from '../../redux/slices/chatSlice';
 // import { useNavigation } from '@react-navigation/native'
 
 
 
 const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
-    // const navigation = useNavigation()
+    const activeChat = useSelector((state: RootState) => state.chat.activeChat)
     const user = useSelector((state: RootState) => state.user.user);
     // @ts-ignore
     const baseUrl = process.env.SERVER_URL
@@ -25,10 +26,18 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
 
     const { loading, error, users: user2, refreshData, isValidating } = useGetUsers(url);
     const { loading: loadingLastMessage, error: errorLastMessage, lastMessage, refreshData: refreshLastMessage, isValidating: isValidatingLastMessage } = useGetLastMessage(chatroom.id!);
+    const dispatch = useDispatch()
 
+    useEffect(() => {
+        if (lastMessage && lastMessage.status !== 'read') {
+            dispatch(addToPendingChats(chatroom.id!))
+        }
+    }, [lastMessage])
 
-    // const lastMessage = 'hello last message :)'
-
+    useEffect(() => {
+        //updates the unread badge in the chatsList
+        refreshLastMessage()
+    }, [activeChat])
 
 
     if (loading || loadingLastMessage) {
@@ -79,7 +88,7 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                         <ListItem.Title>
                             {user2.name}
                         </ListItem.Title>
-                        <ListItem.Subtitle>{lastMessage.text}</ListItem.Subtitle>
+                        <ListItem.Subtitle>{lastMessage ? lastMessage.text : `${user2.name} wants to chat with you`}</ListItem.Subtitle>
                     </ListItem.Content>
                     <ListItem.Content
                         style={{
@@ -91,12 +100,12 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                             justifyContent: 'flex-end',
                             gap: 17,
                         }}
-                    >                    {lastMessage.status === 'sent' && <Badge status="success" />}
+                    >                    {lastMessage && lastMessage.status === 'sent' && <Badge status="success" />}
 
-                        <ListItem.Subtitle style={{
+                        {lastMessage && <ListItem.Subtitle style={{
                             fontSize: 12,
                             color: '8e8e8f'
-                        }}>{moment(lastMessage.created_at).fromNow()}</ListItem.Subtitle>
+                        }}>{moment(lastMessage.created_at).fromNow()}</ListItem.Subtitle>}
 
                     </ListItem.Content>
                 </ListItem>

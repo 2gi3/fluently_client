@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { selectSocketUrl, clearSocketUrl, setConnected } from '../redux/slices/statusSlice';
 import { clearSocket, setConnectedUsers, setSocket } from '../redux/slices/webSocketSlice';
 import { RootState } from '../redux/store';
-import { addMessage } from '../redux/slices/chatSlice';
+import { addMessage, addToPendingChats } from '../redux/slices/chatSlice';
 
 export function ConnectionManagerAuto() {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ export function ConnectionManagerAuto() {
                   dispatch(addMessage(parsedObject.content))
 
                 } else if (activeChatRef.current !== parsedObject.content.chatId) {
-                  //If the message belongs to an inactive chat, then manage the logic here
+                  dispatch(addToPendingChats(parsedObject.content.chatId))
                 } else {
                   console.log({ 'Parsed JSON object: ': parsedObject });
 

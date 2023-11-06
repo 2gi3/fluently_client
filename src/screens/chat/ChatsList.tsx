@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, Pressable } from 'react-native';
+import { FlatList, View, Pressable, Text } from 'react-native';
 // import { ChatT } from '../../types';
 import ChatCard from '../../components/chat/ChatCard';
 import { Divider } from '@rneui/themed';
@@ -12,6 +12,8 @@ import { Skeleton } from '@rneui/base';
 import { sizes } from '../../styles/variables/measures';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
+import { useEffect, useState } from 'react'
+import { ConnectionManagerButtons } from '../../components/ConnectionManagerButtons';
 
 
 
@@ -21,10 +23,27 @@ const ChatsList = (
     // console.log(chats);
     const navigation = useNavigation()
     const user = useSelector((state: RootState) => state.user.user);
+    const activeChat = useSelector((state: RootState) => state.chat.activeChat);
+    const pendingChats = useSelector((state: RootState) => state.chat.pendingChats);
+    const { loading, error, chatrooms, refreshData, isValidating } = useGetChats();
+    const [sortedChatrooms, setSortedChatrooms] = useState<ChatroomT[] | null>(null)
 
 
-    const { loading, error, cahtrooms, refreshData, isValidating } = useGetChats();
+    useEffect(() => {
+        refreshData();
+        if (chatrooms) {
+            const filteredChatrooms = chatrooms
+                .slice()
+                .sort((a: any, b: any) => b.last_message_id - a.last_message_id)
+                .filter((chatroom: ChatroomT) => {
+                    // this will eliminate chatrooms opened by another user that hasn't sent a message yet
+                    return chatroom.user1Id === user.id || chatroom.last_message_id !== null;
+                });
 
+            setSortedChatrooms(filteredChatrooms);
+            console.log(chatrooms);
+        }
+    }, [chatrooms, activeChat, pendingChats]);
 
 
 
@@ -47,14 +66,20 @@ const ChatsList = (
             <Skeleton circle={true} animation="wave" width={80} height={80} style={{ marginTop: sizes.M, marginBottom: sizes.XS, marginLeft: sizes.S }} />
             <Skeleton animation="wave" width={200} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
         </View>
-    } else {
+    } else if (sortedChatrooms) {
         return (
             <FlatList
-                data={cahtrooms}
+                data={sortedChatrooms}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id!.toString()}
             />
         );
+    } else {
+        return (
+            <View>
+                <Text>hello there</Text>
+            </View>
+        )
     }
 };
 
