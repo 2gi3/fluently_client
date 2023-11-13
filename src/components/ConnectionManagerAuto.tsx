@@ -60,6 +60,16 @@ export function ConnectionManagerAuto() {
 
                 } else if (activeChatRef.current !== parsedObject.content.chatId) {
                   dispatch(addToPendingChats(parsedObject.content.chatId))
+                  console.log(parsedObject.content)
+                  Notification.requestPermission().then(permission => {
+                    if (permission === 'granted') {
+                      new Notification('Fluently', {
+                        body: `New message: ${parsedObject.content.text}`,
+                        icon: '../assets/images/logos/logo2.png',
+                        // tag: 'New message'
+                      })
+                    }
+                  })
                 } else {
                   console.log({ 'Parsed JSON object: ': parsedObject });
 

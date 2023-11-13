@@ -101,3 +101,7 @@ which includes:
 # Run project locally
 
 - Run the back-end on localhost:3000
+
+## External documentation
+
+- [Notification](https://developer.mozilla.org/en-US/docs/Web/API/Notification/Notification)
