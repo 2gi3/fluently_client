@@ -8,9 +8,9 @@ import Navigator from './src/navigation';
 import { store } from './src/redux/store';
 import { useEffect, useRef, useState } from 'react';
 import { ConnectionManagerAuto } from './src/components/ConnectionManagerAuto';
-import * as Notifications from 'expo-notifications';
-import { registerForPushNotificationsAsync, sendPushNotification } from './src/functions/chat';
-import { Text, View, Button, Platform } from 'react-native';
+// import * as Notifications from 'expo-notifications';
+// import { registerForPushNotificationsAsync, sendPushNotification } from './src/functions/chat';
+// import { Text, View, Button, Platform } from 'react-native';
 
 
 
@@ -27,6 +27,7 @@ export default function App() {
   // const [notification, setNotification] = useState<Notifications.Notification | null>(null);
   // const notificationListener = useRef<Notifications.Subscription | null>(null);
   // const responseListener = useRef<Notifications.Subscription | null>(null);
+
 
 
 

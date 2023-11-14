@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 import { selectSocketUrl, clearSocketUrl, setConnected } from '../redux/slices/statusSlice';
 import { clearSocket, setConnectedUsers, setSocket } from '../redux/slices/webSocketSlice';
-import { RootState } from '../redux/store';
 import { addMessage, addToPendingChats } from '../redux/slices/chatSlice';
+import { notifyUser } from '../functions/chat';
 
 export function ConnectionManagerAuto() {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ export function ConnectionManagerAuto() {
 
     if (socketUrl && user) {
       const newSocket = new WebSocket(socketUrl);
-
+      // console.log({newSocket})
       newSocket.onopen = () => {
         dispatch(setConnected(true));
         dispatch(setSocket(newSocket));
@@ -37,18 +38,11 @@ export function ConnectionManagerAuto() {
         const message = event.data;
         // console.log(message)
         if (message instanceof Blob) {
-          // Handle Blob messages (similar to the previous example)
           const reader = new FileReader();
-
           reader.onload = function () {
             const blobData: any = reader.result;
-            // console.log('Received a Blob: ', blobData);
-
-            // You can process the binary data here, e.g., convert it to a string
             const textData = new TextDecoder().decode(blobData);
-            // console.log('Decoded Blob as text: ', textData);
 
-            // If the message is expected to be JSON, you can parse it
             try {
               const parsedObject = JSON.parse(textData);
               console.log({ activeChat2: activeChat })
@@ -60,16 +54,7 @@ export function ConnectionManagerAuto() {
 
                 } else if (activeChatRef.current !== parsedObject.content.chatId) {
                   dispatch(addToPendingChats(parsedObject.content.chatId))
-                  console.log(parsedObject.content)
-                  Notification.requestPermission().then(permission => {
-                    if (permission === 'granted') {
-                      new Notification('Fluently', {
-                        body: `New message: ${parsedObject.content.text}`,
-                        icon: '../assets/images/logos/logo2.png',
-                        // tag: 'New message'
-                      })
-                    }
-                  })
+                  notifyUser(`New message: ${parsedObject.content.text}`)
                 } else {
                   console.log({ 'Parsed JSON object: ': parsedObject });
 

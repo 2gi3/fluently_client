@@ -11,6 +11,8 @@ import { useUserData } from "../functions/hooks/user";
 import { Text, View, } from "react-native"
 import { Button } from "@rneui/base";
 import TopTabButton from "../components/navigation/TopTabButton";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
 
 
 
@@ -19,6 +21,8 @@ import TopTabButton from "../components/navigation/TopTabButton";
 const Tabs = () => {
     const Tabs = createBottomTabNavigator()
     const user = useUserData()
+    const pendingChats = useSelector((state: RootState) => state.chat.pendingChats);
+
 
     // const renderIcon = useCustomTabIcon()
 
@@ -37,6 +41,7 @@ const Tabs = () => {
             <Tabs.Screen
                 name="Chats" component={ChatsList} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble-outline'),
+                    tabBarBadge: pendingChats.length > 0 ? pendingChats.length : undefined,
                     headerRight: () => (
                         <TopTabButton
                             onPress={() => navigation.navigate('Students')}
