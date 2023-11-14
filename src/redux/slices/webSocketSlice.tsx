@@ -7,20 +7,27 @@ type connectedUsersTyps = string[];
 const websocketSlice = createSlice({
     name: 'websocket',
     initialState: {
-        socket: null as WebSocketType,
-        connectedUsers: [] as connectedUsersTyps
+        // socket: null as WebSocketType,
+        connectedUsers: [] as connectedUsersTyps,
+        outgoingMessage: null
     },
     reducers: {
-        setSocket: (state, action) => {
-            state.socket = action.payload;
+        // setSocket: (state, action) => {
+        //     state.socket = action.payload;
+        // },
+        // clearSocket: (state) => {
+        //     state.socket = null;
+        // },
+        // sendMessage: (state, action) => {
+        //     if (state.socket) {
+        //         state.socket.send(action.payload);
+        //     }
+        // },
+        setOutgoingMessage: (state, action) => {
+            state.outgoingMessage = action.payload;
         },
-        clearSocket: (state) => {
-            state.socket = null;
-        },
-        sendMessage: (state, action) => {
-            if (state.socket) {
-                state.socket.send(action.payload);
-            }
+        clearOutgoingMessage: (state, action) => {
+            state.outgoingMessage = null;
         },
         addUser: (state, action) => {
             if (typeof action.payload === 'string') {
@@ -40,5 +47,7 @@ const websocketSlice = createSlice({
     },
 });
 
-export const { setSocket, clearSocket, sendMessage, addUser, removeUser, setConnectedUsers } = websocketSlice.actions;
+export const {
+    // setSocket, clearSocket, sendMessage,
+    addUser, removeUser, setConnectedUsers, setOutgoingMessage, clearOutgoingMessage } = websocketSlice.actions;
 export default websocketSlice.reducer;

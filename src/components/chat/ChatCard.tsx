@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Avatar, ListItem, Divider, Skeleton, Badge } from "@rneui/base"
-import { TouchableOpacity, View, Pressable } from "react-native"
+import { TouchableOpacity, View, Text } from "react-native"
 import moment from 'moment';
 import { ChatroomT } from '../../types/chat';
 import { useGetUsers, useUserData } from '../../functions/hooks/user';
@@ -86,9 +86,11 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                     </View>
                     <ListItem.Content style={{ height: '100%', gap: 8 }}>
                         <ListItem.Title>
-                            {user2.name}
+                            <Text>{user2.name}</Text>
                         </ListItem.Title>
-                        <ListItem.Subtitle>{lastMessage ? lastMessage.text : `${user2.name} wants to chat with you`}</ListItem.Subtitle>
+                        <ListItem.Subtitle>
+                            <Text>{lastMessage ? lastMessage.text : `${user2.name} wants to chat with you`}</Text>
+                        </ListItem.Subtitle>
                     </ListItem.Content>
                     <ListItem.Content
                         style={{
@@ -100,12 +102,13 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                             justifyContent: 'flex-end',
                             gap: 17,
                         }}
-                    >                    {lastMessage && lastMessage.status === 'sent' && <Badge status="success" />}
+                    >                   <Text> {lastMessage && lastMessage.status === 'sent' && <Badge status="success" />}</Text>
 
                         {lastMessage && <ListItem.Subtitle style={{
                             fontSize: 12,
                             color: '8e8e8f'
-                        }}>{moment(lastMessage.created_at).fromNow()}</ListItem.Subtitle>}
+                        }}>
+                            <Text>{moment(lastMessage.created_at).fromNow()}</Text></ListItem.Subtitle>}
 
                     </ListItem.Content>
                 </ListItem>

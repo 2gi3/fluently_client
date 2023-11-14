@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { createMessage } from "../../functions/chat";
 import { useGetMessages } from "../../functions/hooks/chat";
-import { sendMessage } from "../../redux/slices/webSocketSlice";
+import { setOutgoingMessage } from "../../redux/slices/webSocketSlice";
 import { useGetUsers } from "../../functions/hooks/user";
 import { addMessage, clearActiveChats, clearChatMessages, removeFromPendingChats, setActiveChat } from "../../redux/slices/chatSlice";
 
@@ -28,7 +28,7 @@ const ChatScreen = () => {
 
     const [messages, setMessages] = useState(messagesDB || []);
 
-    const socket = useSelector((state: RootState) => state.webSocket.socket);
+    const isConnected = useSelector((state: RootState) => state.status.connected);
     const localMessages = useSelector((state: RootState) => state.chat.chatMessages);
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
 
@@ -55,8 +55,8 @@ const ChatScreen = () => {
             newMessage
         ]);
 
-        if (socket) {
-            dispatch(sendMessage(JSON.stringify({
+        if (isConnected) {
+            dispatch(setOutgoingMessage(JSON.stringify({
                 type: 'chatMessage',
                 recipient: route.params.user2id,
                 content: newMessage,

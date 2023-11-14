@@ -1,8 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { selectSocketUrl, clearSocketUrl, setConnected } from '../redux/slices/statusSlice';
-import { clearSocket, setConnectedUsers, setSocket } from '../redux/slices/webSocketSlice';
+import { setConnectedUsers } from '../redux/slices/webSocketSlice';
 import { addMessage, addToPendingChats } from '../redux/slices/chatSlice';
 import { notifyUser } from '../functions/chat';
 
@@ -12,15 +12,21 @@ export function ConnectionManagerAuto() {
   const user = useSelector((state: RootState) => state.user.user);
   const activeChat = useSelector((state: RootState) => state.chat.activeChat)
   const activeChatRef = useRef<string | number | null>(null);
+  const outgoingMessage = useSelector((state: RootState) => state.webSocket.outgoingMessage)
 
-
+  const [webSocket, setWebSocket] = useState<null | WebSocket>()
 
   useEffect(() => {
     if (activeChat) {
       activeChatRef.current = activeChat;
     }
   }, [activeChat]);
+  useEffect(() => {
+    if (outgoingMessage && webSocket) {
+      webSocket.send(outgoingMessage)
+    }
 
+  }, [outgoingMessage])
 
   useEffect(() => {
 
@@ -29,7 +35,8 @@ export function ConnectionManagerAuto() {
       // console.log({newSocket})
       newSocket.onopen = () => {
         dispatch(setConnected(true));
-        dispatch(setSocket(newSocket));
+        // dispatch(setSocket(newSocket));
+        setWebSocket(newSocket)
         newSocket.send(JSON.stringify({ connectedUserId: user.id }));
         console.log('Connected to the server via WebSocket');
       };
@@ -81,7 +88,8 @@ export function ConnectionManagerAuto() {
 
       newSocket.onclose = (event) => {
         dispatch(setConnected(false));
-        dispatch(clearSocket());
+        // dispatch(clearSocket());
+        setWebSocket(null)
         if (event.wasClean) {
           console.log('Closed cleanly, code=' + event.code + ', reason=' + event.reason);
         } else {
@@ -92,7 +100,8 @@ export function ConnectionManagerAuto() {
       return () => {
         newSocket.close();
         dispatch(clearSocketUrl());
-        dispatch(clearSocket())
+        // dispatch(clearSocket())
+        setWebSocket(null)
       };
     }
   }, [socketUrl, dispatch]);
