@@ -31,7 +31,7 @@ const chatSlice = createSlice({
             state.pendingChats.push(action.payload);
         },
         removeFromPendingChats: (state, action: PayloadAction<string | number>) => {
-            state.pendingChats = state.pendingChats.filter(chatId => chatId !== action.payload);
+            state.pendingChats = state.pendingChats.filter(chatId => chatId != action.payload);
         },
     },
 });

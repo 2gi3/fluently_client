@@ -18,7 +18,6 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
         <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingHorizontal: sizes.S }}>
 
             <Button
-                // title=""
                 loading={false}
                 loadingProps={{ size: 'small', color: 'black' }}
                 icon={{

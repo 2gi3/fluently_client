@@ -25,10 +25,7 @@ const ProfilePictureUploader = () => {
                 <Dialog.Title title="Select an image" />
                 <ImagePickerExample />
 
-                {/* <Text>Dialog body text. Add relevant information here.</Text> */}
-                {/* <Dialog.Actions>
-        <Dialog.Button title="Upload photo" onPress={() => console.log('Primary Action Clicked!')}/>
-      </Dialog.Actions> */}
+
             </Dialog>
         </>
     )

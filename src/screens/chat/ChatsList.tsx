@@ -17,10 +17,7 @@ import { ConnectionManagerButtons } from '../../components/ConnectionManagerButt
 
 
 
-const ChatsList = (
-    // { chats }: { chats: ChatT[] }
-) => {
-    // console.log(chats);
+const ChatsList = () => {
     const navigation = useNavigation()
     const user = useSelector((state: RootState) => state.user.user);
     const activeChat = useSelector((state: RootState) => state.chat.activeChat);
@@ -41,7 +38,6 @@ const ChatsList = (
                 });
 
             setSortedChatrooms(filteredChatrooms);
-            console.log(chatrooms);
         }
     }, [chatrooms, activeChat, pendingChats]);
 

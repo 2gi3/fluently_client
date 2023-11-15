@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, ListItem, Divider, Skeleton, Badge } from "@rneui/base"
 import { TouchableOpacity, View, Text } from "react-native"
 import moment from 'moment';
@@ -14,7 +14,9 @@ import { addToPendingChats } from '../../redux/slices/chatSlice';
 
 
 const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
+    const connectedUsers = useSelector((state: RootState) => state.webSocket.connectedUsers)
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
+    const pendingChats = useSelector((state: RootState) => state.chat.pendingChats)
     const user = useSelector((state: RootState) => state.user.user);
     // @ts-ignore
     const baseUrl = process.env.SERVER_URL
@@ -27,17 +29,30 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     const { loading, error, users: user2, refreshData, isValidating } = useGetUsers(url);
     const { loading: loadingLastMessage, error: errorLastMessage, lastMessage, refreshData: refreshLastMessage, isValidating: isValidatingLastMessage } = useGetLastMessage(chatroom.id!);
     const dispatch = useDispatch()
+    const [isConnected, setIsConnected] = useState(false)
+
+    // const isLastMessageSent = lastMessage && lastMessage.status === 'sent';
+
+    // Dynamic background color based on the condition
+    const [backgroundColor, setBackgroundColor] = useState('white')
+    // isLastMessageSent ? 'yellow' : 'wheat';
 
     useEffect(() => {
-        if (lastMessage && lastMessage.status !== 'read') {
-            dispatch(addToPendingChats(chatroom.id!))
+        if (connectedUsers && user2) {
+            setIsConnected(connectedUsers.includes(user2.id))
         }
-    }, [lastMessage])
+        if (lastMessage && lastMessage.status !== 'read') {
+            setBackgroundColor('#f0f9ff')
+            if (!pendingChats.includes(chatroom.id!)) {
+                dispatch(addToPendingChats(chatroom.id!))
+            }
+        } else (setBackgroundColor('white'))
+    }, [lastMessage, connectedUsers, user2])
 
     useEffect(() => {
         //updates the unread badge in the chatsList
         refreshLastMessage()
-    }, [activeChat])
+    }, [activeChat, pendingChats])
 
 
     if (loading || loadingLastMessage) {
@@ -58,10 +73,23 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                 key={String(`${chatroom.id}-Chatroom`)}
                 // onPress={() => navigation.navigate('Chat')}
                 style={{ maxWidth: 440, maxHeight: 108, minWidth: 260 }}
+            // lastMessage && lastMessage.status === 'sent'
             >
                 <ListItem
+                    containerStyle={{
+                        backgroundColor: backgroundColor,
+                        // elevation: 5
+                    }}
                 >
                     <View style={{ position: 'relative' }}>
+                        {isConnected && <View
+                            style={{
+                                position: 'absolute',
+                                right: 0
+                            }}>
+                            <Badge status="success" />
+                        </View>
+                        }
                         <Avatar
                             rounded
                             source={{
@@ -69,27 +97,13 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                             }}
                             size="large"
                         />
-                        {/* <Avatar
-                        rounded
-                        source={require('../../../assets/images/flags/FlagItalian.webp')}
-                        size={24}
-                        containerStyle={{ position: 'absolute', bottom: 0 }}
-                        avatarStyle={{
-                            width: '100%',
-                            height: '100%',
-                            resizeMode: 'cover',
-                            position: 'absolute',
-                            top: 0,
-                            left: 0,
-                        }}
-                    /> */}
                     </View>
                     <ListItem.Content style={{ height: '100%', gap: 8 }}>
                         <ListItem.Title>
                             <Text>{user2.name}</Text>
                         </ListItem.Title>
                         <ListItem.Subtitle>
-                            <Text>{lastMessage ? lastMessage.text : `${user2.name} wants to chat with you`}</Text>
+                            <Text>{lastMessage ? lastMessage.text : `Help ${user2.name} practice your native language`}</Text>
                         </ListItem.Subtitle>
                     </ListItem.Content>
                     <ListItem.Content
@@ -102,13 +116,19 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                             justifyContent: 'flex-end',
                             gap: 17,
                         }}
-                    >                   <Text> {lastMessage && lastMessage.status === 'sent' && <Badge status="success" />}</Text>
+                    >
+                        {/* {lastMessage && lastMessage.status === 'sent' &&
+                            <View>
+                                <Badge status="success" />
+                            </View>
+                        } */}
 
                         {lastMessage && <ListItem.Subtitle style={{
                             fontSize: 12,
                             color: '8e8e8f'
                         }}>
-                            <Text>{moment(lastMessage.created_at).fromNow()}</Text></ListItem.Subtitle>}
+                            <Text>{moment(lastMessage.created_at).fromNow()}</Text>
+                        </ListItem.Subtitle>}
 
                     </ListItem.Content>
                 </ListItem>

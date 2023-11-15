@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import { selectSocketUrl, clearSocketUrl, setConnected } from '../redux/slices/statusSlice';
-import { setConnectedUsers } from '../redux/slices/webSocketSlice';
+import { clearOutgoingMessage, setConnectedUsers } from '../redux/slices/webSocketSlice';
 import { addMessage, addToPendingChats } from '../redux/slices/chatSlice';
 import { notifyUser } from '../functions/chat';
 
@@ -24,6 +24,7 @@ export function ConnectionManagerAuto() {
   useEffect(() => {
     if (outgoingMessage && webSocket) {
       webSocket.send(outgoingMessage)
+      dispatch(clearOutgoingMessage())
     }
 
   }, [outgoingMessage])
@@ -32,7 +33,6 @@ export function ConnectionManagerAuto() {
 
     if (socketUrl && user) {
       const newSocket = new WebSocket(socketUrl);
-      // console.log({newSocket})
       newSocket.onopen = () => {
         dispatch(setConnected(true));
         // dispatch(setSocket(newSocket));
@@ -43,7 +43,6 @@ export function ConnectionManagerAuto() {
 
       newSocket.onmessage = (event) => {
         const message = event.data;
-        // console.log(message)
         if (message instanceof Blob) {
           const reader = new FileReader();
           reader.onload = function () {
@@ -52,7 +51,6 @@ export function ConnectionManagerAuto() {
 
             try {
               const parsedObject = JSON.parse(textData);
-              console.log({ activeChat2: activeChat })
 
               if (parsedObject.type === 'chatMessage') {
                 if (activeChatRef.current === parsedObject.content.chatId) {
@@ -78,8 +76,6 @@ export function ConnectionManagerAuto() {
           try {
             const parsedObject = JSON.parse(message);
             dispatch(setConnectedUsers(parsedObject.userSockets))
-            console.log(parsedObject.userSockets);
-            // Now 'parsedObject' should contain the userSockets map
           } catch (error) {
             console.error('Error parsing JSON:', error);
           }
@@ -100,6 +96,7 @@ export function ConnectionManagerAuto() {
       return () => {
         newSocket.close();
         dispatch(clearSocketUrl());
+        dispatch(clearOutgoingMessage())
         // dispatch(clearSocket())
         setWebSocket(null)
       };

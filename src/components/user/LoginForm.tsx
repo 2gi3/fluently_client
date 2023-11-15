@@ -52,7 +52,6 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     }),
                 });
                 const user = await response.json()
-                console.log(user)
 
 
                 if (response.ok) {

@@ -24,16 +24,6 @@ const StudentsList = () => {
     const [disconnectedUsersArray, setDisconnectedUsersArray] = useState<any[] | null>()
     const [combinedUsers, setCombinedUsers] = useState<any[] | null>(users)
 
-    // const connectedUsersArray = users.filter((user: any) => connectedUsers.includes(user.id));
-    // const disconnectedUsersArray = users.filter((user: any) => !connectedUsers.includes(user.id));
-
-    // // Concatenate connected users on top of disconnected users
-    // const combinedUsers = [...connectedUsersArray, ...disconnectedUsersArray];
-    // console.log({ connectedUsersArray })
-    // console.log({ combinedUsers })
-
-
-
     const renderItem = ({ item }: { item: UserT }) => {
         //@ts-ignore
         const isUserConnected = connectedUsers.includes(item.id);
@@ -73,9 +63,7 @@ const StudentsList = () => {
             setConnectedUsersArray(connected);
             setDisconnectedUsersArray(disconnected);
             setCombinedUsers([...connected, ...disconnected]);
-
         }
-        console.log(connectedUsers)
 
     }, [users, connectedUsers])
 

@@ -1,12 +1,11 @@
 import React from 'react';
 import { Avatar, ListItem, Divider, Badge } from "@rneui/base"
-import { TouchableOpacity, View, Pressable } from "react-native"
+import { TouchableOpacity, View, Text } from "react-native"
 // import { ChatT, UserT } from "../../types"
 import moment from 'moment';
 import { UserT } from '../../types/user';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-// import { useNavigation } from '@react-navigation/native'
 
 
 
@@ -22,6 +21,14 @@ const StudentCard = ({ user, isConnected }: { user: UserT, isConnected: boolean 
             <ListItem
             >
                 <View style={{ position: 'relative' }}>
+                    {isConnected && <View
+                        style={{
+                            position: 'absolute',
+                            right: 0
+                        }}>
+                        <Badge status="success" />
+                    </View>
+                    }
                     <Avatar
                         rounded
                         source={{
@@ -62,7 +69,7 @@ const StudentCard = ({ user, isConnected }: { user: UserT, isConnected: boolean 
                         gap: 8,
                     }}
                 >
-                    {isConnected && <Badge status="success" />}
+                    {/* {isConnected && <Text><Badge status="success" /></Text>} */}
 
                 </ListItem.Content>
             </ListItem>

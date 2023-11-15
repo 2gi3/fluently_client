@@ -88,7 +88,6 @@ const ChatScreen = () => {
 
 
     useEffect(() => {
-        console.log({ chatId: route.params!.id })
         if (user2) {// @ts-ignore
             navigation.setOptions({ title: user2.name, headerTitleAlign: 'center' })
             dispatch(setActiveChat(route.params.id))

@@ -20,7 +20,6 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
     const isMyMessage = () => {
         if (user.id) {
             const result = message.userId.toString() === user.id.toString();
-            // console.log(result); // Log the result for debugging
             return result;
         } else {
             return false
@@ -43,7 +42,6 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
                 alignSelf: isMyMessage() ? 'flex-end' : 'flex-start'
             }]}
         >
-            {/* <Badge value={message.text} status="success" /> */}
 
             <Text style={{ marginBottom: 8 }}>{message.text}</Text>
 

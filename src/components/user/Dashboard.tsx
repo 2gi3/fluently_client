@@ -50,7 +50,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
             quality: 1,
         });
 
-        // console.log(result);
 
         if (!result.canceled) {
             if (result.assets && result.assets.length > 0) {
@@ -75,7 +74,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
 
     const handleDeleteAccount = async () => {
         if (confirmationSentence === confirmationInput.trim().toLocaleLowerCase()) {
-            console.log(user.id)
             try {
                 //@ts-ignore
                 const response = await fetch(`${baseUrl}/api/user/${user.id}`, {
@@ -114,7 +112,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
             setImage('https://res.cloudinary.com/gippolito/image/upload/v1697039397/profilePlaceholder_ytrsld.webp')
         }
 
-        // console.log(image)
     }, [socketUrl])
 
     return (

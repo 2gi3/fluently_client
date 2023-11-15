@@ -26,7 +26,7 @@ const websocketSlice = createSlice({
         setOutgoingMessage: (state, action) => {
             state.outgoingMessage = action.payload;
         },
-        clearOutgoingMessage: (state, action) => {
+        clearOutgoingMessage: (state) => {
             state.outgoingMessage = null;
         },
         addUser: (state, action) => {

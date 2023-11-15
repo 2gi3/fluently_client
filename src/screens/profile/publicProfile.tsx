@@ -109,13 +109,6 @@ const PublicProfile = () => {
                         //@ts-ignore
                         const newChatroom = await createNewChatroom(`${url}/api/chat`, user1?.id, users.id);
                         if (newChatroom.message === "Chatroom already exists") {
-                            console.log({ newChatroom: newChatroom.chatroom })
-                            // 'newChatroom.chatroom': {
-                            //     "id": 35,
-                            //     "user1Id": 23,
-                            //     "user2Id": 18,
-                            //     "last_message_id": null
-                            // }
                             // @ts-ignore
                             if (user1?.id === newChatroom?.chatroom?.user1Id) {
                                 // @ts-ignore

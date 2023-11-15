@@ -147,35 +147,3 @@ export const useGetUsers = (url: string) => {
     return { loading: !users && !error, error, users, refreshData, isValidating };
 };
 
-
-// export const useGetUsers = (url: string) => {
-//     const [loading, setLoading] = useState<boolean>(true);
-//     const [error, setError] = useState<string | null>(null);
-//     const [users, setUsers] = useState<UserT[]>([]);
-
-
-//     useEffect(() => {
-
-//         const fetchData = async () => {
-//             try {
-//                 const response = await fetch(url);
-//                 if (!response.ok) {
-//                     throw new Error('Failed to fetch users');
-//                 }
-//                 const data = await response.json();
-//                 console.log(data)
-
-//                 setUsers(data);
-//                 setLoading(false);
-//             } catch (error: any) {
-//                 setError(error.message);
-//                 setLoading(false);
-//             }
-//         };
-
-//         fetchData();
-//     }, [url]);
-
-//     return { loading, error, users };
-// };
-
