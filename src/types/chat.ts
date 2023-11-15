@@ -15,11 +15,6 @@ export type MessageT = {
     created_at?: string;
 };
 
-// export type ChatT = {
-//     id: string;
-//     user: UserT;
-//     lastMessage?: MessageT;
-// };
 
 export interface ChatroomT {
     id?: number;

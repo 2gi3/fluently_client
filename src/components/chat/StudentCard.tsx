@@ -1,7 +1,6 @@
 import React from 'react';
 import { Avatar, ListItem, Divider, Badge } from "@rneui/base"
 import { TouchableOpacity, View, Text } from "react-native"
-// import { ChatT, UserT } from "../../types"
 import moment from 'moment';
 import { UserT } from '../../types/user';
 import { useSelector } from 'react-redux';
