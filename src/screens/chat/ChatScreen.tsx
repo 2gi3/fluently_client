@@ -33,7 +33,6 @@ const ChatScreen = () => {
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
 
 
-    //@ts-ignore
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/user/${route.params.user2id}`
     const { users: user2 } = useGetUsers(url);

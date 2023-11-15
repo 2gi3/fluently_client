@@ -3,7 +3,7 @@ import { ScrollView, View } from "react-native"
 import { sizes } from "../../styles/variables/measures"
 import { useGetUsers, useUserData } from "../../functions/hooks/user"
 import { useNavigation, useRoute } from "@react-navigation/native"
-import { useEffect } from "react"
+import React, { useEffect } from "react"
 import { createNewChatroom } from "../../functions/chat"
 import { ChatroomT } from "../../types/chat"
 
@@ -20,7 +20,6 @@ const PublicProfile = () => {
         console.log('waiting for id')
     }
 
-    //@ts-ignore
     const url = process.env.SERVER_URL
 
     // const url = `${process.env.SERVER_URL}/api/user/${studentId}`

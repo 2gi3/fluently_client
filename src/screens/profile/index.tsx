@@ -1,6 +1,6 @@
 import { View } from "react-native"
 import Dashboard from "../../components/user/Dashboard";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useUserData } from "../../functions/hooks/user";
 import LoginForm from "../../components/user/LoginForm";
 import SignupForm from "../../components/user/SignupForm";
@@ -52,6 +52,7 @@ const Profile = () => {
             return <SignupForm toggleLoginState={toggleLoginState} />;
         }
     } else {
+        //@ts-ignore
         return <Dashboard user={user} />;
     }
 };

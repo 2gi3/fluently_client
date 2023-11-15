@@ -16,7 +16,6 @@ import { RootState } from '../../redux/store';
 const StudentsList = () => {
     const route = useRoute()
     const navigation = useNavigation()
-    //@ts-ignore
     const url = process.env.SERVER_URL
     const connectedUsers = useSelector((state: RootState) => state.webSocket.connectedUsers)
     const { loading, error, users, refreshData, isValidating } = useGetUsers(`${url}/api/user`);

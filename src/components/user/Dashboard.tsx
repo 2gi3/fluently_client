@@ -4,7 +4,7 @@ import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { UserT } from "../../types/user";
 import { sizes } from "../../styles/variables/measures";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useLogIn, useLogOut } from "../../functions/hooks/user";
 import { updateUser } from "../../functions/user";
 import ImagePickerExample from "./ImagePicker";
@@ -37,7 +37,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
 
     const [introduction, setIntroduction] = useState<string | null>()
     const [name, setName] = useState<string>('')
-    //@ts-ignore
     const baseUrl = process.env.SERVER_URL
     const updateUserEndpoint = `${baseUrl}/api/user/${user.id}`
 
@@ -75,7 +74,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const handleDeleteAccount = async () => {
         if (confirmationSentence === confirmationInput.trim().toLocaleLowerCase()) {
             try {
-                //@ts-ignore
                 const response = await fetch(`${baseUrl}/api/user/${user.id}`, {
                     method: 'DELETE',
                     headers: {

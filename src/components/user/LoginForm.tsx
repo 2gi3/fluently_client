@@ -2,7 +2,7 @@ import { Button, Card, Icon, Input, Overlay } from "@rneui/base"
 import { sizes } from "../../styles/variables/measures"
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, } from "react-native"
 import { useLogIn } from "../../functions/hooks/user"
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { clearNewUser } from "../../redux/slices/newUserSlice"
 import { useDispatch, useSelector } from 'react-redux';
 import { emailRegex, passwordRegex } from "../../regex"
@@ -30,7 +30,6 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
         setVisible(!visible);
 
     };
-    //@ts-ignore
     const baseUrl = process.env.SERVER_URL
 
 

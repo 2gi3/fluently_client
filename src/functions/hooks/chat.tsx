@@ -10,7 +10,6 @@ import { clearChatMessages } from "../../redux/slices/chatSlice";
 
 export const useGetChats = () => {
     const user = useSelector((state: RootState) => state.user.user);
-    //@ts-ignore
     const baseUrl = `${process.env.SERVER_URL}`
     const url = `${baseUrl}/api/chat/${user.id}`
 
@@ -37,7 +36,6 @@ export const useGetChats = () => {
 export const useGetMessages = (chatId: string | number) => {
     const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.user.user);
-    //@ts-ignore
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/chat/message/${chatId}`
 
@@ -64,7 +62,6 @@ export const useGetMessages = (chatId: string | number) => {
 
 export const useGetLastMessage = (chatId: string | number) => {
     const user = useSelector((state: RootState) => state.user.user);
-    //@ts-ignore
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/chat/last_message/${chatId}`
 

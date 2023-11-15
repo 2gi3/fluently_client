@@ -1,14 +1,14 @@
 export interface NewUserT {
-    email: string;
-    password: string;
-    name: string;
+    email: string | null;
+    password: string | null;
+    name: string | null;
     age: number | null;
     gender: Gender | null;
     nationality: string;
-    country: string;
-    native_language: string;
-    teaching_language: string;
-    learning_language: string;
+    country: string | null;
+    native_language: string | null;
+    teaching_language: string | null;
+    learning_language: string | null;
 
 }
 
@@ -20,22 +20,23 @@ export interface UserT extends NewUserT {
 }
 
 export interface UserStateT {
-    user: {
-        id: number | null;
-        email: string | null;
-        password: string | null;
-        name: string | null;
-        age: number | null;
-        gender: Gender | null;
-        nationality: string | null;
-        country: string | null;
-        native_language: string | null;
-        teaching_language: string | null;
-        learning_language: string | null;
-        image: string | null;
-        description: string | null;
-        banned: boolean | null;
-    }
+    user: UserT
+    // {
+    //     id: number | null;
+    //     email: string | null;
+    //     password: string | null;
+    //     name: string | null;
+    //     age: number | null;
+    //     gender: Gender | null;
+    //     nationality: string | null;
+    //     country: string | null;
+    //     native_language: string | null;
+    //     teaching_language: string | null;
+    //     learning_language: string | null;
+    //     image: string | null;
+    //     description: string | null;
+    //     banned: boolean | null;
+    // }
 }
 
 

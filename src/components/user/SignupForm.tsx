@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Card, Divider, Icon, Overlay, Skeleton, Text } from "@rneui/base";
 import { Input } from "@rneui/themed";
 import { SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
@@ -84,7 +84,6 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 teaching_language: teachingLanguage,
                 learning_language: newUser.learning_language,
             };
-            //@ts-ignore
             const url = process.env.SERVER_URL
             const response = await fetch(`${url}/api/user/signup`, {
                 // const response = await fetch(`http://localhost:3000/api/user/signup`, {

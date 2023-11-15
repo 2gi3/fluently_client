@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSocketUrl } from '../redux/slices/statusSlice';
 import { RootState } from '../redux/store';
@@ -7,7 +8,6 @@ import { replaceHttpWithWs } from '../functions';
 export function ConnectionManagerButtons() {
     const dispatch = useDispatch();
     const socketUrl = useSelector((state: RootState) => state.status.socketUrl);
-    //@ts-ignore
     const socketUrlVar = process.env.WEB_SOCKET_URL
 
     const connectSocket = () => {
@@ -17,7 +17,7 @@ export function ConnectionManagerButtons() {
         }
 
         // const newSocketUrl = replaceHttpWithWs(serverUrl);
-        dispatch(setSocketUrl(socketUrlVar));
+        dispatch(setSocketUrl(socketUrlVar!));
     };
 
     const disconnectSocket = () => {

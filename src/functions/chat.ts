@@ -33,7 +33,6 @@ export const createNewChatroom = async (endpoint: string, user1Id: number, user2
 }
 
 export const createMessage = async ({ chatId, userId, text, status }: MessageT) => {
-    //@ts-ignore
     const baseUlr = process.env.SERVER_URL
 
     try {
@@ -67,7 +66,6 @@ export const createMessage = async ({ chatId, userId, text, status }: MessageT) 
 };
 
 export const updateMessageStatus = async (messageId: string | number, newStatus: string = 'read') => {
-    //@ts-ignore
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/chat/message/${messageId}`
     try {
