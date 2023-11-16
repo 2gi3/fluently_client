@@ -1,3 +1,4 @@
+import React from 'react'
 import { Text, View, } from "react-native"
 import { Badge } from '@rneui/themed';
 // import { ChatMessageT, MessageT, UserT } from "../../types"
@@ -13,7 +14,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, messageRead: boolean, isLastMessage: boolean }) => {
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user);
     const activeChat = useSelector((state: RootState) => state.chat.activeChat);
 
 

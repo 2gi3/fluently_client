@@ -2,7 +2,7 @@ import { Avatar, Button, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, 
 import { Image, ScrollView, TextInput, View } from "react-native"
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
-import { UserT } from "../../types/user";
+import { UpdatedUserResponse, UserT } from "../../types/user";
 import { sizes } from "../../styles/variables/measures";
 import React, { useEffect, useState } from "react";
 import { useLogIn, useLogOut } from "../../functions/hooks/user";
@@ -17,7 +17,6 @@ import { ConnectionManagerButtons } from "../ConnectionManagerButtons";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
-    // const user = useSelector((state: RootState) => state.user.user);
     const socketUrl = useSelector((state: RootState) => state.status.socketUrl)
     const dispatch = useDispatch();
     const logIn = useLogIn()
@@ -32,7 +31,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const [descriptionVisible, setDescriptionVisible] = useState(false);
     const [nameVisible, setNameVisible] = useState(false);
 
-    const [image, setImage] = useState<any>();
+    const [image, setImage] = useState<string | undefined>();
     const [displeyNameErrors, setDispleyNameErrors] = useState(false)
 
     const [introduction, setIntroduction] = useState<string | null>()
@@ -179,7 +178,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
                                 />
                                 <Dialog.Actions>
                                     <Dialog.Button title="Upload name" onPress={async () => {
-                                        const data: any = await updateUser({ name: name }, updateUserEndpoint);
+                                        const data: UpdatedUserResponse = await updateUser({ name: name }, updateUserEndpoint);
+                                        console.log({ data })
                                         logIn(data.updatedUser)
                                         setNameVisible(false)
                                     }} />
@@ -225,7 +225,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             />
                             <Dialog.Actions>
                                 <Dialog.Button title="Upload description" onPress={async () => {
-                                    const data: any = await updateUser({ description: introduction }, updateUserEndpoint);
+                                    const data: UpdatedUserResponse = await updateUser({ description: introduction }, updateUserEndpoint);
                                     logIn(data.updatedUser)
                                     setDescriptionVisible(false)
                                 }} />

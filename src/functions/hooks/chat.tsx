@@ -4,12 +4,12 @@ import { RootState } from "../../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../../types/user";
 import { useState, useEffect } from "react";
-import { MessageT } from "../../types/chat";
+import { ChatroomT, MessageT } from "../../types/chat";
 import { clearChatMessages } from "../../redux/slices/chatSlice";
 
 
 export const useGetChats = () => {
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user);
     const baseUrl = `${process.env.SERVER_URL}`
     const url = `${baseUrl}/api/chat/${user.id}`
 
@@ -18,7 +18,7 @@ export const useGetChats = () => {
         if (!response.ok) {
             throw new Error('Failed to fetch chatrooms');
         }
-        const data = await response.json();
+        const data: ChatroomT[] = await response.json();
         return data;
     };
 
@@ -35,7 +35,7 @@ export const useGetChats = () => {
 
 export const useGetMessages = (chatId: string | number) => {
     const dispatch = useDispatch()
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user);
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/chat/message/${chatId}`
 
@@ -61,7 +61,7 @@ export const useGetMessages = (chatId: string | number) => {
 };
 
 export const useGetLastMessage = (chatId: string | number) => {
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user);
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/chat/last_message/${chatId}`
 

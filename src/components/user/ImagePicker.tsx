@@ -3,7 +3,7 @@ import { Button, Image, View, Platform } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 
 export default function ImagePickerExample() {
-    const [image, setImage] = useState<any>(null);
+    const [image, setImage] = useState<string | null>(null);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({

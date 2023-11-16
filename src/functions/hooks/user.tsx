@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from '../../redux/slices/statusSlice';
-import { logOut } from '../../redux/slices/statusSlice'; // Assuming you have a 'logOut' action
-import { UserStateT, setUser } from '../../redux/slices/userSlice'; // Assuming you have a 'logOut' action
+import { logOut } from '../../redux/slices/statusSlice';
+import { setUser } from '../../redux/slices/userSlice';
 
 import { UserT } from '../../types/user';
 import { clearNewUser } from '../../redux/slices/newUserSlice';
@@ -17,7 +17,7 @@ import useSWR, { mutate } from 'swr';
 
 
 export const useLogIn = () => {
-    const dispatch = useDispatch(); // Access the Redux dispatch function
+    const dispatch = useDispatch();
 
     const storeUserDataAndLogIn = async (user: UserT) => {
         try {
@@ -51,7 +51,7 @@ export const useLogOut = () => {
 
 export const useUserData = () => {
     const dispatch = useDispatch();
-    const [user, setUserData] = useState<UserStateT | null>(null);
+    const [user, setUserData] = useState<UserT | null>(null);
     const [loading, setLoading] = useState(true)
     const loggedIn = useSelector((state: RootState) => state.status.loggedIn);
 
@@ -60,7 +60,7 @@ export const useUserData = () => {
             try {
                 const data = await AsyncStorage.getItem('@user');
                 if (data) {
-                    const parsedUser: UserStateT = JSON.parse(data);
+                    const parsedUser: UserT = JSON.parse(data);
                     setUserData(parsedUser);
                     dispatch(setUser(parsedUser))
                 } else {

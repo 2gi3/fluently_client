@@ -19,9 +19,9 @@ const StudentsList = () => {
     const url = process.env.SERVER_URL
     const connectedUsers = useSelector((state: RootState) => state.webSocket.connectedUsers)
     const { loading, error, users, refreshData, isValidating } = useGetUsers(`${url}/api/user`);
-    const [connectedUsersArray, setConnectedUsersArray] = useState<any[] | null>()
-    const [disconnectedUsersArray, setDisconnectedUsersArray] = useState<any[] | null>()
-    const [combinedUsers, setCombinedUsers] = useState<any[] | null>(users)
+    const [connectedUsersArray, setConnectedUsersArray] = useState<UserT[] | null>()
+    const [disconnectedUsersArray, setDisconnectedUsersArray] = useState<UserT[] | null>()
+    const [combinedUsers, setCombinedUsers] = useState<UserT[] | null>(users)
 
     const renderItem = ({ item }: { item: UserT }) => {
         //@ts-ignore
@@ -56,14 +56,15 @@ const StudentsList = () => {
 
     useEffect(() => {
         if (users && connectedUsers.length > 0) {
-            const connected = users.filter((user: any) => connectedUsers.includes(user.id));
-            const disconnected = users.filter((user: any) => !connectedUsers.includes(user.id));
+            const connected = users.filter((user: UserT) => connectedUsers.includes(user.id!.toString()));
+            const disconnected = users.filter((user: UserT) => !connectedUsers.includes(user.id!.toString()));
 
             setConnectedUsersArray(connected);
             setDisconnectedUsersArray(disconnected);
             setCombinedUsers([...connected, ...disconnected]);
-        }
+            console.log({ combinedUsers })
 
+        }
     }, [users, connectedUsers])
 
     return (
@@ -78,7 +79,7 @@ const StudentsList = () => {
             <FlatList
                 data={combinedUsers}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
+                keyExtractor={(item: UserT, index: number) => (item.id ? item.id.toString() : `user-${index.toString()}`)}
             />
     );
 };

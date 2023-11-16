@@ -1,3 +1,4 @@
+import React from 'react'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import ChatsList from "../screens/chat/ChatsList"
 import DeleteMe from "../screens/deleteMe"

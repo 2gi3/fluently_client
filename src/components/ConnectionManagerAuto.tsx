@@ -9,7 +9,7 @@ import { notifyUser } from '../functions/chat';
 export function ConnectionManagerAuto() {
   const dispatch = useDispatch();
   const socketUrl = useSelector(selectSocketUrl);
-  const user = useSelector((state: RootState) => state.user.user);
+  const user = useSelector((state: RootState) => state.user);
   const activeChat = useSelector((state: RootState) => state.chat.activeChat)
   const activeChatRef = useRef<string | number | null>(null);
   const outgoingMessage = useSelector((state: RootState) => state.webSocket.outgoingMessage)

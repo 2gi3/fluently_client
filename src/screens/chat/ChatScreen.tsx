@@ -4,7 +4,7 @@ import Message from "../../components/chat/Message"
 import chatData from "../../../mock_data/chatsData.json"
 import { sizes } from "../../styles/variables/measures";
 import ChatInput from "../../components/chat/ChatInput";
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -13,20 +13,27 @@ import { useGetMessages } from "../../functions/hooks/chat";
 import { setOutgoingMessage } from "../../redux/slices/webSocketSlice";
 import { useGetUsers } from "../../functions/hooks/user";
 import { addMessage, clearActiveChats, clearChatMessages, removeFromPendingChats, setActiveChat } from "../../redux/slices/chatSlice";
+import { MessageT } from "../../types/chat";
 
-
+type ChatScreenRouteProp = {
+    params: {
+        id: string; // Assuming id is a string, adjust accordingly
+        user2id: string;
+        name: string;
+    };
+};
 
 
 const ChatScreen = () => {
-    const route: any = useRoute()
+    const route = useRoute() as ChatScreenRouteProp;
     const navigation = useNavigation()
     const dispatch = useDispatch()
     const { loading, error, messages: messagesDB, refreshData, isValidating } = useGetMessages(route.params.id);
-    const flatListRef = useRef<any>(null);
+    const flatListRef = useRef<FlatList<MessageT> | null>(null);
 
-    const user = useSelector((state: RootState) => state.user.user);
+    const user = useSelector((state: RootState) => state.user);
 
-    const [messages, setMessages] = useState(messagesDB || []);
+    const [messages, setMessages] = useState<MessageT[] | []>(messagesDB || []);
 
     const isConnected = useSelector((state: RootState) => state.status.connected);
     const localMessages = useSelector((state: RootState) => state.chat.chatMessages);
@@ -49,7 +56,7 @@ const ChatScreen = () => {
         });
         dispatch(addMessage(newMessage))
 
-        setMessages((prevMessages: any) => [
+        setMessages((prevMessages: MessageT[]) => [
             ...prevMessages,
             newMessage
         ]);
@@ -76,7 +83,7 @@ const ChatScreen = () => {
 
 
 
-    const renderItem = ({ item, index }: { item: any, index: number }) => {
+    const renderItem = ({ item, index }: { item: MessageT, index: number }) => {
         const isLastMessage = index === messages.length - 1;
 
         return (
@@ -104,7 +111,7 @@ const ChatScreen = () => {
     useEffect(() => {
 
         if (localMessages.length > 0) {
-            setMessages((prevMessages: any) => [
+            setMessages((prevMessages: MessageT[]) => [
                 ...messagesDB,
                 ...localMessages
             ]);
@@ -128,7 +135,8 @@ const ChatScreen = () => {
                     data={messages}
                     renderItem={renderItem}
                     // inverted
-                    keyExtractor={(item) => (item.id ? item.id.toString() : item.created_at)}
+                    // keyExtractor={(item) => (item.id ? item.id.toString() : item.created_at)}
+                    keyExtractor={(item: MessageT, index: number) => (item.id ? item.id.toString() : item.created_at || `i-${index.toString()}`)}
                     onContentSizeChange={() => {
                         flatListRef.current?.scrollToEnd({ animated: true });
                     }}

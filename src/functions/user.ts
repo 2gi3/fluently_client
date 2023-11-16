@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../types/user";
 
-export const updateUser = async (payload: Partial<UserT> | any, endpoint: string) => {
+export const updateUser = async (payload: Partial<UserT>, endpoint: string) => {
     try {
         const response = await fetch(endpoint, {
             method: 'PATCH',

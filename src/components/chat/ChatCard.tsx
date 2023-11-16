@@ -17,8 +17,7 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     const connectedUsers = useSelector((state: RootState) => state.webSocket.connectedUsers)
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
     const pendingChats = useSelector((state: RootState) => state.chat.pendingChats)
-    const user = useSelector((state: RootState) => state.user.user);
-    // @ts-ignore
+    const user = useSelector((state: RootState) => state.user);
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/user/${user.id == chatroom.user1Id ?
         chatroom.user2Id
@@ -106,7 +105,7 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                             <Text>{lastMessage ? lastMessage.text : `Help ${user2.name} practice your native language`}</Text>
                         </ListItem.Subtitle>
                     </ListItem.Content>
-                    <ListItem.Content
+                    {lastMessage && lastMessage.created_at !== null && <ListItem.Content
                         style={{
                             maxWidth: 74,
                             marginTop: 7,
@@ -117,20 +116,15 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
                             gap: 17,
                         }}
                     >
-                        {/* {lastMessage && lastMessage.status === 'sent' &&
-                            <View>
-                                <Badge status="success" />
-                            </View>
-                        } */}
-
-                        {lastMessage && <ListItem.Subtitle style={{
+                        <ListItem.Subtitle style={{
                             fontSize: 12,
                             color: '8e8e8f'
                         }}>
                             <Text>{moment(lastMessage.created_at).fromNow()}</Text>
-                        </ListItem.Subtitle>}
+                        </ListItem.Subtitle>
 
                     </ListItem.Content>
+                    }
                 </ListItem>
                 <Divider style={{ marginLeft: 108 }} />
             </View>
