@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { SafeAreaView, Text, Platform, View } from "react-native";
 import { Button, ListItem } from "@rneui/base";
 import { sizes } from "../../styles/variables/measures";
@@ -23,7 +23,7 @@ const DateOfBirthSelector = () => {
 
   function getYearsInRange(): number[] {
     const currentYear = new Date().getFullYear();
-    const years = [];
+    const years: number[] = [];
 
     for (let i = currentYear; i >= currentYear - 100; i--) {
       years.push(i);

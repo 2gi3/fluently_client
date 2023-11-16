@@ -136,7 +136,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     {visible && <Button
                         title="Confirm new picture"
                         onPress={async () => {
-                            const data: any = await updateUser({ imageFile: image }, updateUserEndpoint);
+                            const data = await updateUser({ image: image }, updateUserEndpoint);
                             user['image'] = data.image
                             logIn(user)
                             setVisible(false)

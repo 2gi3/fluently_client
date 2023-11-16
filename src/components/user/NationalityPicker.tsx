@@ -1,5 +1,5 @@
 import { ListItem } from "@rneui/base";
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { updateNewUserField } from "../../redux/slices/newUserSlice";
 import { sizes } from "../../styles/variables/measures";

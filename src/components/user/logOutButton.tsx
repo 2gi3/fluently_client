@@ -1,3 +1,4 @@
+import React from 'react'
 import { View, ViewStyle } from "react-native";
 import { useLogOut } from "../../functions/hooks/user";
 import { Button } from "@rneui/base";

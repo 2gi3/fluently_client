@@ -1,5 +1,5 @@
 import { Button, Dialog } from "@rneui/base"
-import { useState } from "react";
+import React, { useState } from "react";
 import { Text } from "react-native"
 import ImagePickerExample from "./ImagePicker";
 

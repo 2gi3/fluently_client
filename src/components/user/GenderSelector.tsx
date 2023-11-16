@@ -1,3 +1,4 @@
+import React from 'react'
 import { Button } from "@rneui/base";
 import { StyleSheet, View, Text } from "react-native"
 import { sizes } from "../../styles/variables/measures";

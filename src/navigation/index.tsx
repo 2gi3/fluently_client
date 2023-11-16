@@ -1,3 +1,4 @@
+import React from 'react'
 import { NavigationContainer } from "@react-navigation/native"
 import ChatScreen from "../screens/chat/ChatScreen"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"

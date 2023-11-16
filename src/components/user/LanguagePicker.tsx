@@ -1,6 +1,6 @@
 import { Input, ListItem } from "@rneui/base";
 import { worldLanguages } from "../../data/worldLanguages"
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { updateNewUserField } from "../../redux/slices/newUserSlice";
 import { sizes } from "../../styles/variables/measures";

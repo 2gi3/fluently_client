@@ -1,3 +1,4 @@
+import React from 'react'
 import { View, TextInput } from "react-native"
 import { Button } from '@rneui/themed';
 import { sizes } from "../../styles/variables/measures";
