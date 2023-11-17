@@ -38,15 +38,14 @@ const Tabs = () => {
             initialRouteName="Profile"
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
-
                 headerStyle: {
-                    backgroundColor: colors.secondary,
+                    backgroundColor: colors.primary,
                 },
                 headerTitleStyle: {
                     color: colors.secondaryFont
                 },
                 tabBarStyle: {
-                    backgroundColor: colors.secondary,
+                    backgroundColor: colors.primary,
                 }
             }}
         >

@@ -115,7 +115,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
 
     return (
         <ScrollView style={{
-            backgroundColor: secondary
+            backgroundColor: primary
         }}>
             <ListItem>
                 <ListItem.Content style={{
@@ -195,7 +195,9 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 </ListItem.Content>
             </ListItem>
             <Divider />
-            <View style={{ marginVertical: M }}>
+            <ConnectionManagerButtons />
+
+            <View style={{ marginBottom: M }}>
 
                 {/* <ListItem>
                     <ListItem.Content>
@@ -329,9 +331,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     />
                 </View>
             </Overlay>
-            <View>
-                <ConnectionManagerButtons />
-            </View>
         </ScrollView>
     )
 }

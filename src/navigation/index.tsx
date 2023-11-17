@@ -8,7 +8,8 @@ import chatsData from '../../mock_data/chatsData.json'
 import { RootStackParamList } from "../types/navigation"
 import Tabs from "./Tabs"
 import Login from "../components/user/LoginForm"
-import PublicProfile from "../screens/profile/publicProfile"
+import PublicProfile from '../screens/profile/publicProfile'
+import colors from '../styles/variables/colors'
 
 
 
@@ -19,14 +20,12 @@ const Navigator = () => {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{
-                // headerStyle: {
-                //     backgroundColor: 'lightblue'
-                // },
-                // headerTitleStyle: {
-                // fontWeight: 'bold',
-                // fontSize: 25,
-                // color: 'tomato',
-                // }
+                headerStyle: {
+                    backgroundColor: colors.primary,
+                },
+                headerTitleStyle: {
+                    color: colors.secondaryFont
+                }
             }}>
                 <Stack.Screen name='Home' component={Tabs} options={{ headerShown: false }} />
                 <Stack.Screen name='Chat' component={ChatScreen} />

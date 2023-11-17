@@ -75,6 +75,8 @@ export function ConnectionManagerAuto() {
           // Handle other types of messages
           try {
             const parsedObject = JSON.parse(message);
+            console.log({ parsedObject })
+
             dispatch(setConnectedUsers(parsedObject.userSockets))
           } catch (error) {
             console.error('Error parsing JSON:', error);

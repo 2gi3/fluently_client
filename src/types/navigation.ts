@@ -16,4 +16,5 @@ export interface TopTabButtonProps {
     label?: string;
     iconName: string;
     disabled?: boolean
+    isLoading?: boolean
 }

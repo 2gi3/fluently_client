@@ -1,7 +1,7 @@
 
 import { createSlice } from '@reduxjs/toolkit';
 type WebSocketType = WebSocket | null;
-type connectedUsersTyps = string[];
+type connectedUsersTyps = number[];
 
 
 const websocketSlice = createSlice({
@@ -30,7 +30,7 @@ const websocketSlice = createSlice({
             state.outgoingMessage = null;
         },
         addUser: (state, action) => {
-            if (typeof action.payload === 'string') {
+            if (typeof action.payload === 'number') {
                 state.connectedUsers.push(action.payload);
             }
         },

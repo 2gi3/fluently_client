@@ -1,12 +1,14 @@
 import { Avatar, Button, Icon, ListItem, Skeleton, Text } from "@rneui/themed"
 import { ScrollView, View } from "react-native"
-import { sizes } from "../../styles/variables/measures"
-import { useGetUsers, useUserData } from "../../functions/hooks/user"
+import { sizes } from "../../../styles/variables/measures"
+import { useGetUsers, useUserData } from "../../../functions/hooks/user"
 import { useNavigation, useRoute } from "@react-navigation/native"
 import React, { useEffect } from "react"
-import { createNewChatroom } from "../../functions/chat"
-import { ChatroomT } from "../../types/chat"
-import colors from "../../styles/variables/colors"
+import { createNewChatroom } from "../../../functions/chat"
+import { ChatroomT } from "../../../types/chat"
+import colors from "../../../styles/variables/colors"
+import styles from './styles'
+import ProfileCardSkeleton from "./skeleton"
 
 const PublicProfile = () => {
     const route = useRoute()
@@ -33,19 +35,10 @@ const PublicProfile = () => {
 
     return (
         loading || loading1 ?
-            <View style={{ flexDirection: 'column', gap: sizes.S }} >
-                <Skeleton animation="wave" width={220} height={80} style={{ marginTop: sizes.M, marginBottom: sizes.XS, marginLeft: sizes.M }} />
-                <Skeleton animation="wave" width={220} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
-                <Skeleton animation="wave" width={220} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
-                <Skeleton animation="wave" width={220} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
-                <Skeleton animation="wave" width={220} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
-            </View> :
+            <ProfileCardSkeleton /> :
             <ScrollView>
-                <ListItem containerStyle={{ marginBottom: M }}>
-                    <ListItem.Content style={{
-                        alignItems: 'center',
-                        paddingVertical: S
-                    }}>
+                <ListItem containerStyle={styles.listItemContainer}>
+                    <ListItem.Content style={styles.avatarContainer}>
                         <Avatar
                             size={XL}
                             rounded
@@ -66,7 +59,7 @@ const PublicProfile = () => {
                     </ListItem.Content>
                 </ListItem>
 
-                <ListItem containerStyle={{ marginBottom: M }}>
+                <ListItem>
                     <ListItem.Content style={{ paddingBottom: S }}>
                         {/* <ListItem.Title>About yourself</ListItem.Title> */}
 
@@ -85,13 +78,7 @@ const PublicProfile = () => {
 
                 <Button
                     iconRight
-                    buttonStyle={{
-                        borderRadius: 0,
-                        marginLeft: 'auto',
-                        marginRight: 'auto',
-                        marginBottom: sizes.M,
-                        marginTop: 0
-                    }}
+                    buttonStyle={styles.buttonStylePrimary}
                     title="Exchange language"
                     onPress={async () => {
                         //@ts-ignore

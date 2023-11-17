@@ -11,40 +11,40 @@ import colors from './src/styles/variables/colors';
 
 export default function App() {
 
-  // const theme = createTheme({
-  //   lightColors: {
-  //     primary: colors.tertiary,
-  //     warning: colors.danger
-  //   },
-  //   darkColors: {
-  //     primary: '#000',
-  //   },
-  //   mode: 'light',
-  //   components: {
-  //     ListItem: {
-  //       style: {
-  //         backgroundColor: 'red'
-  //       }
-  //     },
-  //     Button: {
-  //       raised: true,
-  //       buttonStyle: {
-  //         backgroundColor: colors.tertiary
-  //       }      
-  //     },
-  //   },
-  // });
+  const theme = createTheme({
+    // lightColors: {
+    //   primary: colors.tertiary,
+    //   warning: colors.danger
+    // },
+    // darkColors: {
+    //   primary: '#000',
+    // },
+    // mode: 'light',
+    components: {
+      ListItem: {
+        containerStyle: {
+          backgroundColor: colors.secondary
+        }
+      },
+      // Button: {
+      //   raised: true,
+      //   buttonStyle: {
+      //     backgroundColor: colors.tertiary
+      //   }
+      // },
+    },
+  });
 
 
 
   return (
     <Provider store={store}>
-      {/* <ThemeProvider theme={theme}> */}
-      <SafeAreaView style={styles.wrapper}>
-        <Navigator />
-        <ConnectionManagerAuto />
-      </SafeAreaView>
-      {/* </ThemeProvider> */}
+      <ThemeProvider theme={theme}>
+        <SafeAreaView style={styles.wrapper}>
+          <Navigator />
+          <ConnectionManagerAuto />
+        </SafeAreaView>
+      </ThemeProvider>
     </Provider>
   );
 }

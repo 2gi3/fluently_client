@@ -21,7 +21,47 @@ const StudentsList = () => {
     const { loading, error, users, refreshData, isValidating } = useGetUsers(`${url}/api/user`);
     const [connectedUsersArray, setConnectedUsersArray] = useState<UserT[] | null>()
     const [disconnectedUsersArray, setDisconnectedUsersArray] = useState<UserT[] | null>()
-    const [combinedUsers, setCombinedUsers] = useState<UserT[] | null>(users)
+    const [combinedUsers, setCombinedUsers] = useState<UserT[] | null>(null)
+
+
+
+    useEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TopTabButton
+                    disabled={isValidating}
+                    onPress={() => refreshData}
+                    iconName="refresh"
+                    isLoading={loading}
+                />
+            ),
+        });
+    }, [navigation, loading, isValidating]);
+
+    useEffect(() => {
+        navigation.setOptions({ headerTitleAlign: 'center' })
+
+    }, [route.params])
+
+    useEffect(() => {
+        console.log({ connectedUsers })
+        if (users && connectedUsers.length > 0) {
+            const connected = users.filter((user: UserT) => connectedUsers.includes(user.id! as number));
+            const disconnected = users.filter((user: UserT) => !connectedUsers.includes(user.id! as number));
+
+            // setConnectedUsersArray(connected);
+            // setDisconnectedUsersArray(disconnected);
+            setCombinedUsers([...connected, ...disconnected]);
+            console.log(users)
+            console.log({ connected })
+            console.log({ disconnected })
+            console.log({ combinedUsers })
+
+        } else
+            setCombinedUsers(users)
+
+
+    }, [users, connectedUsers])
 
     const renderItem = ({ item }: { item: UserT }) => {
         //@ts-ignore
@@ -35,39 +75,8 @@ const StudentsList = () => {
             <StudentCard user={item} isConnected={isUserConnected} />
         </Pressable>)
     };
-
-    useEffect(() => {
-        navigation.setOptions({
-            headerRight: () => (
-                <TopTabButton
-                    disabled={isValidating}
-                    onPress={refreshData}
-                    iconName="refresh"
-                />
-            ),
-        });
-    }, [navigation]);
-
-    useEffect(() => {
-        navigation.setOptions({ headerTitleAlign: 'center' })
-
-    }, [route.params])
-
-    useEffect(() => {
-        if (users && connectedUsers.length > 0) {
-            const connected = users.filter((user: UserT) => connectedUsers.includes(user.id!.toString()));
-            const disconnected = users.filter((user: UserT) => !connectedUsers.includes(user.id!.toString()));
-
-            setConnectedUsersArray(connected);
-            setDisconnectedUsersArray(disconnected);
-            setCombinedUsers([...connected, ...disconnected]);
-            console.log({ combinedUsers })
-
-        }
-    }, [users, connectedUsers])
-
     return (
-        loading ?
+        !combinedUsers ?
             <View style={{ flexDirection: 'column', gap: sizes.S }} >
                 <Skeleton animation="wave" width={220} height={80} style={{ marginTop: sizes.M, marginBottom: sizes.XS, marginLeft: sizes.M }} />
                 <Skeleton animation="wave" width={220} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
