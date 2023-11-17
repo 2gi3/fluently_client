@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SafeAreaView, Text, Platform, View } from "react-native";
-import { Button, ListItem } from "@rneui/base";
+import { Button, ListItem } from "@rneui/themed";
 import { sizes } from "../../styles/variables/measures";
 import { monthsOfTheYear } from "../../data/monthsOfTheYear";
 import { useDispatch } from "react-redux";

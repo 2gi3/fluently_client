@@ -1,4 +1,4 @@
-import { Avatar, Button, Icon, ListItem, Skeleton, Text } from "@rneui/base"
+import { Avatar, Button, Icon, ListItem, Skeleton, Text } from "@rneui/themed"
 import { ScrollView, View } from "react-native"
 import { sizes } from "../../styles/variables/measures"
 import { useGetUsers, useUserData } from "../../functions/hooks/user"
@@ -6,13 +6,12 @@ import { useNavigation, useRoute } from "@react-navigation/native"
 import React, { useEffect } from "react"
 import { createNewChatroom } from "../../functions/chat"
 import { ChatroomT } from "../../types/chat"
+import colors from "../../styles/variables/colors"
 
 const PublicProfile = () => {
     const route = useRoute()
     const navigation = useNavigation()
     const { user: user1, loading: loading1 } = useUserData();
-
-
     const { XS, S, M, L, XL } = sizes
     const studentId = (route.params as { id?: string })?.id;
 
@@ -21,9 +20,6 @@ const PublicProfile = () => {
     }
 
     const url = process.env.SERVER_URL
-
-    // const url = `${process.env.SERVER_URL}/api/user/${studentId}`
-
     const { loading, error, users, refreshData, isValidating } = useGetUsers(`${url}/api/user/${studentId}`);
 
 
@@ -55,7 +51,7 @@ const PublicProfile = () => {
                             rounded
                             source={{ uri: users.image }}
                             title="Hi"
-                            containerStyle={{ backgroundColor: 'grey' }}
+                            containerStyle={{ backgroundColor: colors.primary }}
                         />
 
 
@@ -89,13 +85,6 @@ const PublicProfile = () => {
 
                 <Button
                     iconRight
-                    // icon={
-                    //     <Icon
-                    //         name="chat-bubble-outline"
-                    //         color="#ffffff"
-                    //         iconStyle={{ marginLeft: 10, marginBottom: -1 }}
-                    //     />
-                    // }
                     buttonStyle={{
                         borderRadius: 0,
                         marginLeft: 'auto',

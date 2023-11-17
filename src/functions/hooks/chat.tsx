@@ -23,7 +23,8 @@ export const useGetChats = () => {
     };
 
     const { data: chatrooms, error, isValidating } = useSWR(url, fetcher, {
-        revalidateOnMount: true
+        revalidateOnMount: true,
+        refreshWhenHidden: true
     });
 
     const refreshData = () => {

@@ -1,4 +1,4 @@
-import { Input, ListItem } from "@rneui/base";
+import { Input, ListItem } from "@rneui/themed";
 import { worldLanguages } from "../../data/worldLanguages"
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";

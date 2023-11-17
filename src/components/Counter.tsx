@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from "react-native";
 import { RootState } from "../redux/store";
 import { useSelector, useDispatch } from "react-redux";
-import { Button, Text } from "@rneui/base";
+import { Button, Text } from "@rneui/themed";
 import { decrement, increment } from "../redux/slices/counterSlice";
 
 

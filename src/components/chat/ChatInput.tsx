@@ -3,10 +3,12 @@ import { View, TextInput } from "react-native"
 import { Button } from '@rneui/themed';
 import { sizes } from "../../styles/variables/measures";
 import { ChatInputProps } from "../../types/chat";
+import colors from '../../styles/variables/colors';
 
 
 
 const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
+    const { primary, secondary, tertiary } = colors
 
     const handleSend = async () => {
         if (inputValue.trim() !== "") {
@@ -25,7 +27,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                     name: 'plus',
                     type: 'ant-design',
                     size: sizes.M,
-                    color: 'rgba(111, 202, 186, 1)',
+                    color: tertiary,
                 }}
                 buttonStyle={{
                     backgroundColor: 'transparent',
@@ -49,7 +51,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                 style={{
                     display: 'flex',
                     flex: 1,
-                    backgroundColor: '#ffffff',
+                    backgroundColor: colors.secondary,
                     borderRadius: 5, height: 32,
                     alignSelf: 'center',
                     marginRight: sizes.S,
@@ -60,15 +62,15 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
             <Button
                 // title=""
                 loading={false}
-                loadingProps={{ size: 'small', color: 'white' }}
+                loadingProps={{ size: 'small', color: secondary }}
                 icon={{
                     name: 'send',
                     type: 'material-ui-icins',
                     size: 15,
-                    color: 'white',
+                    color: secondary,
                 }}
                 buttonStyle={{
-                    backgroundColor: 'rgba(111, 202, 186, 1)',
+                    backgroundColor: tertiary,
                     borderRadius: 5,
                 }}
                 titleStyle={{ fontWeight: 'bold', fontSize: 23 }}

@@ -1,4 +1,4 @@
-import { Button, Card, Icon, Text } from "@rneui/base";
+import { Button, Card, Icon, Text } from "@rneui/themed";
 import { Input } from "@rneui/themed";
 import { SafeAreaView, ScrollView, StyleSheet, View } from "react-native"
 import { sizes } from "../styles/variables/measures";

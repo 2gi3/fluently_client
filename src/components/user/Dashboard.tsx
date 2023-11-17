@@ -1,4 +1,4 @@
-import { Avatar, Button, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, color } from "@rneui/base"
+import { Avatar, Button, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, } from "@rneui/themed"
 import { Image, ScrollView, TextInput, View } from "react-native"
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,9 +14,11 @@ import { manipulateAsync } from "expo-image-manipulator";
 import AuthInput from "./AuthInput";
 import { studentName } from "../../regex";
 import { ConnectionManagerButtons } from "../ConnectionManagerButtons";
+import colors from "../../styles/variables/colors";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
+    const { secondary, primary, tertiary, danger } = colors
     const socketUrl = useSelector((state: RootState) => state.status.socketUrl)
     const dispatch = useDispatch();
     const logIn = useLogIn()
@@ -112,7 +114,9 @@ const Dashboard = ({ user }: { user: UserT }) => {
     }, [socketUrl])
 
     return (
-        <ScrollView>
+        <ScrollView style={{
+            backgroundColor: secondary
+        }}>
             <ListItem>
                 <ListItem.Content style={{
                     alignItems: 'center',
@@ -123,7 +127,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         rounded
                         source={{ uri: image }}
                         title="Hi"
-                        containerStyle={{ backgroundColor: 'grey' }}
+                        containerStyle={{ backgroundColor: primary }}
                     >
                         <Avatar.Accessory
                             onPress={() => {
@@ -157,7 +161,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             <Dialog
                                 isVisible={nameVisible}
                                 onBackdropPress={() => setNameVisible(!nameVisible)}
-                                overlayStyle={{ backgroundColor: '#ffffff', width: 'auto' }}
+                                overlayStyle={{ backgroundColor: secondary, width: 'auto' }}
                             >
 
                                 {/* <TextInput
@@ -211,7 +215,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         <Dialog
                             isVisible={descriptionVisible}
                             onBackdropPress={() => setDescriptionVisible(!descriptionVisible)}
-                            overlayStyle={{ backgroundColor: '#ffffff' }}
+                            overlayStyle={{ backgroundColor: secondary }}
                         >
 
                             <TextInput
@@ -233,8 +237,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         </Dialog>
                         {user.description ?
                             <ListItem.Subtitle style={{ marginTop: 5 }}>{user.description}</ListItem.Subtitle>
-                            : <ListItem.Subtitle style={{ color: '#ff6666', marginTop: 5 }}>
-                                To practice by having good conversations, write a good self introduction 😊
+                            : <ListItem.Subtitle style={{ color: danger, marginTop: 5 }}>
+                                Good self introductions facilitate good conversations 😊
 
                             </ListItem.Subtitle>
 
@@ -258,10 +262,10 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 type="outline"
                 onPress={() => setOverlayVisible(!overlayVisible)}
                 titleStyle={{ color: 'red' }}
-                buttonStyle={{ borderColor: 'red', marginVertical: sizes.M, margin: 'auto', backgroundColor: '#ffffff' }}
+                buttonStyle={{ borderColor: danger, marginVertical: sizes.M, margin: 'auto', backgroundColor: secondary }}
             >Delete your profile</Button>
             <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(!overlayVisible)}
-                overlayStyle={{ backgroundColor: 'white', padding: sizes.M }}>
+                overlayStyle={{ backgroundColor: secondary, padding: sizes.M }}>
                 <Text style={{ marginBottom: sizes.M }} >
                     ⚠️ Warning: This action is irreversible!
                 </Text>
@@ -279,7 +283,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             setInputError(undefined)
                         }
                     }}
-                    errorStyle={{ color: 'red' }}
+                    errorStyle={{ color: danger }}
                     onBlur={() => {
                         if (confirmationSentence !== confirmationInput.toLocaleLowerCase()) {
                             setInputError(`Type the word: '${confirmationSentence}' in the input above`)
@@ -302,7 +306,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             <Icon
                                 name="close"
                                 type="material-icons"
-                                color="rgb(32, 137, 220)"
+                                color={tertiary}
                                 size={25}
                             // iconStyle={}
                             />
@@ -318,8 +322,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     />
                     <Button
                         title="Delete account"
-                        buttonStyle={{ backgroundColor: 'red' }}
-                        titleStyle={{ color: 'white' }}
+                        buttonStyle={{ backgroundColor: danger }}
+                        titleStyle={{ color: secondary }}
                         onPress={() => handleDeleteAccount()}
 
                     />

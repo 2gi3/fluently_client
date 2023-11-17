@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Button } from '@rneui/base';
+import { Button } from '@rneui/themed';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { sizes } from '../../styles/variables/measures';
 import { TopTabButtonProps } from '../../types/navigation';
@@ -11,7 +11,7 @@ const TopTabButton = ({ onPress, label, iconName, disabled = false }: TopTabButt
             disabled={disabled}
             type="outline"
             onPress={onPress}
-            style={{ marginRight: sizes.S, display: 'flex', alignItems: 'center' }}
+            style={{ marginRight: sizes.S, display: 'flex', alignItems: 'center', backgroundColor: 'transparent' }}
         >
             {label && <Text style={{ marginRight: sizes.XS }}>{label}</Text>}
             <MaterialCommunityIcons

@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import StudentCard from '../../components/chat/StudentCard';
 import { useGetUsers } from '../../functions/hooks/user';
 import { UserT } from '../../types/user';
-import { Skeleton } from '@rneui/base';
+import { Skeleton } from '@rneui/themed';
 import { sizes } from '../../styles/variables/measures';
 import TopTabButton from '../../components/navigation/TopTabButton';
 import { useSelector } from 'react-redux';
@@ -49,7 +49,6 @@ const StudentsList = () => {
     }, [navigation]);
 
     useEffect(() => {
-        // @ts-ignore
         navigation.setOptions({ headerTitleAlign: 'center' })
 
     }, [route.params])

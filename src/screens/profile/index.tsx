@@ -52,7 +52,6 @@ const Profile = () => {
             return <SignupForm toggleLoginState={toggleLoginState} />;
         }
     } else {
-        //@ts-ignore
         return <Dashboard user={user} />;
     }
 };

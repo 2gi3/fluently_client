@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSocketUrl } from '../redux/slices/statusSlice';
 import { RootState } from '../redux/store';
-import { Button } from '@rneui/base';
+import { Button } from '@rneui/themed';
 import { replaceHttpWithWs } from '../functions';
 
 export function ConnectionManagerButtons() {
@@ -31,8 +31,8 @@ export function ConnectionManagerButtons() {
 
     return (
         <>
-            {socketUrl ? <Button title='Disconnect' onPress={() => disconnectSocket()} />
-                : <Button title='Connect' onPress={() => connectSocket()} />}
+            {socketUrl ? <Button title='Disconnect' onPress={() => disconnectSocket()} containerStyle={{ maxWidth: 440, margin: 'auto' }} />
+                : <Button title='Connect' onPress={() => connectSocket()} containerStyle={{ maxWidth: 440, margin: 'auto' }} />}
         </>
     );
 }

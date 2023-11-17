@@ -9,11 +9,13 @@ import { RootState } from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetLastMessage } from '../../functions/hooks/chat';
 import { addToPendingChats } from '../../redux/slices/chatSlice';
+import colors from '../../styles/variables/colors';
 // import { useNavigation } from '@react-navigation/native'
 
 
 
 const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
+    const { secondary, primary, tertiary } = colors
     const connectedUsers = useSelector((state: RootState) => state.webSocket.connectedUsers)
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
     const pendingChats = useSelector((state: RootState) => state.chat.pendingChats)
@@ -33,19 +35,19 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
     // const isLastMessageSent = lastMessage && lastMessage.status === 'sent';
 
     // Dynamic background color based on the condition
-    const [backgroundColor, setBackgroundColor] = useState('white')
+    const [backgroundColor, setBackgroundColor] = useState(secondary)
     // isLastMessageSent ? 'yellow' : 'wheat';
 
     useEffect(() => {
         if (connectedUsers && user2) {
             setIsConnected(connectedUsers.includes(user2.id))
         }
-        if (lastMessage && lastMessage.status !== 'read') {
-            setBackgroundColor('#f0f9ff')
+        if (lastMessage && lastMessage.status !== 'read' && lastMessage.userId !== user.id) {
+            setBackgroundColor(primary)
             if (!pendingChats.includes(chatroom.id!)) {
                 dispatch(addToPendingChats(chatroom.id!))
             }
-        } else (setBackgroundColor('white'))
+        } else (setBackgroundColor(secondary))
     }, [lastMessage, connectedUsers, user2])
 
     useEffect(() => {

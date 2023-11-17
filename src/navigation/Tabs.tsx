@@ -14,8 +14,14 @@ import { Button } from "@rneui/base";
 import TopTabButton from "../components/navigation/TopTabButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
+import colors from '../styles/variables/colors';
 
-
+const CustomTabLabel = ({ label, position }) => {
+    const margin = position === 'beside-icon' ? sizes.S : null
+    return (
+        <Text style={{ color: colors.secondaryFont, fontSize: 12, marginLeft: margin }}>{label}</Text>
+    );
+}
 
 
 
@@ -30,18 +36,23 @@ const Tabs = () => {
     return (
         <Tabs.Navigator
             initialRouteName="Profile"
-        // screenOptions={{
-        //     headerStyle:{
+            screenOptions={{
+                tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
 
-        //     },
-        //     tabBarStyle:{
-
-        //     }
-        // }}
+                headerStyle: {
+                    backgroundColor: colors.secondary,
+                },
+                headerTitleStyle: {
+                    color: colors.secondaryFont
+                },
+                tabBarStyle: {
+                    backgroundColor: colors.secondary,
+                }
+            }}
         >
             <Tabs.Screen
                 name="Chats" component={ChatsList} options={({ navigation }) => ({
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble-outline'),
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble'),
                     tabBarBadge: pendingChats.length > 0 ? pendingChats.length : undefined,
                     headerRight: () => (
                         <TopTabButton
@@ -55,12 +66,12 @@ const Tabs = () => {
             />
             <Tabs.Screen
                 name="Community" component={DeleteMe} options={{
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'people-outline')
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
                 }}
             />
             <Tabs.Screen
                 name="Profile" component={Profile} options={({ navigation }) => ({
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'person-outline'),
+                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
                     headerRight: () => (
                         user.user?.id ? <LogoutButton style={{ marginRight: sizes.S }} />
                             : null

@@ -1,4 +1,4 @@
-import { Button, Card, Icon, Input, Overlay } from "@rneui/base"
+import { Button, Card, Icon, Input, Overlay } from "@rneui/themed"
 import { sizes } from "../../styles/variables/measures"
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, } from "react-native"
 import { useLogIn } from "../../functions/hooks/user"
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { emailRegex, passwordRegex } from "../../regex"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import AuthInput from "./AuthInput"
+import colors from "../../styles/variables/colors"
 
 
 
@@ -16,6 +17,7 @@ import AuthInput from "./AuthInput"
 
 const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
     const dispatch = useDispatch();
+    const { secondary } = colors
 
     const logIn = useLogIn()
     const [email, setEmail] = useState('');
@@ -113,7 +115,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                         icon={
                             <Icon
                                 name="navigate-next"
-                                color="#ffffff"
+                                color={secondary}
                                 iconStyle={{ marginLeft: 10, marginBottom: -1 }}
                             />
                         }
@@ -138,7 +140,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     </Button>
 
                     <Overlay isVisible={visible} onBackdropPress={toggleOverlay}
-                        overlayStyle={{ backgroundColor: 'white', padding: sizes.M }}>
+                        overlayStyle={{ backgroundColor: secondary, padding: sizes.M }}>
                         <Text style={{ marginVertical: sizes.M }} >{errorMessage}</Text>
 
 
@@ -147,7 +149,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                                 <Icon
                                     name="close"
                                     type="material-icons"
-                                    color="white"
+                                    color={secondary}
                                     size={25}
                                 // iconStyle={}
                                 />

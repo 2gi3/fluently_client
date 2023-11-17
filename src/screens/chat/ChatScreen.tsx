@@ -14,6 +14,7 @@ import { setOutgoingMessage } from "../../redux/slices/webSocketSlice";
 import { useGetUsers } from "../../functions/hooks/user";
 import { addMessage, clearActiveChats, clearChatMessages, removeFromPendingChats, setActiveChat } from "../../redux/slices/chatSlice";
 import { MessageT } from "../../types/chat";
+import colors from "../../styles/variables/colors";
 
 type ChatScreenRouteProp = {
     params: {
@@ -130,7 +131,7 @@ const ChatScreen = () => {
                 <FlatList
                     ref={flatListRef}
                     style={{
-                        backgroundColor: '#dddddd'
+                        backgroundColor: colors.primary
                     }}
                     data={messages}
                     renderItem={renderItem}

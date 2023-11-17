@@ -9,13 +9,15 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect, useState } from "react";
 import { updateMessageStatus } from "../../functions/chat";
-import { Avatar } from "@rneui/base";
+import { Avatar } from "@rneui/themed";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import colors from '../../styles/variables/colors';
 
 
 const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, messageRead: boolean, isLastMessage: boolean }) => {
     const user = useSelector((state: RootState) => state.user);
     const activeChat = useSelector((state: RootState) => state.chat.activeChat);
+    const { secondary, primary, confirmation, secondaryFont } = colors
 
 
     const isMyMessage = () => {
@@ -39,7 +41,7 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
             key={`${message.id}_${message.text}`}
             style={[chatStyles.message,
             {
-                backgroundColor: isMyMessage() ? '#C8DEF8' : '#f1f1f1',
+                backgroundColor: isMyMessage() ? primary : secondary,
                 alignSelf: isMyMessage() ? 'flex-end' : 'flex-start'
             }]}
         >
@@ -56,8 +58,7 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
                 isMyMessage() && isLastMessage ?
                     <MaterialCommunityIcons
                         name={message.status === 'read' ? "check-circle-outline" : "dots-horizontal"}
-                        size={14} color={message.status === 'read' ? '#52c41a' : '8e8e8f'}
-                        // backGroundColor={message.status === 'read' ? '#ffffff' : 'transparent'}
+                        size={14} color={message.status === 'read' ? confirmation : secondaryFont}
                         style={{ position: 'absolute', bottom: -3, right: -14 }} />
                     : null
             }
