@@ -71,7 +71,6 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                 }}
                 buttonStyle={{
                     backgroundColor: tertiary,
-                    borderRadius: 5,
                 }}
                 titleStyle={{ fontWeight: 'bold', fontSize: 23 }}
                 containerStyle={{

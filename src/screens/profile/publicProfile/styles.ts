@@ -35,11 +35,11 @@ const styles = StyleSheet.create({
         color: '#505050',
     },
     buttonStylePrimary: {
-        borderRadius: 0,
         marginLeft: 'auto',
         marginRight: 'auto',
         marginBottom: sizes.M,
         marginTop: sizes.M,
+        backgroundColor: colors.tertiary
     },
 });
 

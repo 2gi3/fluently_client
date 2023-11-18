@@ -4,6 +4,7 @@ import { Button } from '@rneui/themed';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { sizes } from '../../styles/variables/measures';
 import { TopTabButtonProps } from '../../types/navigation';
+import colors from '../../styles/variables/colors';
 
 const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = false }: TopTabButtonProps) => {
     if (isLoading) {
@@ -16,7 +17,7 @@ const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = 
                 disabled={disabled}
                 type="outline"
                 onPress={onPress}
-                style={{ marginRight: sizes.S, display: 'flex', alignItems: 'center', backgroundColor: 'transparent' }}
+                style={{ marginRight: sizes.S, display: 'flex', alignItems: 'center', backgroundColor: 'transparent', borderColor: colors.tertiary }}
             >
                 {label && <Text style={{ marginRight: sizes.XS }}>{label}</Text>}
                 <MaterialCommunityIcons
