@@ -1,0 +1,6 @@
+- Useful tutorial for OAuth: https://www.youtube.com/watch?v=BDeKTPQzvR4
+
+- For the following command there is no password, just press enter:
+ "Create SHA-1 certificate fro android/google Oauth on my (the developer) machine:
+          open the terminal as an administrator and run:
+          keytool -list -v -alias androiddebugkey -keystore" 

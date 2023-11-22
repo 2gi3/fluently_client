@@ -94,6 +94,29 @@ which includes:
 
      This hook takes the 'library' and the 'name' of the icon as mandatory parameters, and returns the icon object to show in the Tabs, it can also take other parameters which have default values.
 
+# Loh in with google
+
+- To manage the google project
+  - Go to the [Google cloud dashboard](https://console.cloud.google.com/apis/dashboard)
+  - Select the project: 'Fluently' (or create a new project if needed)
+  - Congigure OAuth consent screen 
+    - App name : Change this if the name of the app changes
+    - If necessary add any link to the consent screen here.
+    - Select scopes (enable email and public profile)
+    - Select Test users (They have access while publishing status is set to "Testing")
+  - Create credentials: OAuth client ID
+    - A different Cliend ID must be created for each platform (e.g.: Web, iOS, Android)  
+      - Run ```npx expo prebuild``` 
+        - This will create the "package" field into the android object in app.json
+      - iOS:
+        - Create IOS bundleIdentifier (i.e.:bundle ID) in the iOS object in app.json
+      - Android:  
+        - package name = "package" field in the android object in app.json
+        - Create SHA-1 certificate fro android/google Oauth on my (the developer) machine:
+          open the terminal as an administrator and run:
+          keytool -list -v -alias androiddebugkey -keystore "D:\fluently\fluently_client\android\app\debug.keystore"
+          check that the path to "debug.keystore" is correct
+            - check local notes for password hint
 
 
 ## Environment variables
