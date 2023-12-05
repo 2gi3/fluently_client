@@ -33,6 +33,7 @@ export enum Gender {
 }
 
 export interface AuthInputProps {
+    ref?: any
     autoFocus?: boolean
     placeholder: string;
     value: string;

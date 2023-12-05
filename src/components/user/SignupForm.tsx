@@ -47,6 +47,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [displeyEmailErrors, setDispleyEmailErrors] = useState(false)
     const [displeyPasswordErrors, setDispleyPasswordErrors] = useState(false)
     const [displeyNameErrors, setDispleyNameErrors] = useState(false)
+    const [showCount, setShowCount] = useState(false)
     const toggleOverlay = () => {
         setErrorMessage(null)
         setVisible(!visible);
@@ -57,6 +58,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
     const [inputError, setInputError] = useState<string | undefined>()
     const [confirmationInput, setConfirmationInput] = useState('');
+    const [emailChecked, setEmailChecked] = useState(false);
+
 
     const handleSetNewUser = async () => {
         if (emailRegex.test(email) && passwordRegex.test(password)) {
@@ -124,120 +127,138 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
 
     }, [newUser.email, newUser.password]);
 
+    useEffect(() => {
+        if (count && count < 5) {
+            setShowCount(true)
+        }
+        console.log({ count })
+    }, [count])
+
+    useEffect(() => {
+        setEmailChecked(false);
+    }, [email]);
+
     return (
         <ScrollView style={{
             marginHorizontal: sizes.S
         }}>
-            <Card containerStyle={{
-                maxWidth: 420,
-                marginHorizontal: 'auto',
-                marginVertical: sizes.L,
-            }}>
-                <Card.Title h3>{header}</Card.Title>
-                <Card.Divider />
+            {checkingUserExistence ?
+                <View>
+                    <ActivityIndicator size="large" color="#00ff00" />
+                </View>
+                : <Card containerStyle={{
+                    maxWidth: 420,
+                    marginHorizontal: 'auto',
+                    marginVertical: sizes.L,
+                }}>
+                    <Card.Title h3>{header}</Card.Title>
+                    <Card.Divider />
 
-                {!newUser.email && !newUser.password ?
-                    <View style={{
-                        marginVertical: sizes.M,
-                    }}>
-
-                        <AuthInput
-                            autoFocus={true}
-                            placeholder="Email"
-                            value={email}
-                            onChangeText={(text) => setEmail(text.trim())}
-                            onBlur={async () => {
-                                if (emailRegex.test(email)) {
-                                    setCheckingUserExistence(true)
-                                    const response: any = await fetch(`${url}/api/user/exists/${email}`, {
-                                        method: 'GET',
-                                        // credentials: 'include',
-                                    });
-                                    const userExists = await response.json();
-                                    dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
-
-                                    // if (!userExists.ok) {
-                                    //     throw new Error('We are having server problems, please try again later');
-                                    // }
-                                    setCheckingUserExistence(false)
-                                    if (userExists) {
-                                        setConfirmationOverlayVisible(true)
-                                        console.log({ userExists: userExists.exists })
-                                    }
-                                }
-                                setDispleyEmailErrors(true)
-                            }}
-                            errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
-                        />
-                        <AuthInput
-                            placeholder="Password"
-                            value={password}
-                            onChangeText={(text) => setPassword(text.trim())}
-                            onBlur={() => setDispleyPasswordErrors(true)}
-                            errorMessage={passwordRegex.test(password) || password === '' || !displeyPasswordErrors ? undefined : 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'}
-                            secureTextEntry={true}
-                        />
-                        <Button
-                            iconRight
-                            icon={
-                                <Icon
-                                    name="navigate-next"
-                                    color={secondary}
-                                    iconStyle={{ marginLeft: 10, marginBottom: -1 }}
-                                />
+                    {!newUser.email && !newUser.password ?
+                        <View style={{
+                            marginVertical: sizes.M,
+                        }}>
+                            {showCount && <View style={{ margin: 'auto' }}>
+                                <Text style={{ color: colors.danger, fontSize: 14, fontWeight: '500' }}>Remaining attempts: {count}</Text>
+                            </View>
                             }
-                            buttonStyle={{
-                                borderRadius: 0,
-                                marginLeft: 0,
-                                marginRight: 0,
-                                marginBottom: sizes.M,
-                                marginTop: 0
-                            }}
-                            title="Create account"
-                            onPress={handleSetNewUser}
-                        />
-                        <Card.Divider style={{
-                            marginBottom: sizes.M,
-                        }} />
-                        <Text style={{
-                            marginBottom: sizes.S,
-                        }} >You already have an account?</Text>
+                            <AuthInput
+                                autoFocus={!emailRegex.test(email)}
+                                placeholder="Email"
+                                value={email}
+                                onChangeText={(text) => setEmail(text.trim())}
+                                onBlur={async () => {
+                                    if (emailRegex.test(email) && !checkingUserExistence && !confirmationOverlayVisible && !emailChecked) {
+                                        setCheckingUserExistence(true)
+                                        const response: any = await fetch(`${url}/api/user/exists/${email}`, {
+                                            method: 'GET',
+                                            // credentials: 'include',
+                                        });
+                                        setCheckingUserExistence(false)
 
-                        <Button size="sm" type="outline" onPress={() => toggleLoginState(true)}>
-                            Log in
-                        </Button>
-                        <Overlay isVisible={visible} onBackdropPress={toggleOverlay}
-                            overlayStyle={{ backgroundColor: secondary, padding: sizes.M }}>
-                            <Text style={{ marginVertical: sizes.M }} >{errorMessage}</Text>
-
-
+                                        const userExists = await response.json();
+                                        dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
+                                        setEmailChecked(true)
+                                        // if (!userExists.ok) {
+                                        //     throw new Error('We are having server problems, please try again later');
+                                        // }
+                                        if (userExists.exists) {
+                                            setConfirmationOverlayVisible(true)
+                                            // setEmail('')
+                                        } else {
+                                            setConfirmationOverlayVisible(false)
+                                        }
+                                    }
+                                    setDispleyEmailErrors(true)
+                                }}
+                                errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
+                            />
+                            <AuthInput
+                                autoFocus={emailRegex.test(email)}
+                                placeholder="Password"
+                                value={password}
+                                onChangeText={(text) => setPassword(text.trim())}
+                                onBlur={() => setDispleyPasswordErrors(true)}
+                                errorMessage={passwordRegex.test(password) || password === '' || !displeyPasswordErrors ? undefined : 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'}
+                                secureTextEntry={true}
+                            />
                             <Button
+                                iconRight
                                 icon={
                                     <Icon
-                                        name="close"
-                                        type="material-icons"
+                                        name="navigate-next"
                                         color={secondary}
-                                        size={25}
-                                    // iconStyle={}
+                                        iconStyle={{ marginLeft: 10, marginBottom: -1 }}
                                     />
                                 }
-                                // title="Try again"
-                                onPress={toggleOverlay}
-                                buttonStyle={{ width: 'auto', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-
+                                buttonStyle={{
+                                    borderRadius: 0,
+                                    marginLeft: 0,
+                                    marginRight: 0,
+                                    marginBottom: sizes.M,
+                                    marginTop: 0
+                                }}
+                                title="Create account"
+                                onPress={handleSetNewUser}
                             />
-                        </Overlay>
+                            <Card.Divider style={{
+                                marginBottom: sizes.M,
+                            }} />
+                            <Text style={{
+                                marginBottom: sizes.S,
+                            }} >You already have an account?</Text>
 
-                    </View>
-                    : loading ?
-                        <View style={{ flexDirection: 'column', gap: sizes.S }} >
-                            <Skeleton animation="wave" width={180} height={60} />
-                            <Skeleton animation="wave" width={180} height={60} />
-                            <Skeleton animation="wave" width={180} height={60} />
-                        </View> :
-                        checkingUserExistence ?
-                            <View>
-                                <ActivityIndicator size="large" color="#00ff00" />
+                            <Button size="sm" type="outline" onPress={() => toggleLoginState(true)}>
+                                Log in
+                            </Button>
+                            <Overlay isVisible={visible} onBackdropPress={toggleOverlay}
+                                overlayStyle={{ backgroundColor: secondary, padding: sizes.M }}>
+                                <Text style={{ marginVertical: sizes.M }} >{errorMessage}</Text>
+
+
+                                <Button
+                                    icon={
+                                        <Icon
+                                            name="close"
+                                            type="material-icons"
+                                            color={secondary}
+                                            size={25}
+                                        // iconStyle={}
+                                        />
+                                    }
+                                    // title="Try again"
+                                    onPress={toggleOverlay}
+                                    buttonStyle={{ width: 'auto', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+
+                                />
+                            </Overlay>
+
+                        </View>
+                        : loading ?
+                            <View style={{ flexDirection: 'column', gap: sizes.S }} >
+                                <Skeleton animation="wave" width={180} height={60} />
+                                <Skeleton animation="wave" width={180} height={60} />
+                                <Skeleton animation="wave" width={180} height={60} />
                             </View> :
                             <View style={{ paddingTop: sizes.M }}>
                                 <AuthInput
@@ -249,35 +270,35 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                     errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
                                 />
                                 {/* <Input
-                                autoFocus={true}
-                                placeholder="Name"
-                                value={name}
-                                onChangeText={(text) => setName(text)}
-                                errorStyle={{ color: 'red' }}
-                                // errorMessage='ENTER A VALID ERROR HERE'
-                                style={{
-                                    paddingHorizontal: sizes.XS
-                                }}
-                                containerStyle={{
-                                    marginBottom: sizes.M,
-                                }}
-                            /> */}
+                            autoFocus={true}
+                            placeholder="Name"
+                            value={name}
+                            onChangeText={(text) => setName(text)}
+                            errorStyle={{ color: 'red' }}
+                            // errorMessage='ENTER A VALID ERROR HERE'
+                            style={{
+                                paddingHorizontal: sizes.XS
+                            }}
+                            containerStyle={{
+                                marginBottom: sizes.M,
+                            }}
+                        /> */}
                                 <NationalityPicker />
                                 <LanguagePicker />
 
                                 {/* <Input
-                                placeholder="Teaching Language"
-                                value={teachingLanguage}
-                                onChangeText={(text) => setTeachingLanguage(text)}
-                                errorStyle={{ color: 'red' }}
-                                // errorMessage='ENTER A VALID ERROR HERE'
-                                style={{
-                                    paddingHorizontal: sizes.XS
-                                }}
-                                containerStyle={{
-                                    marginBottom: sizes.M,
-                                }}
-                            /> */}
+                            placeholder="Teaching Language"
+                            value={teachingLanguage}
+                            onChangeText={(text) => setTeachingLanguage(text)}
+                            errorStyle={{ color: 'red' }}
+                            // errorMessage='ENTER A VALID ERROR HERE'
+                            style={{
+                                paddingHorizontal: sizes.XS
+                            }}
+                            containerStyle={{
+                                marginBottom: sizes.M,
+                            }}
+                        /> */}
                                 <LearnLanguageSelector />
                                 <GenderSelector />
                                 <DateOfBirthSelector />
@@ -296,14 +317,16 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
 
                             </View>}
 
-            </Card>
+                </Card>
+            }
+
             {confirmationOverlayVisible && <ConfirmationOverlay
                 warning={`This account already exists`}
                 isVisible={confirmationOverlayVisible}
                 onBackdropPress={() => setConfirmationOverlayVisible(!confirmationOverlayVisible)}
                 onConfirm={() => toggleLoginState(true)}
                 onCancel={() => {
-                    setConfirmationOverlayVisible(!confirmationOverlayVisible);
+                    setConfirmationOverlayVisible(false);
                     setInputError(undefined);
                     setConfirmationInput('');
                 }}
@@ -316,6 +339,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
 
 
     )
+
 }
 export default SignupForm
 

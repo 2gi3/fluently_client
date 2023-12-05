@@ -35,7 +35,7 @@ const Tabs = () => {
 
     return (
         <Tabs.Navigator
-            initialRouteName="Profile"
+            initialRouteName={user.user ? "Chats" : "Profile"}
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
                 headerStyle: {
@@ -49,25 +49,29 @@ const Tabs = () => {
                 }
             }}
         >
-            <Tabs.Screen
-                name="Chats" component={ChatsList} options={({ navigation }) => ({
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble'),
-                    tabBarBadge: pendingChats.length > 0 ? pendingChats.length : undefined,
-                    headerRight: () => (
-                        <TopTabButton
-                            onPress={() => navigation.navigate('Students')}
-                            iconName="handshake-outline"
-                            label="Find a partner"
-                        />
-                    )
-                })}
+            {user.user && (
+                <Tabs.Screen
+                    name="Chats" component={ChatsList} options={({ navigation }) => ({
+                        tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble'),
+                        tabBarBadge: pendingChats.length > 0 ? pendingChats.length : undefined,
+                        headerRight: () => (
+                            <TopTabButton
+                                onPress={() => navigation.navigate('Students')}
+                                iconName="handshake-outline"
+                                label="Find a partner"
+                            />
+                        )
+                    })}
 
-            />
-            <Tabs.Screen
-                name="Community" component={DeleteMe} options={{
-                    tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
-                }}
-            />
+                />
+            )}
+            {user.user && (
+                <Tabs.Screen
+                    name="Community" component={DeleteMe} options={{
+                        tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
+                    }}
+                />
+            )}
             <Tabs.Screen
                 name="Profile" component={Profile} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
