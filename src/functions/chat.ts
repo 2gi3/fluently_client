@@ -13,6 +13,7 @@ export const createNewChatroom = async (endpoint: string, user1Id: number, user2
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({
                 user1Id,
                 user2Id
@@ -41,6 +42,7 @@ export const createMessage = async ({ chatId, userId, text, status }: MessageT) 
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify({
                 chatId,
                 userId,
@@ -71,6 +73,7 @@ export const updateMessageStatus = async (messageId: string | number, newStatus:
     try {
         const response = await fetch(url, {
             method: 'PATCH',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
             },

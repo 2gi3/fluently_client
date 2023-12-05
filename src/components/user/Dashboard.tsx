@@ -77,6 +77,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
             try {
                 const response = await fetch(`${baseUrl}/api/user/${user.id}`, {
                     method: 'DELETE',
+                    credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                     }

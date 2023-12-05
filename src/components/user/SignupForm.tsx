@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Card, Divider, Icon, Overlay, Skeleton, Text } from "@rneui/themed";
 import { Input } from "@rneui/themed";
-import { SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
+import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
 import { sizes } from "../../styles/variables/measures";
 import { RootState } from "../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,11 +16,15 @@ import LearnLanguageSelector from './LearnLanguageSelector';
 import GenderSelector from './GenderSelector';
 import DateOfBirthSelector from './DateOfBirthSelector';
 import colors from '../../styles/variables/colors';
+import ConfirmationOverlay from '../ConfirmationOverlay';
+import { setAmount } from '../../redux/slices/counterSlice';
 
 
 
 
 const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
+    const count = useSelector((state: RootState) => state.counter.value);
+
     const { secondary } = colors
     const [city, country, loading, error] = useLocation()
     const dispatch = useDispatch();
@@ -36,7 +40,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [teachingLanguage, setTeachingLanguage] = useState('');
     const [learningLanguage, setLearningLanguage] = useState('');
     const [header, setHeader] = useState('Start learning')
-
+    const [checkingUserExistence, setCheckingUserExistence] = useState(false)
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>()
     const [hideText, setHideText] = useState(true)
@@ -48,7 +52,11 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
         setVisible(!visible);
 
     };
+    const url = process.env.SERVER_URL!
 
+    const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
+    const [inputError, setInputError] = useState<string | undefined>()
+    const [confirmationInput, setConfirmationInput] = useState('');
 
     const handleSetNewUser = async () => {
         if (emailRegex.test(email) && passwordRegex.test(password)) {
@@ -85,10 +93,9 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 teaching_language: teachingLanguage,
                 learning_language: newUser.learning_language,
             };
-            const url = process.env.SERVER_URL
             const response = await fetch(`${url}/api/user/signup`, {
-                // const response = await fetch(`http://localhost:3000/api/user/signup`, {
                 method: 'POST',
+                // credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -99,9 +106,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
             dispatch(clearNewUser());
 
             if (response.ok) {
-
                 console.log('User created successfully');
-
             } else {
                 console.error('Failed to create user');
             }
@@ -140,14 +145,34 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                             autoFocus={true}
                             placeholder="Email"
                             value={email}
-                            onChangeText={(text) => setEmail(text)}
-                            onBlur={() => setDispleyEmailErrors(true)}
+                            onChangeText={(text) => setEmail(text.trim())}
+                            onBlur={async () => {
+                                if (emailRegex.test(email)) {
+                                    setCheckingUserExistence(true)
+                                    const response: any = await fetch(`${url}/api/user/exists/${email}`, {
+                                        method: 'GET',
+                                        // credentials: 'include',
+                                    });
+                                    const userExists = await response.json();
+                                    dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
+
+                                    // if (!userExists.ok) {
+                                    //     throw new Error('We are having server problems, please try again later');
+                                    // }
+                                    setCheckingUserExistence(false)
+                                    if (userExists) {
+                                        setConfirmationOverlayVisible(true)
+                                        console.log({ userExists: userExists.exists })
+                                    }
+                                }
+                                setDispleyEmailErrors(true)
+                            }}
                             errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
                         />
                         <AuthInput
                             placeholder="Password"
                             value={password}
-                            onChangeText={(text) => setPassword(text)}
+                            onChangeText={(text) => setPassword(text.trim())}
                             onBlur={() => setDispleyPasswordErrors(true)}
                             errorMessage={passwordRegex.test(password) || password === '' || !displeyPasswordErrors ? undefined : 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'}
                             secureTextEntry={true}
@@ -209,16 +234,21 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                             <Skeleton animation="wave" width={180} height={60} />
                             <Skeleton animation="wave" width={180} height={60} />
                             <Skeleton animation="wave" width={180} height={60} />
-                        </View> : <View style={{ paddingTop: sizes.M }}>
-                            <AuthInput
-                                autoFocus={true}
-                                placeholder="Name"
-                                value={name}
-                                onChangeText={(text) => setName(text)}
-                                onBlur={() => setDispleyNameErrors(true)}
-                                errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
-                            />
-                            {/* <Input
+                        </View> :
+                        checkingUserExistence ?
+                            <View>
+                                <ActivityIndicator size="large" color="#00ff00" />
+                            </View> :
+                            <View style={{ paddingTop: sizes.M }}>
+                                <AuthInput
+                                    autoFocus={true}
+                                    placeholder="Name"
+                                    value={name}
+                                    onChangeText={(text) => setName(text)}
+                                    onBlur={() => setDispleyNameErrors(true)}
+                                    errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
+                                />
+                                {/* <Input
                                 autoFocus={true}
                                 placeholder="Name"
                                 value={name}
@@ -232,10 +262,10 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                     marginBottom: sizes.M,
                                 }}
                             /> */}
-                            <NationalityPicker />
-                            <LanguagePicker />
+                                <NationalityPicker />
+                                <LanguagePicker />
 
-                            {/* <Input
+                                {/* <Input
                                 placeholder="Teaching Language"
                                 value={teachingLanguage}
                                 onChangeText={(text) => setTeachingLanguage(text)}
@@ -248,25 +278,39 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                     marginBottom: sizes.M,
                                 }}
                             /> */}
-                            <LearnLanguageSelector />
-                            <GenderSelector />
-                            <DateOfBirthSelector />
+                                <LearnLanguageSelector />
+                                <GenderSelector />
+                                <DateOfBirthSelector />
 
-                            <Button
-                                buttonStyle={{
-                                    borderRadius: 0,
-                                    marginLeft: 0,
-                                    marginRight: 0,
-                                    marginBottom: sizes.M,
-                                    marginTop: sizes.M
-                                }}
-                                title="Create your account"
-                                onPress={createUser}
-                            />
+                                <Button
+                                    buttonStyle={{
+                                        borderRadius: 0,
+                                        marginLeft: 0,
+                                        marginRight: 0,
+                                        marginBottom: sizes.M,
+                                        marginTop: sizes.M
+                                    }}
+                                    title="Create your account"
+                                    onPress={createUser}
+                                />
 
-                        </View>}
+                            </View>}
 
             </Card>
+            {confirmationOverlayVisible && <ConfirmationOverlay
+                warning={`This account already exists`}
+                isVisible={confirmationOverlayVisible}
+                onBackdropPress={() => setConfirmationOverlayVisible(!confirmationOverlayVisible)}
+                onConfirm={() => toggleLoginState(true)}
+                onCancel={() => {
+                    setConfirmationOverlayVisible(!confirmationOverlayVisible);
+                    setInputError(undefined);
+                    setConfirmationInput('');
+                }}
+                consfirmButtonTitle='Log In'
+            />
+
+            }
         </ScrollView>
 
 

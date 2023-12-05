@@ -14,7 +14,10 @@ export const useGetChats = () => {
     const url = `${baseUrl}/api/chat/${user.id}`
 
     const fetcher = async () => {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            method: 'GET',
+            credentials: 'include',
+        });
         if (!response.ok) {
             throw new Error('Failed to fetch chatrooms');
         }
@@ -41,7 +44,9 @@ export const useGetMessages = (chatId: string | number) => {
     const url = `${baseUrl}/api/chat/message/${chatId}`
 
     const fetcher = async () => {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            credentials: 'include',
+        });
         if (!response.ok) {
             throw new Error('Failed to fetch messages');
         }
@@ -67,7 +72,9 @@ export const useGetLastMessage = (chatId: string | number) => {
     const url = `${baseUrl}/api/chat/last_message/${chatId}`
 
     const fetcher = async () => {
-        const response = await fetch(url);
+        const response = await fetch(url, {
+            credentials: 'include',
+        });
         if (!response.ok) {
             throw new Error('Failed to fetch messages');
         }

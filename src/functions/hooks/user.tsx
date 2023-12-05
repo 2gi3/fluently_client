@@ -130,7 +130,7 @@ export const useLocation = () => {
 
 export const useGetUsers = (url: string) => {
     const fetcher = async () => {
-        const response = await fetch(url);
+        const response = await fetch(url, { credentials: 'include' });
         if (!response.ok) {
             throw new Error('Failed to fetch users');
         }

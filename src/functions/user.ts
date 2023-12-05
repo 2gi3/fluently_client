@@ -8,6 +8,7 @@ export const updateUser = async (payload: Partial<UserT>, endpoint: string) => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify(payload),
         });
         const data = await response.json()

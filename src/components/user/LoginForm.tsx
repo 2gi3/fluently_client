@@ -2,13 +2,15 @@ import { Button, Card, Icon, Input, Overlay } from "@rneui/themed"
 import { sizes } from "../../styles/variables/measures"
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, } from "react-native"
 import { useLogIn } from "../../functions/hooks/user"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { clearNewUser } from "../../redux/slices/newUserSlice"
 import { useDispatch, useSelector } from 'react-redux';
 import { emailRegex, passwordRegex } from "../../regex"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import AuthInput from "./AuthInput"
 import colors from "../../styles/variables/colors"
+import { RootState } from "../../redux/store"
+import { setAmount } from "../../redux/slices/counterSlice"
 
 
 
@@ -16,6 +18,8 @@ import colors from "../../styles/variables/colors"
 
 
 const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
+    const count = useSelector((state: RootState) => state.counter.value);
+
     const dispatch = useDispatch();
     const { secondary } = colors
 
@@ -33,7 +37,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
 
     };
     const baseUrl = process.env.SERVER_URL
-
+    const [showCount, setShowCount] = useState(false)
 
     const handleLogin = async () => {
         if (!passwordRegex.test(password) || !emailRegex.test(email)) {
@@ -47,11 +51,14 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     headers: {
                         'Content-Type': 'application/json',
                     },
+                    // credentials: 'include',
                     body: JSON.stringify({
                         email: email.trim(),
                         password: password.trim()
                     }),
                 });
+                dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
+
                 const user = await response.json()
 
 
@@ -79,6 +86,13 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
         }
     }
 
+    useEffect(() => {
+        if (count && count < 5) {
+            setShowCount(true)
+        }
+        console.log({ count })
+    }, [count])
+
     return (
         <ScrollView style={{
             marginHorizontal: sizes.S
@@ -98,14 +112,18 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                         autoFocus={true}
                         placeholder="Email"
                         value={email}
-                        onChangeText={(text) => setEmail(text)}
+                        onChangeText={(text) => setEmail(text.trim())}
                         onBlur={() => setDispleyEmailErrors(true)}
                         errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
                     />
+                    {showCount && <View style={{ margin: 'auto' }}>
+                        <Text style={{ color: colors.danger, fontSize: 14, fontWeight: '500' }}>Remaining attempts: {count}</Text>
+                    </View>
+                    }
                     <AuthInput
                         placeholder="Password"
                         value={password}
-                        onChangeText={(text) => setPassword(text)}
+                        onChangeText={(text) => setPassword(text.trim())}
                         onBlur={() => setDispleyPasswordErrors(true)}
                         errorMessage={passwordRegex.test(password) || password === '' || !displeyPasswordErrors ? undefined : 'Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character'}
                         secureTextEntry={true}
