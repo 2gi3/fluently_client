@@ -33,10 +33,29 @@ export const useLogIn = () => {
 
 
 export const useLogOut = () => {
+    const baseUrl = process.env.SERVER_URL
     const dispatch = useDispatch();
 
+
     const clearLocalStorageAndLogOut = async () => {
+        const accessToken = await AsyncStorage.getItem('speaky-access-token')
+        const refreshToken = await AsyncStorage.getItem('speaky-refresh-token')
+
         try {
+            const response = await fetch(`${baseUrl}/api/auth/token/${JSON.parse(refreshToken!)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': JSON.parse(accessToken!),
+                },
+            });
+
+            // if (!response.ok) {
+            //     throw new Error(`Failed to log out: ${response.statusText}`);
+            // }
+
+            console.log(await response.json())
+
             await AsyncStorage.clear();
             dispatch(logOut());
             dispatch(clearNewUser());
@@ -129,8 +148,16 @@ export const useLocation = () => {
 
 
 export const useGetUsers = (url: string) => {
+
     const fetcher = async () => {
-        const response = await fetch(url, { credentials: 'include' });
+        const accessToken = await AsyncStorage.getItem('speaky-access-token')
+        const response = await fetch(url, {
+            // credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': JSON.parse(accessToken!),
+            }
+        });
         if (!response.ok) {
             throw new Error('Failed to fetch users');
         }

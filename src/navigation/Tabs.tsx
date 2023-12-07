@@ -7,7 +7,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useCustomTabIcon } from "../functions/hooks/navigation";
 import { sizes } from "../styles/variables/measures";
 import Profile from "../screens/profile";
-import LogoutButton from "../components/user/logOutButton";
+import LogoutButton from "../components/user/Authentication/logOutButton";
 import { useUserData } from "../functions/hooks/user";
 import { Text, View, } from "react-native"
 import { Button } from "@rneui/base";

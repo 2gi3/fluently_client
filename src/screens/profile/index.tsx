@@ -2,8 +2,8 @@ import { View } from "react-native"
 import Dashboard from "../../components/user/Dashboard";
 import React, { useState } from "react";
 import { useUserData } from "../../functions/hooks/user";
-import LoginForm from "../../components/user/LoginForm";
-import SignupForm from "../../components/user/SignupForm";
+import LoginForm from "../../components/user/Authentication/LoginForm";
+import SignupForm from "../../components/user/Authentication/SignupForm";
 import { sizes } from "../../styles/variables/measures";
 import { Skeleton } from "@rneui/base";
 

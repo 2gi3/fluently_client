@@ -3,17 +3,22 @@ import { Platform } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import { ChatroomT, MessageT } from "../types/chat";
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export const createNewChatroom = async (endpoint: string, user1Id: number, user2Id: number) => {
+    const accessToken = await AsyncStorage.getItem('speaky-access-token')
 
     try {
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': JSON.parse(accessToken!),
             },
-            credentials: 'include',
+            // credentials: 'include',
             body: JSON.stringify({
                 user1Id,
                 user2Id
@@ -34,6 +39,7 @@ export const createNewChatroom = async (endpoint: string, user1Id: number, user2
 }
 
 export const createMessage = async ({ chatId, userId, text, status }: MessageT) => {
+    const accessToken = await AsyncStorage.getItem('speaky-access-token')
     const baseUlr = process.env.SERVER_URL
 
     try {
@@ -41,8 +47,9 @@ export const createMessage = async ({ chatId, userId, text, status }: MessageT) 
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': JSON.parse(accessToken!),
             },
-            credentials: 'include',
+            // credentials: 'include',
             body: JSON.stringify({
                 chatId,
                 userId,
@@ -68,14 +75,16 @@ export const createMessage = async ({ chatId, userId, text, status }: MessageT) 
 };
 
 export const updateMessageStatus = async (messageId: string | number, newStatus: string = 'read') => {
+    const accessToken = await AsyncStorage.getItem('speaky-access-token')
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/chat/message/${messageId}`
     try {
         const response = await fetch(url, {
             method: 'PATCH',
-            credentials: 'include',
+            // credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': JSON.parse(accessToken!),
             },
             body: JSON.stringify({ status: newStatus }),
         });

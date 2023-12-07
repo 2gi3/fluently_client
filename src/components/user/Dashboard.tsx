@@ -7,14 +7,13 @@ import { sizes } from "../../styles/variables/measures";
 import React, { useEffect, useState } from "react";
 import { useLogIn, useLogOut } from "../../functions/hooks/user";
 import { updateUser } from "../../functions/user";
-import ImagePickerExample from "./ImagePicker";
 import * as ImagePicker from 'expo-image-picker';
-import { updateNewUserField } from "../../redux/slices/newUserSlice";
 import { manipulateAsync } from "expo-image-manipulator";
-import AuthInput from "./AuthInput";
+import AuthInput from "./Authentication/AuthInput";
 import { studentName } from "../../regex";
 import { ConnectionManagerButtons } from "../ConnectionManagerButtons";
 import colors from "../../styles/variables/colors";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
@@ -73,6 +72,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
 
 
     const handleDeleteAccount = async () => {
+        const accessToken = await AsyncStorage.getItem('speaky-access-token')
+
         if (confirmationSentence === confirmationInput.trim().toLocaleLowerCase()) {
             try {
                 const response = await fetch(`${baseUrl}/api/user/${user.id}`, {
@@ -80,9 +81,10 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': JSON.parse(accessToken!),
+
                     }
                 });
-                console.log(response)
 
                 if (response.status === 200) {
                     console.log('Account deleted successfully');
@@ -114,6 +116,13 @@ const Dashboard = ({ user }: { user: UserT }) => {
 
     }, [socketUrl])
 
+    useEffect(() => {
+        const prt = async () => {
+            const accessToken = await AsyncStorage.getItem('speaky-access-token')
+            console.log({ accessToken: JSON.parse(accessToken!) })
+        }
+        prt()
+    }, [])
     return (
         <ScrollView style={{
             backgroundColor: primary

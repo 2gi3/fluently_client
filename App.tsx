@@ -1,6 +1,6 @@
 import { SafeAreaView } from 'react-native';
 import { Provider } from "react-redux";
-import { styles } from './src/styles';
+import { globalStyles } from './src/styles';
 import Navigator from './src/navigation';
 import { store } from './src/redux/store';
 import React from 'react';
@@ -18,7 +18,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <ThemeProvider theme={theme}>
-        <SafeAreaView style={styles.wrapper}>
+        <SafeAreaView style={globalStyles.wrapper}>
           <Navigator />
           <ConnectionManagerAuto />
         </SafeAreaView>

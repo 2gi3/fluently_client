@@ -29,7 +29,7 @@ export const statusSlice = createSlice({
         },
         setConnected: (state, action: PayloadAction<boolean>) => {
             state.connected = action.payload;
-        },
+        }
     },
 });
 

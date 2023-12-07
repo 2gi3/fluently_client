@@ -1,7 +1,7 @@
 import { Button, Dialog } from "@rneui/base"
 import React, { useState } from "react";
 import { Text } from "react-native"
-import ImagePickerExample from "./ImagePicker";
+import ImageSelector from "./ImageSelector";
 
 const ProfilePictureUploader = () => {
     const [visible, setVisible] = useState(false);
@@ -16,14 +16,13 @@ const ProfilePictureUploader = () => {
             <Button
                 title="Update"
                 onPress={toggleDialog}
-            // buttonStyle={styles.button}
             />
             <Dialog
                 isVisible={visible}
                 onBackdropPress={toggleDialog}
             >
                 <Dialog.Title title="Select an image" />
-                <ImagePickerExample />
+                <ImageSelector />
 
 
             </Dialog>

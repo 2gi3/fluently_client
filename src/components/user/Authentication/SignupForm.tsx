@@ -2,22 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { Button, Card, Divider, Icon, Overlay, Skeleton, Text } from "@rneui/themed";
 import { Input } from "@rneui/themed";
 import { ActivityIndicator, SafeAreaView, ScrollView, StyleSheet, View, } from "react-native"
-import { sizes } from "../../styles/variables/measures";
-import { RootState } from "../../redux/store";
+import { sizes } from "../../../styles/variables/measures";
+import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
-import { clearNewUser, setNewUser, updateNewUserField } from '../../redux/slices/newUserSlice';
-import { Gender, NewUserT } from '../../types/user';
-import { useLocation, useLogIn } from '../../functions/hooks/user';
-import { emailRegex, passwordRegex, studentName } from '../../regex';
+import { clearNewUser, setNewUser, updateNewUserField } from '../../../redux/slices/newUserSlice';
+import { Gender, NewUserT } from '../../../types/user';
+import { useLocation, useLogIn } from '../../../functions/hooks/user';
+import { emailRegex, passwordRegex, studentName } from '../../../regex';
 import AuthInput from './AuthInput';
-import LanguagePicker from './LanguagePicker';
-import NationalityPicker from './NationalityPicker';
-import LearnLanguageSelector from './LearnLanguageSelector';
-import GenderSelector from './GenderSelector';
-import DateOfBirthSelector from './DateOfBirthSelector';
-import colors from '../../styles/variables/colors';
-import ConfirmationOverlay from '../ConfirmationOverlay';
-import { setAmount } from '../../redux/slices/counterSlice';
+import LearnLanguageSelector from '../selectors/LearnLanguageSelector';
+import GenderSelector from '../selectors/GenderSelector';
+import DateOfBirthSelector from '../selectors/DateOfBirthSelector';
+import colors from '../../../styles/variables/colors';
+import ConfirmationOverlay from '../../ConfirmationOverlay';
+import { setAmount } from '../../../redux/slices/counterSlice';
+import LanguageSelector from '../selectors/LanguageSelector';
+import NationalitySelector from '../selectors/NationalitySelector';
+import styles from './styles'
+import { globalStyles } from '../../../styles';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 
 
@@ -25,7 +29,7 @@ import { setAmount } from '../../redux/slices/counterSlice';
 const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
     const count = useSelector((state: RootState) => state.counter.value);
 
-    const { secondary } = colors
+    const { primaryFont, secondary } = colors
     const [city, country, loading, error] = useLocation()
     const dispatch = useDispatch();
     const newUser = useSelector((state: RootState) => state.newUser.newUser);
@@ -104,8 +108,15 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 },
                 body: JSON.stringify(newUserData),
             });
-            const data = await response.json()
-            logIn(data.user)
+
+            const accessToken = response.headers.get('Authorization')
+
+            const { user, refreshToken } = await response.json()
+            logIn(user)
+            await AsyncStorage.setItem('speaky-access-token', JSON.stringify(accessToken));
+            await AsyncStorage.setItem('speaky-refresh-token', JSON.stringify(refreshToken));
+
+
             dispatch(clearNewUser());
 
             if (response.ok) {
@@ -139,18 +150,12 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     }, [email]);
 
     return (
-        <ScrollView style={{
-            marginHorizontal: sizes.S
-        }}>
+        <ScrollView style={styles.scrollView}>
             {checkingUserExistence ?
                 <View>
                     <ActivityIndicator size="large" color="#00ff00" />
                 </View>
-                : <Card containerStyle={{
-                    maxWidth: 420,
-                    marginHorizontal: 'auto',
-                    marginVertical: sizes.L,
-                }}>
+                : <Card containerStyle={styles.cardContainer}>
                     <Card.Title h3>{header}</Card.Title>
                     <Card.Divider />
 
@@ -207,17 +212,11 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 icon={
                                     <Icon
                                         name="navigate-next"
-                                        color={secondary}
+                                        color={primaryFont}
                                         iconStyle={{ marginLeft: 10, marginBottom: -1 }}
                                     />
                                 }
-                                buttonStyle={{
-                                    borderRadius: 0,
-                                    marginLeft: 0,
-                                    marginRight: 0,
-                                    marginBottom: sizes.M,
-                                    marginTop: 0
-                                }}
+                                buttonStyle={globalStyles.whideButton}
                                 title="Create account"
                                 onPress={handleSetNewUser}
                             />
@@ -228,7 +227,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 marginBottom: sizes.S,
                             }} >You already have an account?</Text>
 
-                            <Button size="sm" type="outline" onPress={() => toggleLoginState(true)}>
+                            <Button type="outline" onPress={() => toggleLoginState(true)}>
                                 Log in
                             </Button>
                             <Overlay isVisible={visible} onBackdropPress={toggleOverlay}
@@ -283,8 +282,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 marginBottom: sizes.M,
                             }}
                         /> */}
-                                <NationalityPicker />
-                                <LanguagePicker />
+                                <NationalitySelector />
+                                <LanguageSelector />
 
                                 {/* <Input
                             placeholder="Teaching Language"
@@ -304,13 +303,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 <DateOfBirthSelector />
 
                                 <Button
-                                    buttonStyle={{
-                                        borderRadius: 0,
-                                        marginLeft: 0,
-                                        marginRight: 0,
-                                        marginBottom: sizes.M,
-                                        marginTop: sizes.M
-                                    }}
+                                    buttonStyle={globalStyles.whideButton}
                                     title="Create your account"
                                     onPress={createUser}
                                 />

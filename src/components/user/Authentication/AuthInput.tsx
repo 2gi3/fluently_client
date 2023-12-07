@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { Input, Text } from "@rneui/base";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { AuthInputProps } from '../../types/user';
-import { sizes } from '../../styles/variables/measures';
+import { AuthInputProps } from '../../../types/user';
+import { sizes } from '../../../styles/variables/measures';
 
 const AuthInput = ({
   autoFocus = false,

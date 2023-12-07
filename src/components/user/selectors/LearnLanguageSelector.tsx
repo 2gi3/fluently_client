@@ -1,10 +1,12 @@
 import React from 'react'
-import { Button } from "@rneui/base";
+import { Button } from "@rneui/themed";
 import { StyleSheet, View, Text } from "react-native"
-import { sizes } from "../../styles/variables/measures";
+import { sizes } from "../../../styles/variables/measures";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { updateNewUserField } from "../../redux/slices/newUserSlice";
+import { RootState } from "../../../redux/store";
+import { updateNewUserField } from "../../../redux/slices/newUserSlice";
+import styles from './styles';
+import { globalStyles } from '../../../styles';
 
 const LearnLanguageSelector = () => {
     const learningLanguage = useSelector((state: RootState) => state.newUser.newUser.learning_language);
@@ -13,7 +15,7 @@ const LearnLanguageSelector = () => {
 
     return (
         <View style={{ padding: sizes.XS, marginBottom: sizes.M }}>
-            <Text style={{ marginBottom: sizes.S, paddingHorizontal: sizes.XS, fontSize: 18, color: '#86939e' }}>
+            <Text style={[styles.selectorTitle, globalStyles.elementTitle]}>
                 Which language are you learning?
             </Text>
             <View style={{ display: 'flex', gap: sizes.S, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: sizes.XS }}>

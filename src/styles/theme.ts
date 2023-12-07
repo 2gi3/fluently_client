@@ -2,14 +2,14 @@ import { createTheme } from "@rneui/themed";
 import colors from "./variables/colors";
 import { sizes } from "./variables/measures";
 
-const { secondary, tertiary } = colors
+const { primaryFont, secondary, secondaryFont, tertiary } = colors
 const { XS } = sizes
 
 export const theme = createTheme({
-    // lightColors: {
-    //   primary: colors.tertiary,
-    //   warning: colors.danger
-    // },
+    lightColors: {
+        primary: colors.tertiary,
+        warning: colors.danger
+    },
     // darkColors: {
     //   primary: '#000',
     // },
@@ -20,11 +20,20 @@ export const theme = createTheme({
                 backgroundColor: secondary
             }
         },
+        ListItemTitle: {
+            style: {
+                color: secondaryFont,
+                fontSize: 18
+            }
+        },
         Button: {
             buttonStyle: {
                 borderColor: tertiary,
                 borderRadius: XS
-            }
+            },
+            titleStyle: {
+                color: primaryFont
+            },
         },
     },
 });

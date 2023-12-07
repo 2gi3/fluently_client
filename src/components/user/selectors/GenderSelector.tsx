@@ -1,10 +1,12 @@
 import React from 'react'
-import { Button } from "@rneui/base";
+import { Button } from "@rneui/themed";
 import { StyleSheet, View, Text } from "react-native"
-import { sizes } from "../../styles/variables/measures";
+import { sizes } from "../../../styles/variables/measures";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { updateNewUserField } from "../../redux/slices/newUserSlice";
+import { RootState } from "../../../redux/store";
+import { updateNewUserField } from "../../../redux/slices/newUserSlice";
+import styles from './styles';
+import { globalStyles } from '../../../styles';
 
 const GenderSelector = () => {
     const gender = useSelector((state: RootState) => state.newUser.newUser.gender);
@@ -13,7 +15,7 @@ const GenderSelector = () => {
 
     return (
         <View style={{ padding: sizes.XS, marginBottom: sizes.M }}>
-            <Text style={{ marginBottom: sizes.S, paddingHorizontal: sizes.XS, fontSize: 18, color: '#86939e' }}>
+            <Text style={[styles.selectorTitle, globalStyles.elementTitle]}>
                 What is your gender?
             </Text>
             <View style={{ display: 'flex', gap: sizes.XS, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingHorizontal: sizes.XS }}>
@@ -24,7 +26,7 @@ const GenderSelector = () => {
                         dispatch(updateNewUserField({ key: 'gender', value: 'female' }));
 
                     }}
-                    size="sm"
+                    // size="sm"
                     buttonStyle={{ width: 68 }}
 
                 />
@@ -35,7 +37,7 @@ const GenderSelector = () => {
                         dispatch(updateNewUserField({ key: 'gender', value: 'other' }));
 
                     }}
-                    size="sm"
+                    // size="sm"
                     buttonStyle={{ width: 68 }}
 
                 />
@@ -46,7 +48,7 @@ const GenderSelector = () => {
                     onPress={() => {
                         dispatch(updateNewUserField({ key: 'gender', value: 'male' }));
                     }}
-                    size="sm"
+                    // size="sm"
                     buttonStyle={{ width: 68 }}
 
 

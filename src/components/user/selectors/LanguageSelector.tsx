@@ -1,16 +1,16 @@
 import { Input, ListItem } from "@rneui/themed";
-import { worldLanguages } from "../../data/worldLanguages"
+import { worldLanguages } from "../../../data/worldLanguages"
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
-import { updateNewUserField } from "../../redux/slices/newUserSlice";
-import { sizes } from "../../styles/variables/measures";
-import { RootState } from "../../redux/store";
+import { updateNewUserField } from "../../../redux/slices/newUserSlice";
+import { sizes } from "../../../styles/variables/measures";
+import { RootState } from "../../../redux/store";
 import { View, Text } from "react-native"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 
-const LanguagePicker = () => {
+const LanguageSelector = () => {
   const newUser = useSelector((state: RootState) => state.newUser.newUser);
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
@@ -34,7 +34,7 @@ const LanguagePicker = () => {
           <ListItem.Content
             style={{ paddingHorizontal: sizes.XS }}
           >
-            <ListItem.Title style={{ color: '#86939e', fontSize: 18 }}>Native Language</ListItem.Title>
+            <ListItem.Title>Native Language</ListItem.Title>
           </ListItem.Content>
           {newUser.native_language && (
             <View style={{ paddingHorizontal: sizes.XS }} >
@@ -67,14 +67,6 @@ const LanguagePicker = () => {
             containerStyle={{
               marginTop: -sizes.M,
             }}
-          // rightIcon={(
-          //   <MaterialCommunityIcons
-          //     name="text-search"
-          //     size={24}
-          //     color={'#8e8e8f'}
-          //     style={{ marginLeft: 8 }}
-          //   />
-          // )}
           />
         )
       }
@@ -107,4 +99,4 @@ const LanguagePicker = () => {
   )
 }
 
-export default LanguagePicker
+export default LanguageSelector

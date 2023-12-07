@@ -3,10 +3,11 @@ import { sizes } from "./variables/measures";
 import colors from "./variables/colors";
 
 const { XS, S, M, L, XL } = sizes
-const { secondary } = colors
+const { secondary, secondaryFont } = colors
 
 
-export const styles = StyleSheet.create({
+
+export const globalStyles = StyleSheet.create({
     wrapper: {
         marginTop: StatusBar.currentHeight || 0,
         marginHorizontal: 'auto',
@@ -16,8 +17,16 @@ export const styles = StyleSheet.create({
     },
     container: {
         padding: M
+    },
+    whideButton: {
+        marginLeft: 0,
+        marginRight: 0,
+        marginBottom: M,
+        marginTop: 0,
+        maxWidth: 400
+    },
+    elementTitle: {
+        color: secondaryFont,
+        fontSize: 18
     }
 });
-
-
-

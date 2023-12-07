@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { SafeAreaView, Text, Platform, View } from "react-native";
 import { Button, ListItem } from "@rneui/themed";
-import { sizes } from "../../styles/variables/measures";
-import { monthsOfTheYear } from "../../data/monthsOfTheYear";
+import { sizes } from "../../../styles/variables/measures";
+import { monthsOfTheYear } from "../../../data/monthsOfTheYear";
 import { useDispatch } from "react-redux";
-import { updateNewUserField } from "../../redux/slices/newUserSlice";
+import { updateNewUserField } from "../../../redux/slices/newUserSlice";
+import { globalStyles } from "../../../styles";
 
 const DateOfBirthSelector = () => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ const DateOfBirthSelector = () => {
   return (
     <SafeAreaView style={{ marginBottom: sizes.M, padding: sizes.XS }}>
       <View style={{ paddingHorizontal: sizes.XS, marginBottom: sizes.S }} >
-        <Text style={{ color: '#86939e', fontSize: 18 }}>What is your date of birth?</Text>
+        <Text style={globalStyles.elementTitle}>What is your date of birth?</Text>
       </View>
       {/* <Button onPress={() => setShowDatePicker(!showDatePicker)} title="Show date picker!" /> */}
       {/* <Text>Selected: {date.toLocaleString()}</Text> */}
@@ -83,7 +84,6 @@ const DateOfBirthSelector = () => {
             setShowYearPicker(!showYearPicker)
 
           }}
-          size="sm"
           buttonStyle={{ width: 56 }}
 
         />
@@ -93,7 +93,6 @@ const DateOfBirthSelector = () => {
           onPress={() => {
             setShowMonthPicker(!showMonthPicker)
           }}
-          size="sm"
         // buttonStyle={{ width: 112 }}
 
         />}
@@ -107,7 +106,6 @@ const DateOfBirthSelector = () => {
             handleYearMonthChange(year, month);
             setShowDayPicker(!showDayPicker);
           }}
-          size="sm"
           buttonStyle={{ width: 42 }}
         /> : null}
       </View>

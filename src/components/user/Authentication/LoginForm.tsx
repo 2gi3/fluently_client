@@ -1,16 +1,19 @@
 import { Button, Card, Icon, Input, Overlay } from "@rneui/themed"
-import { sizes } from "../../styles/variables/measures"
+import { sizes } from "../../../styles/variables/measures"
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, } from "react-native"
-import { useLogIn } from "../../functions/hooks/user"
+import { useLogIn } from "../../../functions/hooks/user"
 import React, { useEffect, useState } from 'react'
-import { clearNewUser } from "../../redux/slices/newUserSlice"
+import { clearNewUser } from "../../../redux/slices/newUserSlice"
 import { useDispatch, useSelector } from 'react-redux';
-import { emailRegex, passwordRegex } from "../../regex"
+import { emailRegex, passwordRegex } from "../../../regex"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import AuthInput from "./AuthInput"
-import colors from "../../styles/variables/colors"
-import { RootState } from "../../redux/store"
-import { setAmount } from "../../redux/slices/counterSlice"
+import colors from "../../../styles/variables/colors"
+import { RootState } from "../../../redux/store"
+import { setAmount } from "../../../redux/slices/counterSlice"
+import styles from "./styles"
+import { globalStyles } from "../../../styles"
+import AsyncStorage from "@react-native-async-storage/async-storage"
 
 
 
@@ -21,7 +24,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
     const count = useSelector((state: RootState) => state.counter.value);
 
     const dispatch = useDispatch();
-    const { secondary } = colors
+    const { primaryFont, secondary } = colors
 
     const logIn = useLogIn()
     const [email, setEmail] = useState('');
@@ -59,7 +62,12 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                 });
                 dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
 
-                const user = await response.json()
+                const accessToken = response.headers.get('Authorization')
+
+                const { user, refreshToken } = await response.json()
+                await AsyncStorage.setItem('speaky-access-token', JSON.stringify(accessToken));
+                await AsyncStorage.setItem('speaky-refresh-token', JSON.stringify(refreshToken));
+
 
 
                 if (response.ok) {
@@ -94,19 +102,11 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
     }, [count])
 
     return (
-        <ScrollView style={{
-            marginHorizontal: sizes.S
-        }}>
-            <Card containerStyle={{
-                maxWidth: 420,
-                marginHorizontal: 'auto',
-                marginVertical: sizes.L,
-            }}>
+        <ScrollView style={styles.scrollView}>
+            <Card containerStyle={styles.cardContainer}>
                 <Card.Title h3>Welcome back!</Card.Title>
                 <Card.Divider />
-                <View style={{
-                    marginVertical: sizes.M,
-                }}>
+                <View style={{ marginVertical: sizes.M }}>
 
                     <AuthInput
                         autoFocus={true}
@@ -133,17 +133,11 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                         icon={
                             <Icon
                                 name="navigate-next"
-                                color={secondary}
+                                color={primaryFont}
                                 iconStyle={{ marginLeft: 10, marginBottom: -1 }}
                             />
                         }
-                        buttonStyle={{
-                            borderRadius: 0,
-                            marginLeft: 0,
-                            marginRight: 0,
-                            marginBottom: sizes.M,
-                            marginTop: 0
-                        }}
+                        buttonStyle={globalStyles.whideButton}
                         title="Log in"
                         onPress={handleLogin}
                     />
@@ -153,7 +147,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     <Text style={{
                         marginBottom: sizes.S,
                     }} >You don't have an account yet?</Text>
-                    <Button size="sm" type="outline" onPress={() => toggleLoginState(false)}>
+                    <Button type="outline" onPress={() => toggleLoginState(false)}>
                         Create an account
                     </Button>
 
