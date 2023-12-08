@@ -78,7 +78,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
             try {
                 const response = await fetch(`${baseUrl}/api/user/${user.id}`, {
                     method: 'DELETE',
-                    credentials: 'include',
+                    // credentials: 'include',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': JSON.parse(accessToken!),
@@ -116,13 +116,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
 
     }, [socketUrl])
 
-    useEffect(() => {
-        const prt = async () => {
-            const accessToken = await AsyncStorage.getItem('speaky-access-token')
-            console.log({ accessToken: JSON.parse(accessToken!) })
-        }
-        prt()
-    }, [])
     return (
         <ScrollView style={{
             backgroundColor: primary

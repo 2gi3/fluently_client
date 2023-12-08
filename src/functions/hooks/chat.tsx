@@ -4,7 +4,7 @@ import { RootState } from "../../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../../types/user";
 import { useState, useEffect } from "react";
-import { ChatroomT, MessageT } from "../../types/chat";
+import { ChatMessageT, ChatroomT, MessageT } from "../../types/chat";
 import { clearChatMessages } from "../../redux/slices/chatSlice";
 
 
@@ -15,7 +15,6 @@ export const useGetChats = () => {
 
     const fetcher = async () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
-        console.log('atB', accessToken)
         const response = await fetch(url, {
             method: 'GET',
             // credentials: 'include',
@@ -27,7 +26,7 @@ export const useGetChats = () => {
         if (!response.ok) {
             throw new Error('Failed to fetch chatrooms');
         }
-        const data: ChatroomT[] = await response.json();
+        const data: { chatrooms: ChatroomT[], lastMessages: ChatMessageT[] } = await response.json();
         return data;
     };
 

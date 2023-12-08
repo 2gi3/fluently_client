@@ -35,7 +35,8 @@ const ChatsList = () => {
     useEffect(() => {
         refreshData();
         if (chatrooms) {
-            const filteredChatrooms = chatrooms
+
+            const filteredChatrooms = chatrooms.chatrooms
                 .slice()
                 .sort((a: ChatroomT, b: ChatroomT) => {
                     const aLastMessageId = a.last_message_id ?? Number.MAX_SAFE_INTEGER;
@@ -62,8 +63,10 @@ const ChatsList = () => {
             })}
             style={{ maxWidth: 440, maxHeight: 108, minWidth: 300 }}
         >
-            <ChatCard chatroom={item} />
-        </Pressable>
+            <ChatCard
+                chatroom={item}
+                lastMessages={chatrooms!.lastMessages}
+            />        </Pressable>
     );
 
     if (loading) {
@@ -71,7 +74,7 @@ const ChatsList = () => {
             <Skeleton circle={true} animation="wave" width={80} height={80} style={{ marginTop: sizes.M, marginBottom: sizes.XS, marginLeft: sizes.S }} />
             <Skeleton animation="wave" width={200} height={80} style={{ marginVertical: sizes.XS, marginLeft: sizes.M }} />
         </View>
-    } else if (sortedChatrooms) {
+    } else if (chatrooms) {
         return (
             <FlatList
                 data={sortedChatrooms}

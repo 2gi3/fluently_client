@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, ListItem, Divider, Skeleton, Badge } from "@rneui/base"
 import { TouchableOpacity, View, Text } from "react-native"
 import moment from 'moment';
-import { ChatroomT } from '../../types/chat';
+import { ChatMessageT, ChatroomT } from '../../types/chat';
 import { useGetUsers, useUserData } from '../../functions/hooks/user';
 import { sizes } from '../../styles/variables/measures';
 import { RootState } from '../../redux/store';
@@ -14,7 +14,7 @@ import colors from '../../styles/variables/colors';
 
 
 
-const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
+const ChatCard = ({ chatroom, lastMessages }: { chatroom: ChatroomT, lastMessages?: ChatMessageT[] }) => {
     const { secondary, primary, tertiary } = colors
     const connectedUsers = useSelector((state: RootState) => state.webSocket.connectedUsers)
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
@@ -28,16 +28,17 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
 
 
     const { loading, error, users: user2, refreshData, isValidating } = useGetUsers(url);
-    const { loading: loadingLastMessage, error: errorLastMessage, lastMessage, refreshData: refreshLastMessage, isValidating: isValidatingLastMessage } = useGetLastMessage(chatroom.id!);
+    // const { loading: loadingLastMessage, error: errorLastMessage, lastMessage, refreshData: refreshLastMessage, isValidating: isValidatingLastMessage } = useGetLastMessage(chatroom.id!);
     const dispatch = useDispatch()
     const [isConnected, setIsConnected] = useState(false)
-
+    const lastMessage = lastMessages!.find(
+        (message) => Number(message.id) === Number(chatroom.last_message_id)
+    )
     // const isLastMessageSent = lastMessage && lastMessage.status === 'sent';
 
     // Dynamic background color based on the condition
     const [backgroundColor, setBackgroundColor] = useState(secondary)
     // isLastMessageSent ? 'yellow' : 'wheat';
-
     useEffect(() => {
         if (connectedUsers && user2) {
             setIsConnected(connectedUsers.includes(user2.id))
@@ -50,13 +51,13 @@ const ChatCard = ({ chatroom }: { chatroom: ChatroomT }) => {
         } else (setBackgroundColor(secondary))
     }, [lastMessage, connectedUsers, user2])
 
-    useEffect(() => {
-        //updates the unread badge in the chatsList
-        refreshLastMessage()
-    }, [activeChat, pendingChats])
+    // useEffect(() => {
+    //     //updates the unread badge in the chatsList
+    //     refreshLastMessage()
+    // }, [activeChat, pendingChats])
 
 
-    if (loading || loadingLastMessage) {
+    if (loading) {
         return (
             <View style={{
                 //  flexDirection: 'column',

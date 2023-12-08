@@ -154,7 +154,7 @@ const ChatScreen = () => {
         return (
             <View>
                 <Text>
-                    {`Say hello to ${route.params?.name} to start a language exchange`}
+                    {`Say hello to ${user2.name} to start a language exchange`}
                 </Text>
             </View>
         )

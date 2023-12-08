@@ -26,8 +26,11 @@ export interface ChatroomT {
 export type ChatMessageT = {
     user: UserT;
     id: string;
+    chatId: number
     text: string;
     created_at: string;
+    status: string
+    userId: number
 };
 export type MockChatType = {
     id: string;
