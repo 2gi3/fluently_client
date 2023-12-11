@@ -20,6 +20,7 @@ export const useLogIn = () => {
     const dispatch = useDispatch();
 
     const storeUserDataAndLogIn = async (user: UserT) => {
+        console.log('loginUser', { user })
         try {
             await AsyncStorage.setItem('@user', JSON.stringify(user));
             dispatch(logIn());

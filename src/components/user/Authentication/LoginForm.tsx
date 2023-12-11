@@ -14,6 +14,7 @@ import { setAmount } from "../../../redux/slices/counterSlice"
 import styles from "./styles"
 import { globalStyles } from "../../../styles"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import { setAccessToken } from "../../../functions/auth"
 
 
 
@@ -59,13 +60,11 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                         email: email.trim(),
                         password: password.trim()
                     }),
-                });
+                })
+                setAccessToken(response);
                 dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
 
-                const accessToken = response.headers.get('Authorization')
-
                 const { user, refreshToken } = await response.json()
-                await AsyncStorage.setItem('speaky-access-token', JSON.stringify(accessToken));
                 await AsyncStorage.setItem('speaky-refresh-token', JSON.stringify(refreshToken));
 
 

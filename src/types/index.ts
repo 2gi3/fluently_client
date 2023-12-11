@@ -7,3 +7,11 @@ export interface StatusState {
     connected: boolean;
     socketUrl: string | null;
 }
+
+export interface ApiResponseHeadersT {
+    headers: {
+        get: (key: string) => string | null;
+    };
+    json: () => Promise<{ refreshToken?: string }>;
+
+}

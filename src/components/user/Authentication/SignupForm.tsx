@@ -21,6 +21,7 @@ import NationalitySelector from '../selectors/NationalitySelector';
 import styles from './styles'
 import { globalStyles } from '../../../styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setAccessToken } from '../../../functions/auth';
 
 
 
@@ -109,12 +110,10 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 body: JSON.stringify(newUserData),
             });
 
-            const accessToken = response.headers.get('Authorization')
-
+            setAccessToken(response)
             const { user, refreshToken } = await response.json()
-            logIn(user)
-            await AsyncStorage.setItem('speaky-access-token', JSON.stringify(accessToken));
             await AsyncStorage.setItem('speaky-refresh-token', JSON.stringify(refreshToken));
+            logIn(user)
 
 
             dispatch(clearNewUser());
