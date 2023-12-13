@@ -10,6 +10,8 @@ export const useTokenRefresher = () => {
             try {
                 const accessToken = await AsyncStorage.getItem('speaky-access-token');
                 const refreshToken = await AsyncStorage.getItem('speaky-refresh-token');
+                const cleanedRefreshToken = refreshToken!.replace(/^"(.*)"$/, '$1'); // if the token is wrapped in double quotes then the double quotes will be removed 
+
 
                 if (accessToken) {
                     const [, payloadBase64] = accessToken.split('.');
@@ -17,12 +19,12 @@ export const useTokenRefresher = () => {
                     const expirationTime = payload.exp * 1000;
                     const currentTime = Date.now();
                     const timeLeftInMinutes = Math.floor((expirationTime - currentTime) / (60 * 1000));
-                    console.log({ timeLeftBefore: timeLeftInMinutes });
-                    if (timeLeftInMinutes < 90) {
-                        const newAccessToken = await fetch(`${baseUrl}/api/auth/token/${refreshToken}`, {
+                    console.log(` Access token expires in ${timeLeftInMinutes} minutes`);
+                    if (timeLeftInMinutes < 32) {
+                        const newAccessToken = await fetch(`${baseUrl}/api/auth/token/${cleanedRefreshToken}`, {
                             headers: {
                                 'Content-Type': 'application/json',
-                                'Authorization': JSON.parse(accessToken!),
+                                // 'Authorization': JSON.parse(accessToken!),
                             }
                         });
                         setAccessToken(newAccessToken);
@@ -35,7 +37,9 @@ export const useTokenRefresher = () => {
 
         updateAccessToken();
 
-        const intervalId = setInterval(updateAccessToken, 3600000);
+        const TOKEN_REFRESH_INTERVAL = 29 * 60 * 1000; // 29 minutes
+
+        const intervalId = setInterval(updateAccessToken, TOKEN_REFRESH_INTERVAL);
 
         return () => clearInterval(intervalId);
     }, []);

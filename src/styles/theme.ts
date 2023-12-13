@@ -3,7 +3,7 @@ import colors from "./variables/colors";
 import { sizes } from "./variables/measures";
 
 const { primaryFont, secondary, secondaryFont, tertiary } = colors
-const { XS } = sizes
+const { XS, S, M, L, XL } = sizes
 
 export const theme = createTheme({
     lightColors: {
@@ -35,5 +35,22 @@ export const theme = createTheme({
                 color: primaryFont
             },
         },
+        Card: {
+            containerStyle: {
+                maxWidth: 400,
+                borderRadius: 24,
+                padding: XS
+            }
+        },
+        CardTitle: {
+            style: {
+                textAlign: 'left',
+                marginTop: 15,
+                marginBottom: 7
+            }
+        },
+        CardImage: {
+            style: { borderRadius: S }
+        }
     },
 });

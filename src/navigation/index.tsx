@@ -7,9 +7,9 @@ import StudentsList from "../screens/chat/StudentsList"
 import chatsData from '../../mock_data/chatsData.json'
 import { RootStackParamList } from "../types/navigation"
 import Tabs from "./Tabs"
-import Login from "../components/user/LoginForm"
 import PublicProfile from '../screens/profile/publicProfile'
 import colors from '../styles/variables/colors'
+import PostsGallery from '../screens/community/postsGallery'
 
 
 
@@ -31,6 +31,8 @@ const Navigator = () => {
                 <Stack.Screen name='Chat' component={ChatScreen} />
                 <Stack.Screen name='Students' component={StudentsList} />
                 <Stack.Screen name='Student' component={PublicProfile} />
+                {/* <Stack.Screen name='Community' component={PostsGallery} /> */}
+
             </Stack.Navigator>
         </NavigationContainer>
     )

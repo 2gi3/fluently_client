@@ -9,12 +9,13 @@ import { sizes } from "../styles/variables/measures";
 import Profile from "../screens/profile";
 import LogoutButton from "../components/user/Authentication/logOutButton";
 import { useUserData } from "../functions/hooks/user";
-import { Text, View, } from "react-native"
+import { ActivityIndicator, Text, View, } from "react-native"
 import { Button } from "@rneui/base";
 import TopTabButton from "../components/navigation/TopTabButton";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import colors from '../styles/variables/colors';
+import PostsGallery from '../screens/community/postsGallery';
 
 const CustomTabLabel = ({ label, position }) => {
     const margin = position === 'beside-icon' ? sizes.S : null
@@ -32,10 +33,14 @@ const Tabs = () => {
 
 
     // const renderIcon = useCustomTabIcon()
+    if (user.loading) {
+        return <ActivityIndicator size="large" color="#00ff00" style={{ marginTop: 200 }} />
+    }
+
 
     return (
         <Tabs.Navigator
-            initialRouteName={user.user ? "Chats" : "Profile"}
+            initialRouteName={user.user ? "Community" : "Profile"}
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
                 headerStyle: {
@@ -67,7 +72,7 @@ const Tabs = () => {
             )}
             {user.user && (
                 <Tabs.Screen
-                    name="Community" component={DeleteMe} options={{
+                    name="Community" component={PostsGallery} options={{
                         tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
                     }}
                 />
@@ -78,15 +83,7 @@ const Tabs = () => {
                     headerRight: () => (
                         user.user?.id ? <LogoutButton style={{ marginRight: sizes.S }} />
                             : null
-                        //  (<Button onPress={() => navigation.navigate('Login')}
-                        // ><Text>Log in
-                        //         <Entypo
-                        //             name="login"
-                        //             size={24}
-                        //             color={'#8e8e8f'}
-                        //             style={{ marginRight: sizes.S }} />
-                        //     </Text>
-                        // </Button>)
+
                     )
                 })}
             />

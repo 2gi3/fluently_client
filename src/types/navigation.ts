@@ -9,6 +9,7 @@ export type RootStackParamList = {
     Student: undefined
     Profile: undefined
     'Profile/Login': undefined
+    Community: undefined
 };
 
 export interface TopTabButtonProps {
