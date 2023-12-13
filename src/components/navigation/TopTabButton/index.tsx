@@ -1,15 +1,14 @@
 import React from 'react';
-import { ActivityIndicator, Text, View } from 'react-native';
+import { ActivityIndicator, Text } from 'react-native';
 import { Button } from '@rneui/themed';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { sizes } from '../../styles/variables/measures';
-import { TopTabButtonProps } from '../../types/navigation';
-import colors from '../../styles/variables/colors';
+import { TopTabButtonProps } from '../../../types/navigation';
+import { styles } from './styles';
 
 const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = false }: TopTabButtonProps) => {
     if (isLoading) {
         return (
-            <ActivityIndicator style={{ marginRight: 12 }} />
+            <ActivityIndicator style={styles.activityIndicator} />
         )
     } else {
         return (
@@ -17,9 +16,9 @@ const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = 
                 disabled={disabled}
                 type="outline"
                 onPress={onPress}
-                style={{ marginRight: sizes.S, display: 'flex', alignItems: 'center', backgroundColor: 'transparent', borderColor: colors.tertiary }}
+                style={styles.container}
             >
-                {label && <Text style={{ marginRight: sizes.XS }}>{label}</Text>}
+                {label && <Text style={styles.label}>{label}</Text>}
                 <MaterialCommunityIcons
                     name={iconName}
                     size={24}

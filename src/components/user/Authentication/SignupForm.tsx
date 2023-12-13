@@ -14,7 +14,6 @@ import LearnLanguageSelector from '../selectors/LearnLanguageSelector';
 import GenderSelector from '../selectors/GenderSelector';
 import DateOfBirthSelector from '../selectors/DateOfBirthSelector';
 import colors from '../../../styles/variables/colors';
-import ConfirmationOverlay from '../../ConfirmationOverlay';
 import { setAmount } from '../../../redux/slices/counterSlice';
 import LanguageSelector from '../selectors/LanguageSelector';
 import NationalitySelector from '../selectors/NationalitySelector';
@@ -22,6 +21,7 @@ import styles from './styles'
 import { globalStyles } from '../../../styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccessToken } from '../../../functions/auth';
+import ConfirmationOverlay from '../ConfirmationOverlay';
 
 
 

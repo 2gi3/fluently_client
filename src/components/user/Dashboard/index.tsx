@@ -1,19 +1,20 @@
 import { Avatar, Button, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, } from "@rneui/themed"
 import { Image, ScrollView, TextInput, View } from "react-native"
-import { RootState } from "../../redux/store";
+import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
-import { UpdatedUserResponse, UserT } from "../../types/user";
-import { sizes } from "../../styles/variables/measures";
+import { UpdatedUserResponse, UserT } from "../../../types/user";
+import { sizes } from "../../../styles/variables/measures";
 import React, { useEffect, useState } from "react";
-import { useLogIn, useLogOut } from "../../functions/hooks/user";
-import { updateUser } from "../../functions/user";
+import { useLogIn, useLogOut } from "../../../functions/hooks/user";
+import { updateUser } from "../../../functions/user";
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync } from "expo-image-manipulator";
-import AuthInput from "./Authentication/AuthInput";
-import { studentName } from "../../regex";
-import { ConnectionManagerButtons } from "../ConnectionManagerButtons";
-import colors from "../../styles/variables/colors";
+import AuthInput from "./../Authentication/AuthInput";
+import { studentName } from "../../../regex";
+import { ConnectionManagerButtons } from "../../ConnectionManagerButtons";
+import colors from "../../../styles/variables/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { styles } from "./styles";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
@@ -103,8 +104,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
         } else {
             console.log('the words do not match')
         }
-
-        // setOverlayVisible(!overlayVisible)
     }
 
     useEffect(() => {
@@ -117,64 +116,41 @@ const Dashboard = ({ user }: { user: UserT }) => {
     }, [socketUrl])
 
     return (
-        <ScrollView style={{
-            backgroundColor: primary
-        }}>
+        <ScrollView style={styles.container}>
             <ListItem>
-                <ListItem.Content style={{
-                    alignItems: 'center',
-                    paddingVertical: S
-                }}>
+                <ListItem.Content style={styles.listItemContent}>
                     <Avatar
-                        size={XL}
+                        size={sizes.XL}
                         rounded
                         source={{ uri: image }}
                         title="Hi"
-                        containerStyle={{ backgroundColor: primary }}
+                        containerStyle={styles.avatarContainer}
                     >
                         <Avatar.Accessory
                             onPress={() => {
-                                pickImage()
-                            }
-                            }
-                            size={23} />
+                                pickImage();
+                            }}
+                            size={23}
+                        />
                     </Avatar>
 
-                    {visible && <Button
-                        title="Confirm new picture"
-                        onPress={async () => {
-                            const data = await updateUser({ image: image }, updateUserEndpoint);
-                            user['image'] = data.image
-                            logIn(user)
-                            setVisible(false)
-                        }}
-                        containerStyle={{ marginTop: 25 }}
-
-                    />
-
-                    }
+                    {visible && (
+                        <Button
+                            title="Confirm new picture"
+                            onPress={async () => {
+                                const data = await updateUser({ image: image }, updateUserEndpoint);
+                                user['image'] = data.image;
+                                logIn(user);
+                                setVisible(false);
+                            }}
+                            containerStyle={styles.buttonContainer}
+                        />
+                    )}
                     <View>
                         <View>
-                            <Text h3 style={{ marginTop: S }}>{user.name}</Text>
-                            <Avatar.Accessory
-                                size={18}
-                                onPress={() => {
-                                    setNameVisible(!nameVisible)
-                                }} />
-                            <Dialog
-                                isVisible={nameVisible}
-                                onBackdropPress={() => setNameVisible(!nameVisible)}
-                                overlayStyle={{ backgroundColor: secondary, width: 'auto' }}
-                            >
-
-                                {/* <TextInput
-                                    autoFocus={true}
-                                    placeholder="Share about your Job or studies, hobbies, future goals and personal interests"
-                                    multiline={false}
-                                    // numberOfLines={8}
-                                    style={{ padding: sizes.XS }}
-                                    onChangeText={value => setName(value)}
-                                /> */}
+                            <Text h3 style={{ marginTop: sizes.S }}>{user.name}</Text>
+                            <Avatar.Accessory size={18} onPress={() => setNameVisible(!nameVisible)} />
+                            <Dialog isVisible={nameVisible} onBackdropPress={() => setNameVisible(!nameVisible)} overlayStyle={styles.dialogOverlay}>
                                 <AuthInput
                                     autoFocus={true}
                                     placeholder="Name"
@@ -184,12 +160,15 @@ const Dashboard = ({ user }: { user: UserT }) => {
                                     errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
                                 />
                                 <Dialog.Actions>
-                                    <Dialog.Button title="Upload name" onPress={async () => {
-                                        const data: UpdatedUserResponse = await updateUser({ name: name }, updateUserEndpoint);
-                                        console.log({ data })
-                                        logIn(data.updatedUser)
-                                        setNameVisible(false)
-                                    }} />
+                                    <Dialog.Button
+                                        title="Upload name"
+                                        onPress={async () => {
+                                            const data: UpdatedUserResponse = await updateUser({ name: name }, updateUserEndpoint);
+                                            console.log({ data });
+                                            logIn(data.updatedUser);
+                                            setNameVisible(false);
+                                        }}
+                                    />
                                 </Dialog.Actions>
                             </Dialog>
                         </View>
@@ -200,66 +179,55 @@ const Dashboard = ({ user }: { user: UserT }) => {
             <Divider />
             <ConnectionManagerButtons />
 
-            <View style={{ marginBottom: M }}>
-
-                {/* <ListItem>
-                    <ListItem.Content>
-                        <ListItem.Title>You are helping with</ListItem.Title>
-                        <ListItem.Subtitle style={{ marginTop: 5 }}>{user.teaching_language}</ListItem.Subtitle>
-                    </ListItem.Content>
-                </ListItem> */}
-
+            <View style={{ marginBottom: sizes.M }}>
                 <ListItem>
-                    <ListItem.Content style={{ paddingBottom: M }}>
+                    <ListItem.Content style={{ paddingBottom: sizes.M }}>
                         <ListItem.Title>About yourself</ListItem.Title>
-                        <Avatar.Accessory
-                            size={23}
-                            onPress={() => {
-                                setDescriptionVisible(!descriptionVisible)
-                            }} />
-                        <Dialog
-                            isVisible={descriptionVisible}
-                            onBackdropPress={() => setDescriptionVisible(!descriptionVisible)}
-                            overlayStyle={{ backgroundColor: secondary }}
-                        >
-
+                        <Avatar.Accessory size={23} onPress={() => setDescriptionVisible(!descriptionVisible)} />
+                        <Dialog isVisible={descriptionVisible} onBackdropPress={() => setDescriptionVisible(!descriptionVisible)} overlayStyle={{ backgroundColor: secondary }}>
                             <TextInput
                                 autoFocus={true}
                                 placeholder="Share about your Job or studies, hobbies, future goals and personal interests"
-
                                 multiline={true}
                                 numberOfLines={8}
                                 style={{ padding: sizes.XS }}
-                                onChangeText={value => setIntroduction(value)}
+                                onChangeText={(value) => setIntroduction(value)}
                             />
                             <Dialog.Actions>
-                                <Dialog.Button title="Upload description" onPress={async () => {
-                                    const data: UpdatedUserResponse = await updateUser({ description: introduction }, updateUserEndpoint);
-                                    logIn(data.updatedUser)
-                                    setDescriptionVisible(false)
-                                }} />
+                                <Dialog.Button
+                                    title="Upload description"
+                                    onPress={async () => {
+                                        const data: UpdatedUserResponse = await updateUser({ description: introduction }, updateUserEndpoint);
+                                        logIn(data.updatedUser);
+                                        setDescriptionVisible(false);
+                                    }}
+                                />
                             </Dialog.Actions>
                         </Dialog>
-                        {user.description ?
-                            <ListItem.Subtitle style={{ marginTop: 5 }}>{user.description}</ListItem.Subtitle>
-                            : <ListItem.Subtitle style={{ color: danger, marginTop: 5 }}>
+                        {user.description ? (
+                            <ListItem.Subtitle style={styles.descriptionSubtitle}>{user.description}</ListItem.Subtitle>
+                        ) : (
+                            <ListItem.Subtitle style={{ color: colors.danger, marginTop: sizes.M }}>
                                 Good self introductions facilitate good conversations 😊
-
                             </ListItem.Subtitle>
-
-
-                        }
+                        )}
                     </ListItem.Content>
                 </ListItem>
                 <Divider />
             </View>
             <ListItem>
-                <ListItem.Content style={{ paddingVertical: S }}>
+                <ListItem.Content style={{ paddingVertical: sizes.S }}>
                     <ListItem.Title>Personal details:</ListItem.Title>
-                    <ListItem.Subtitle style={{ marginTop: 5 }}>Email: <Text style={{ color: '#666666' }}>{user.email}</Text> </ListItem.Subtitle>
-                    <ListItem.Subtitle style={{ marginTop: 5 }}>Nationality: <Text style={{ color: '#666666' }}>{user.nationality}</Text></ListItem.Subtitle>
-                    <ListItem.Subtitle style={{ marginTop: 5 }}>Native Language: <Text style={{ color: '#666666' }}>{user.native_language}</Text></ListItem.Subtitle>
-                    <ListItem.Subtitle style={{ marginTop: 5 }}>You are learning: {user.learning_language}</ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
+                        Email: <Text style={{ color: '#666666' }}>{user.email}</Text>{' '}
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
+                        Nationality: <Text style={{ color: '#666666' }}>{user.nationality}</Text>
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
+                        Native Language: <Text style={{ color: '#666666' }}>{user.native_language}</Text>
+                    </ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.personalDetailsSubtitle}>You are learning: {user.learning_language}</ListItem.Subtitle>
                 </ListItem.Content>
             </ListItem>
             <Button
@@ -267,15 +235,13 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 type="outline"
                 onPress={() => setOverlayVisible(!overlayVisible)}
                 titleStyle={{ color: 'red' }}
-                buttonStyle={{ borderColor: danger, marginVertical: sizes.M, margin: 'auto', backgroundColor: secondary }}
-            >Delete your profile</Button>
-            <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(!overlayVisible)}
-                overlayStyle={{ backgroundColor: secondary, padding: sizes.M }}>
-                <Text style={{ marginBottom: sizes.M }} >
-                    ⚠️ Warning: This action is irreversible!
-                </Text>
-                <Text style={{ marginBottom: sizes.M }} >
-
+                buttonStyle={styles.deleteButton}
+            >
+                Delete your profile
+            </Button>
+            <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(!overlayVisible)} overlayStyle={styles.overlayContainer}>
+                <Text style={styles.overlayText}>⚠️ Warning: This action is irreversible!</Text>
+                <Text style={styles.overlayText}>
                     If you want to proceed, type <Text style={{ fontWeight: 'bold' }}>&apos;&nbsp;{confirmationSentence}&nbsp;&apos; </Text> in the input below:
                 </Text>
                 <Input
@@ -285,53 +251,35 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     onChangeText={(text) => {
                         setConfirmationInput(text);
                         if (confirmationSentence === confirmationInput.toLocaleLowerCase()) {
-                            setInputError(undefined)
+                            setInputError(undefined);
                         }
                     }}
-                    errorStyle={{ color: danger }}
+                    errorStyle={{ color: colors.danger }}
                     onBlur={() => {
                         if (confirmationSentence !== confirmationInput.toLocaleLowerCase()) {
-                            setInputError(`Type the word: '${confirmationSentence}' in the input above`)
+                            setInputError(`Type the word: '${confirmationSentence}' in the input above`);
                         } else {
-                            setInputError(undefined)
+                            setInputError(undefined);
                         }
                     }}
                     errorMessage={inputError}
-                    style={{
-                        paddingHorizontal: sizes.XS
-                    }}
+                    style={styles.overlayInput}
                     containerStyle={{
                         marginBottom: sizes.M,
                     }}
                 />
-                <View style={{ display: 'flex', gap: sizes.M, flexDirection: 'row', flexWrap: 'nowrap', justifyContent: 'space-between' }}>
+                <View style={styles.overlayButtonContainer}>
                     <Button
                         type="outline"
-                        icon={
-                            <Icon
-                                name="close"
-                                type="material-icons"
-                                color={tertiary}
-                                size={25}
-                            // iconStyle={}
-                            />
-                        }
-                        // title="Try again"
+                        icon={<Icon name="close" type="material-icons" color={colors.tertiary} size={25} />}
                         onPress={() => {
                             setOverlayVisible(!overlayVisible);
                             setInputError(undefined);
-                            setConfirmationInput('')
+                            setConfirmationInput('');
                         }}
-                        buttonStyle={{ width: 'auto', margin: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
-
+                        buttonStyle={styles.closeButton}
                     />
-                    <Button
-                        title="Delete account"
-                        buttonStyle={{ backgroundColor: danger }}
-                        titleStyle={{ color: secondary }}
-                        onPress={() => handleDeleteAccount()}
-
-                    />
+                    <Button title="Delete account" buttonStyle={styles.deleteAccountButton} titleStyle={{ color: colors.secondary }} onPress={() => handleDeleteAccount()} />
                 </View>
             </Overlay>
         </ScrollView>

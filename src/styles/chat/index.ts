@@ -17,7 +17,7 @@ export const chatStyles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5, // This is for Android shadow
+        // elevation: 5, 
 
 
     },
