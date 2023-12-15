@@ -27,6 +27,7 @@ export const globalStyles = StyleSheet.create({
     },
     elementTitle: {
         color: secondaryFont,
-        fontSize: 18
+        fontSize: 18,
+        fontWeight: "600"
     }
 });

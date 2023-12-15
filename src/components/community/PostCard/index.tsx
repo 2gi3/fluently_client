@@ -11,16 +11,48 @@ const PostCard = ({ post }: PostCardPropsT) => {
     const icon = getIconForPostType(post.type);
     return (
         <Card >
+            <Icon
+                raised
+                // reverse
+                name="bookmark-outline"
+                color={colors.tertiary}
+                size={14}
+                type='ionicon'
+                containerStyle={{
+                    position: 'absolute',
+                    top: sizes.XS,
+                    right: sizes.XS,
+                    zIndex: 2,
+                    margin: 0,
+                    marginRight: 2,
+                    shadowColor: colors.tertiary
+                }}
+            />
             <Card.Image
                 source={{
                     uri:
                         'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
                 }}
             />
+            <Card.Title>{post.title}</Card.Title>
+            <View style={{ marginBottom: sizes.S, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'flex-start', gap: sizes.XS }}>
+                <Avatar
+                    size={sizes.M}
+                    rounded
+                    source={{ uri: 'https://res.cloudinary.com/gippolito/image/upload/v1697039397/profilePlaceholder_ytrsld.webp' }}
+                    title="Hi"
+                // containerStyle={styles.avatarContainer}
+                />
+
+                <Text>John Doe</Text>
+                <Text>( + 18 replies )</Text>
+
+            </View>
+
             <View>
 
                 <View style={{ marginBottom: 11, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', alignContent: 'center', gap: sizes.S }}>
-                    <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: sizes.XS }}>
+                    {/* <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: sizes.XS }}>
                         <Avatar
                             size={sizes.M}
                             rounded
@@ -31,8 +63,8 @@ const PostCard = ({ post }: PostCardPropsT) => {
 
                         <Text>John Doe</Text>
 
-                    </View>
-                    <View style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: sizes.XS }}>
+                    </View> */}
+                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: sizes.XS }}>
 
                         {/* <Icon
                             name="book-education-outline"
@@ -40,7 +72,7 @@ const PostCard = ({ post }: PostCardPropsT) => {
                             size={sizes.M}
                             type='material-community'
                         /> */}
-                        <Icon
+                        {/* <Icon
                             name={icon}
                             color={colors.secondaryFont}
                             size={sizes.M}
@@ -52,39 +84,24 @@ const PostCard = ({ post }: PostCardPropsT) => {
                             style={{
                                 marginTop: -2
                             }}
-                        />
+                        /> */}
                         {/* <Badge value='Pronouns' badgeStyle={{ height: 'auto' }} containerStyle={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></Badge> */}
-                        <Text>{post.label}</Text>
-
+                        <Badge value={post.label} />
                     </View>
-                    <View style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: sizes.XS }}>
+                    {/* <View style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: sizes.XS }}> */}
 
 
-                        <Icon
-                            raised
-                            // reverse
-                            name="heart"
-                            color={colors.tertiary}
-                            size={14}
-                            type='simple-line-icon'
-                            containerStyle={{
-                                margin: 0,
-                                marginRight: 2,
-                                shadowColor: colors.tertiary
-                            }}
-                        />
-                        {/* <Badge value='Pronouns' badgeStyle={{ height: 'auto' }} containerStyle={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></Badge> */}
-                        <Text>11</Text>
 
-                    </View>
+                    {/* <Badge value='Pronouns' badgeStyle={{ height: 'auto' }} containerStyle={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></Badge> */}
+                    {/* <Text>save</Text> */}
+
+                    {/* </View> */}
 
                 </View>
 
             </View>
-            <Card.Title>{post.title}</Card.Title>
 
-
-            <Text style={{ marginBottom: 13, height: 'auto' }}>
+            <Text style={{ marginBottom: sizes.S, height: 'auto' }}>
                 {post.body}
             </Text>
             <Button

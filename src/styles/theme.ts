@@ -23,7 +23,8 @@ export const theme = createTheme({
         ListItemTitle: {
             style: {
                 color: secondaryFont,
-                fontSize: 18
+                fontSize: 18,
+                fontWeight: "600"
             }
         },
         Button: {
@@ -46,19 +47,26 @@ export const theme = createTheme({
             style: {
                 textAlign: 'left',
                 // marginTop: 15,
-                marginBottom: 7
+                marginBottom: S,
+                marginTop: - 6,
+                color: secondaryFont,
+                fontSize: 18,
+                fontWeight: "600"
             }
         },
         CardImage: {
             style: {
                 borderRadius: XS,
-                marginBottom: S
+                marginBottom: S + 6
             }
         },
         Badge: {
             badgeStyle: {
                 backgroundColor: secondaryFont,
-                paddingHorizontal: XS
+                paddingHorizontal: XS,
+                paddingTop: 2,
+                paddingBottom: 3,
+                borderRadius: S
             }
         }
     },
