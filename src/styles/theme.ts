@@ -2,7 +2,7 @@ import { createTheme } from "@rneui/themed";
 import colors from "./variables/colors";
 import { sizes } from "./variables/measures";
 
-const { primaryFont, secondary, secondaryFont, tertiary } = colors
+const { primary, primaryFont, secondary, secondaryFont, tertiary } = colors
 const { XS, S, M, L, XL } = sizes
 
 export const theme = createTheme({
@@ -39,18 +39,27 @@ export const theme = createTheme({
             containerStyle: {
                 maxWidth: 400,
                 borderRadius: 24,
-                padding: XS
+                padding: S
             }
         },
         CardTitle: {
             style: {
                 textAlign: 'left',
-                marginTop: 15,
+                // marginTop: 15,
                 marginBottom: 7
             }
         },
         CardImage: {
-            style: { borderRadius: S }
+            style: {
+                borderRadius: XS,
+                marginBottom: S
+            }
+        },
+        Badge: {
+            badgeStyle: {
+                backgroundColor: secondaryFont,
+                paddingHorizontal: XS
+            }
         }
     },
 });

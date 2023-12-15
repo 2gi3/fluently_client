@@ -1,46 +1,68 @@
 [
     {
         "title": "What do 297 char look like?",
-        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.",
+        "type": "open-question",
+        "label": "pronouns"
     },
     {
         "title": "A 591 characters lorem ipsum",
-        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.        "
+        "body": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+        "type": "closed-question",
+        "label": "subject/object"
     },
     {
         "title": "ไทย talk like a pro? Street vendors impressed? ดีจัง!",
-        "body": "สวัสดีครับ, Lorem (title is 60ish char) ipsum dolor sit amet, consectetur adipiscing elit. ไม่ว่าจะเป็น ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco."
+        "body": "สวัสดีครับ, Lorem (title is 60ish char) ipsum dolor sit amet, consectetur adipiscing elit. ไม่ว่าจะเป็น ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.",
+        "type": "post",
+        "label": "food"
     },
     {
         "title": "Traveling to new places",
-        "body": "Explored a new city today. The architecture and culture were amazing! Wandering through historic streets, I immersed myself in the vibrant atmosphere, creating memories to last a lifetime."
+        "body": "Explored a new city today. The architecture and culture were amazing! Wandering through historic streets, I immersed myself in the vibrant atmosphere, creating memories to last a lifetime.",
+        "type": "post",
+        "label": "pronouns"
     },
     {
         "title": "Learning a new language",
-        "body": "Decided to pick up a new language. It's challenging, but fun! Embracing the intricacies of grammar and vocabulary, each step brings me closer to fluency and a broader perspective."
+        "body": "Decided to pick up a new language. It's challenging, but fun! Embracing the intricacies of grammar and vocabulary, each step brings me closer to fluency and a broader perspective.",
+        "type": "post",
+        "label": "pronouns"
     },
     {
         "title": "Cooking experiment",
-        "body": "Tried a new recipe for dinner. It turned out surprisingly well! The kitchen buzzed with delightful aromas as I crafted a delicious meal, savoring the joy of culinary exploration."
+        "body": "Tried a new recipe for dinner. It turned out surprisingly well! The kitchen buzzed with delightful aromas as I crafted a delicious meal, savoring the joy of culinary exploration.",
+        "type": "post",
+        "label": "pronouns"
     },
     {
         "title": "Movie marathon",
-        "body": "Spent the weekend watching a movie marathon. My favorite was the sci-fi flick. Transported to otherworldly realms, each film was a captivating adventure, making the weekend truly cinematic."
+        "body": "Spent the weekend watching a movie marathon. My favorite was the sci-fi flick. Transported to otherworldly realms, each film was a captivating adventure, making the weekend truly cinematic.",
+        "type": "post",
+        "label": "pronouns"
     },
     {
         "title": "Bookworm mode",
-        "body": "Dived into a good book today. Couldn't put it down until I finished it. The pages turned swiftly, revealing a compelling narrative that captivated my imagination and sparked introspection."
+        "body": "Dived into a good book today. Couldn't put it down until I finished it. The pages turned swiftly, revealing a compelling narrative that captivated my imagination and sparked introspection.",
+        "type": "post",
+        "label": "pronouns"
     },
     {
         "title": "Fitness journey",
-        "body": "Started a new fitness routine. Feeling the burn, but it's worth it! Each workout challenges me, pushing my limits and sculpting a healthier, stronger version of myself. The journey to fitness is empowering."
+        "body": "Started a new fitness routine. Feeling the burn, but it's worth it! Each workout challenges me, pushing my limits and sculpting a healthier, stronger version of myself. The journey to fitness is empowering.",
+        "type": "post",
+        "label": "pronouns"
     },
     {
         "title": "Gaming session",
-        "body": "Played some intense games with friends online. Laughter and competition ensued. In the virtual realm, camaraderie flourished as we navigated challenges, creating memories that echoed through the digital landscape."
+        "body": "Played some intense games with friends online. Laughter and competition ensued. In the virtual realm, camaraderie flourished as we navigated challenges, creating memories that echoed through the digital landscape.",
+        "type": "post",
+        "label": "pronouns"
     },
     {
         "title": "Hiking adventure",
-        "body": "Embarked on a challenging hike. The view from the top was breathtaking! Scaling heights, I embraced the invigorating struggle, and at the summit, nature unveiled a panoramic masterpiece, rewarding the arduous climb."
+        "body": "Embarked on a challenging hike. The view from the top was breathtaking! Scaling heights, I embraced the invigorating struggle, and at the summit, nature unveiled a panoramic masterpiece, rewarding the arduous climb.",
+        "type": "post",
+        "label": "pronouns"
     }
 ]

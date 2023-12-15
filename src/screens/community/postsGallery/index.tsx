@@ -24,7 +24,7 @@ const PostsGallery = () => {
 
     return (
         <FlatList
-            data={posts}
+            data={posts as PostT[]}
             renderItem={renderItem}
             keyExtractor={(item, i) => `${item.title}-${i}`}
         />
