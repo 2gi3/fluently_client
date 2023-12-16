@@ -10,6 +10,7 @@ import Tabs from "./Tabs"
 import PublicProfile from '../screens/profile/publicProfile'
 import colors from '../styles/variables/colors'
 import PostsGallery from '../screens/community/postsGallery'
+import CreatePost from '../screens/community/CreatePost'
 
 
 
@@ -31,7 +32,7 @@ const Navigator = () => {
                 <Stack.Screen name='Chat' component={ChatScreen} />
                 <Stack.Screen name='Students' component={StudentsList} />
                 <Stack.Screen name='Student' component={PublicProfile} />
-                {/* <Stack.Screen name='Community' component={PostsGallery} /> */}
+                <Stack.Screen name='Create-post' component={CreatePost} />
 
             </Stack.Navigator>
         </NavigationContainer>

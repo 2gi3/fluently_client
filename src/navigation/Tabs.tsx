@@ -70,11 +70,22 @@ const Tabs = () => {
 
                 />
             )}
+            {/* options={{
+                        tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
+                    }} */}
             {user.user && (
                 <Tabs.Screen
-                    name="Community" component={PostsGallery} options={{
+                    name="Community" component={PostsGallery} options={({ navigation }) => ({
                         tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
-                    }}
+                        // tabBarBadge: pendingChats.length > 0 ? pendingChats.length : undefined,
+                        headerRight: () => (
+                            <TopTabButton
+                                onPress={() => navigation.navigate('Create-post')}
+                                iconName="pencil-plus-outline"
+                                label="Create a post"
+                            />
+                        )
+                    })}
                 />
             )}
             <Tabs.Screen

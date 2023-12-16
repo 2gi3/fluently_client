@@ -17,7 +17,14 @@ export const theme = createTheme({
     components: {
         ListItem: {
             containerStyle: {
-                backgroundColor: secondary
+                backgroundColor: secondary,
+                padding: 0
+            }
+        },
+        ListItemAccordion: {
+            containerStyle: {
+                padding: 0,
+                marginBottom: S
             }
         },
         ListItemTitle: {
@@ -25,7 +32,7 @@ export const theme = createTheme({
                 color: secondaryFont,
                 fontSize: 18,
                 fontWeight: "600"
-            }
+            },
         },
         Button: {
             buttonStyle: {
@@ -67,6 +74,24 @@ export const theme = createTheme({
                 paddingTop: 2,
                 paddingBottom: 3,
                 borderRadius: S
+            }
+        },
+        CheckBox: {
+            containerStyle: {
+                padding: 0,
+                margin: 0,
+                marginLeft: 0,
+                marginRight: 0
+            },
+            // wrapperStyle: {
+            //     margin: 0,
+            // },
+            // style: {
+            //     margin: 0,
+            // },
+            textStyle: {
+                margin: 0,
+                color: secondaryFont
             }
         }
     },
