@@ -1,4 +1,4 @@
-import { View, FlatList, SafeAreaView, Text } from "react-native"
+import { View, FlatList, SafeAreaView, Text, KeyboardAvoidingView, Platform } from "react-native"
 import Message from "../../components/chat/Message"
 // import { ChatMessageT } from "../../types"
 import chatData from "../../../mock_data/chatsData.json"
@@ -126,29 +126,30 @@ const ChatScreen = () => {
 
 
         return (
-            // <SafeAreaView style={{ paddingBottom: sizes.L }}>
-            <>
-                <FlatList
-                    ref={flatListRef}
-                    style={{
-                        backgroundColor: colors.primary
-                    }}
-                    data={messages}
-                    renderItem={renderItem}
-                    // inverted
-                    // keyExtractor={(item) => (item.id ? item.id.toString() : item.created_at)}
-                    keyExtractor={(item: MessageT, index: number) => (item.id ? item.id.toString() : item.created_at || `i-${index.toString()}`)}
-                    onContentSizeChange={() => {
-                        flatListRef.current?.scrollToEnd({ animated: true });
-                    }}
-                />
-                <ChatInput
-                    onSend={handleSend}
-                    inputValue={inputValue}
-                    setInputValue={setInputValue}
-                />
-            </>
-            // </SafeAreaView>
+            <SafeAreaView style={{ flex: 1 }}>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={{ flex: 1 }}
+                >
+                    <FlatList
+                        ref={flatListRef}
+                        style={{ backgroundColor: colors.primary }}
+                        data={messages}
+                        renderItem={renderItem}
+                        keyExtractor={(item: MessageT, index: number) =>
+                            item.id ? item.id.toString() : item.created_at || `i-${index.toString()}`
+                        }
+                        onContentSizeChange={() => {
+                            flatListRef.current?.scrollToEnd({ animated: true });
+                        }}
+                    />
+                    <ChatInput
+                        onSend={handleSend}
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                    />
+                </KeyboardAvoidingView>
+            </SafeAreaView>
         )
     } else {
         return (
