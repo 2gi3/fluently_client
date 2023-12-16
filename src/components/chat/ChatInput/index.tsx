@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { View, TextInput } from "react-native"
 import { Button } from '@rneui/themed';
 import { sizes } from "../../../styles/variables/measures";
@@ -10,11 +10,14 @@ import { styles } from './styles';
 
 const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
     const { secondary, tertiary } = colors
+    const inputRef = useRef<TextInput | null>(null);
 
     const handleSend = async () => {
         if (inputValue.trim() !== "") {
             onSend(inputValue);
             setInputValue("");
+            inputRef.current?.focus();
+
         }
     };
 
@@ -35,6 +38,8 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                 onPress={() => console.log('aye')}
             />
             <TextInput
+                autoFocus
+                ref={inputRef}
                 placeholder="Type away..."
                 value={inputValue}
                 onChangeText={(text) => setInputValue(text)}
