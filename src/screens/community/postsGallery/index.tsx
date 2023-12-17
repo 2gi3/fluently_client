@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Skeleton } from "@rneui/themed"
 import { FlatList, Pressable, ScrollView, View } from "react-native"
 import { sizes } from '../../../styles/variables/measures'

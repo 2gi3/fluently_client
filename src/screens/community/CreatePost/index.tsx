@@ -1,14 +1,17 @@
 import { View, Text, ScrollView, TextInput } from "react-native"
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Overlay, Skeleton } from "@rneui/base";
 import { sizes } from "../../../styles/variables/measures";
 import { Button, Card, CheckBox, ListItem } from "@rneui/themed";
 import colors from "../../../styles/variables/colors";
 import useImagePicker from "../../../functions/hooks";
+import { useNavigation } from "@react-navigation/native"
+
 
 
 
 const CreatePost = () => {
+    const navigation = useNavigation()
     const [loading, setLoading] = useState(false)
     const [postType, setPostType] = useState<null | 'question' | 'moment'>(null)
     const [title, setTitle] = useState<null | string>(null)
@@ -16,7 +19,15 @@ const CreatePost = () => {
     const { image, visible, pickImage, confirmImage } = useImagePicker();
     const [topic, setTopic] = useState<null | string>()
 
+    useEffect(() => {
+        navigation.setOptions({
+            title: postType === 'moment' ? 'Your story matters'
+                : postType === 'question' ? 'Let\'s do this together'
+                    : 'Embrace our community',
+            headerTitleAlign: 'center'
 
+        })
+    }, [postType])
 
     if (loading) {
         return (
@@ -51,7 +62,7 @@ const CreatePost = () => {
         return (
             <ScrollView>
                 <Card >
-                    <Card.Title>What would you like to share?</Card.Title>
+                    <Card.Title>What would you like to post?</Card.Title>
                     {/* <Card.Divider /> */}
 
                     <View style={{ display: 'flex', flexDirection: 'row', gap: sizes.S }}>

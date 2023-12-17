@@ -25,8 +25,9 @@ const Navigator = () => {
                     backgroundColor: colors.primary,
                 },
                 headerTitleStyle: {
-                    color: colors.secondaryFont
-                }
+                    color: colors.secondaryFont,
+                    fontSize: 14,
+                },
             }}>
                 <Stack.Screen name='Home' component={Tabs} options={{ headerShown: false }} />
                 <Stack.Screen name='Chat' component={ChatScreen} />

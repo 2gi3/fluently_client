@@ -47,10 +47,14 @@ const Tabs = () => {
                     backgroundColor: colors.primary,
                 },
                 headerTitleStyle: {
-                    color: colors.secondaryFont
+                    color: colors.secondaryFont,
+                    fontSize: 14,
                 },
                 tabBarStyle: {
                     backgroundColor: colors.primary,
+                },
+                tabBarLabelStyle: {
+                    color: colors.secondaryFont
                 }
             }}
         >
@@ -58,6 +62,8 @@ const Tabs = () => {
                 <Tabs.Screen
                     name="Chats" component={ChatsList} options={({ navigation }) => ({
                         tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble'),
+                        tabBarLabel: 'Chats',
+                        title: 'Use what you learn',
                         tabBarBadge: pendingChats.length > 0 ? pendingChats.length : undefined,
                         headerRight: () => (
                             <TopTabButton
@@ -77,6 +83,8 @@ const Tabs = () => {
                 <Tabs.Screen
                     name="Community" component={PostsGallery} options={({ navigation }) => ({
                         tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
+                        tabBarLabel: 'Community',
+                        title: 'You are one of Us',
                         // tabBarBadge: pendingChats.length > 0 ? pendingChats.length : undefined,
                         headerRight: () => (
                             <TopTabButton
@@ -91,6 +99,8 @@ const Tabs = () => {
             <Tabs.Screen
                 name="Profile" component={Profile} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
+                    tabBarLabel: 'Profile',
+                    title: 'Let your true self shine',
                     headerRight: () => (
                         user.user?.id ? <LogoutButton style={{ marginRight: sizes.S }} />
                             : null

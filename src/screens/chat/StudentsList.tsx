@@ -39,7 +39,7 @@ const StudentsList = () => {
     }, [navigation, loading, isValidating]);
 
     useEffect(() => {
-        navigation.setOptions({ headerTitleAlign: 'center' })
+        navigation.setOptions({ title: 'Your fellow students', headerTitleAlign: 'center' })
 
     }, [route.params])
 
