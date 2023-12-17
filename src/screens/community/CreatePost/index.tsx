@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { Overlay, Skeleton } from "@rneui/base";
 import { sizes } from "../../../styles/variables/measures";
 import { Button, Card, CheckBox, ListItem } from "@rneui/themed";
+import colors from "../../../styles/variables/colors";
+import useImagePicker from "../../../functions/hooks";
 
 
 
@@ -11,6 +13,8 @@ const CreatePost = () => {
     const [postType, setPostType] = useState<null | 'question' | 'moment'>(null)
     const [title, setTitle] = useState<null | string>(null)
     const [expanded, setExpanded] = React.useState(false);
+    const { image, visible, pickImage, confirmImage } = useImagePicker();
+    const [topic, setTopic] = useState<null | string>()
 
 
 
@@ -130,12 +134,12 @@ const CreatePost = () => {
                     {/* </View> */}
 
                 </Card>
-                <Card>
+                {postType === 'question' && <Card>
                     <ListItem.Accordion
                         content={
                             <ListItem.Content>
                                 <ListItem.Title>Select a topic</ListItem.Title>
-                                {postType && <ListItem.Subtitle>{postType}</ListItem.Subtitle>}
+                                {postType && <ListItem.Subtitle>{topic}</ListItem.Subtitle>}
                             </ListItem.Content>
                         }
                         isExpanded={expanded}
@@ -148,9 +152,9 @@ const CreatePost = () => {
                                 title="Pronouns"
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
-                                checked={postType === 'question'}
+                                checked={topic === 'Pronouns'}
                                 onPress={() => {
-                                    setPostType('question');
+                                    setTopic('question');
                                     setExpanded(false)
                                 }}
                             />
@@ -158,9 +162,9 @@ const CreatePost = () => {
                                 title="Past tense"
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
-                                checked={postType === 'moment'}
+                                checked={topic === 'Past tense'}
                                 onPress={() => {
-                                    setPostType('moment');
+                                    setTopic('Past tense');
                                     setExpanded(false)
                                 }}
                             />
@@ -168,9 +172,9 @@ const CreatePost = () => {
                                 title="questions"
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
-                                checked={postType === 'question'}
+                                checked={topic === 'questions'}
                                 onPress={() => {
-                                    setPostType('question');
+                                    setTopic('questions');
                                     setExpanded(false)
                                 }}
                             />
@@ -178,9 +182,9 @@ const CreatePost = () => {
                                 title="Future tense"
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
-                                checked={postType === 'moment'}
+                                checked={topic === 'Future tense'}
                                 onPress={() => {
-                                    setPostType('moment');
+                                    setTopic('moment');
                                     setExpanded(false)
                                 }}
                             />
@@ -198,19 +202,71 @@ const CreatePost = () => {
           </ListItem.Content>
         </ListItem> */}
                     </ListItem.Accordion>
-                </Card>
-                <Card >
-                    <Card.Title>Give your {postType} a title</Card.Title>
-                    <TextInput
-                        // autoFocus={true}
-                        placeholder="Maximum 100 leters"
-                        multiline={true}
-                        numberOfLines={4}
-                        // style={{ padding: title ? sizes.XS : null }}
-                        style={{ paddingLeft: 4 }}
-                        onChangeText={(value) => setTitle(value)}
-                    />
-                </Card>
+                </Card>}
+                {postType &&
+                    <>
+                        <Card>
+                            {image && <Card.Image
+                                style={{ marginBottom: sizes.S }}
+                                source={{ uri: image }}
+                            />}
+                            <Button
+                                type="outline"
+                                title={image ? 'Change the image' : 'Add an image'}
+                                // loading={false}
+                                // loadingProps={{ size: 'small', color: 'black' }}
+                                // icon={{
+                                //     name: 'plus',
+                                //     type: 'ant-design',
+                                //     size: sizes.M,
+                                //     color: colors.tertiary,
+                                // }}
+                                onPress={pickImage}
+                            />
+                        </Card>
+                        <Card >
+                            <Card.Title>Give your {postType} a title</Card.Title>
+                            <TextInput
+                                // autoFocus={true}
+                                placeholder="Maximum 100 leters"
+                                multiline={true}
+                                numberOfLines={4}
+                                // style={{ padding: title ? sizes.XS : null }}
+                                style={{ paddingLeft: 4 }}
+                                onChangeText={(value) => setTitle(value)}
+                            />
+                        </Card>
+                        <Card >
+                            <Card.Title>Add more informations</Card.Title>
+                            <TextInput
+                                // autoFocus={true}
+                                placeholder="Maximum 600 leters"
+                                multiline={true}
+                                numberOfLines={8}
+                                // style={{ padding: title ? sizes.XS : null }}
+                                style={{ paddingLeft: 4 }}
+                                onChangeText={(value) => setTitle(value)}
+                            />
+                        </Card>
+                        <Button
+                            title={`Post your ${postType}`}
+                            containerStyle={{
+                                margin: sizes.S,
+                                marginBottom: sizes.L
+                            }}
+                            // loading={false}
+                            // loadingProps={{ size: 'small', color: 'black' }}
+                            // icon={{
+                            //     name: 'plus',
+                            //     type: 'ant-design',
+                            //     size: sizes.M,
+                            //     color: colors.tertiary,
+                            // }}
+                            onPress={() => console.log('st gr kz')}
+                        />
+                    </>
+                }
+
             </ScrollView >
         );
     }
