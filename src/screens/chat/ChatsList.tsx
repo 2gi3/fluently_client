@@ -51,13 +51,6 @@ const ChatsList = () => {
         }
     }, [chatrooms, activeChat, pendingChats]);
 
-    // useEffect(() => {
-    //     navigation.setOptions({
-    //         title: 'Practice what you learned',
-    //         tabBarLabel: 'Chats'
-    //     })
-    // }, [])
-
 
     const renderItem = ({ item }: { item: ChatroomT }) => (
         <Pressable

@@ -1,4 +1,4 @@
-import { View, Text, ScrollView, TextInput } from "react-native"
+import { View, Text, ScrollView, TextInput, ActivityIndicator } from "react-native"
 import React, { useEffect, useState } from "react";
 import { Overlay, Skeleton } from "@rneui/base";
 import { sizes } from "../../../styles/variables/measures";
@@ -6,18 +6,36 @@ import { Button, Card, CheckBox, ListItem } from "@rneui/themed";
 import colors from "../../../styles/variables/colors";
 import useImagePicker from "../../../functions/hooks";
 import { useNavigation } from "@react-navigation/native"
+import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/store";
+import { useCreatePost } from "../../../functions/hooks/community";
+import { PostT } from "../../../types/community";
 
 
 
 
 const CreatePost = () => {
     const navigation = useNavigation()
-    const [loading, setLoading] = useState(false)
+    const user = useSelector((state: RootState) => state.user);
     const [postType, setPostType] = useState<null | 'question' | 'moment'>(null)
-    const [title, setTitle] = useState<null | string>(null)
+    const [title, setTitle] = useState('')
     const [expanded, setExpanded] = React.useState(false);
-    const { image, visible, pickImage, confirmImage } = useImagePicker();
-    const [topic, setTopic] = useState<null | string>()
+    const { image, pickImage } = useImagePicker();
+    const [topic, setTopic] = useState<null | string>(null)
+    const [body, setBody] = useState<null | string>(null)
+
+
+    const postData: PostT = {
+        userId: user.id!,
+        type: postType || 'moment',
+        topic,
+        image,
+        title,
+        body,
+
+    }
+
+    const { createPost, loading, error, success } = useCreatePost()
 
     useEffect(() => {
         navigation.setOptions({
@@ -31,29 +49,8 @@ const CreatePost = () => {
 
     if (loading) {
         return (
-            <View style={{ display: 'flex', flexDirection: 'column', gap: sizes.M, padding: sizes.L }}>
-                <Skeleton
-                    circle
-                    animation="wave"
-                    width={80}
-                    height={80}
-                />
-                <Skeleton
-                    animation="wave"
-                    width={180}
-                    height={80}
-                />
-
-                <Skeleton
-                    animation="wave"
-                    width={220}
-                    height={40}
-                />
-                <Skeleton
-                    animation="wave"
-                    width={220}
-                    height={40}
-                />
+            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                <ActivityIndicator size="large" color={colors.tertiary} />
 
             </View>
 
@@ -256,7 +253,7 @@ const CreatePost = () => {
                                 numberOfLines={8}
                                 // style={{ padding: title ? sizes.XS : null }}
                                 style={{ paddingLeft: 4 }}
-                                onChangeText={(value) => setTitle(value)}
+                                onChangeText={(value) => setBody(value)}
                             />
                         </Card>
                         <Button
@@ -273,7 +270,7 @@ const CreatePost = () => {
                             //     size: sizes.M,
                             //     color: colors.tertiary,
                             // }}
-                            onPress={() => console.log('st gr kz')}
+                            onPress={() => createPost(postData)}
                         />
                     </>
                 }

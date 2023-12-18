@@ -5,10 +5,9 @@ import { PostCardPropsT } from '../../../types/community'
 import { sizes } from '../../../styles/variables/measures'
 import { Avatar } from '@rneui/base'
 import colors from '../../../styles/variables/colors'
-import { getIconForPostType } from '../../../functions/community'
 
 const PostCard = ({ post }: PostCardPropsT) => {
-    const icon = getIconForPostType(post.type);
+    console.log(post)
     return (
         <Card >
             <Icon
@@ -28,24 +27,23 @@ const PostCard = ({ post }: PostCardPropsT) => {
                     shadowColor: colors.tertiary
                 }}
             />
-            <Card.Image
+            {post.image && <Card.Image
                 source={{
-                    uri:
-                        'https://awildgeographer.files.wordpress.com/2015/02/john_muir_glacier.jpg',
+                    uri: post.image
                 }}
-            />
+            />}
             <Card.Title>{post.title}</Card.Title>
             <View style={{ marginBottom: sizes.S, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'flex-start', gap: sizes.XS }}>
                 <Avatar
                     size={sizes.M}
                     rounded
-                    source={{ uri: 'https://res.cloudinary.com/gippolito/image/upload/v1697039397/profilePlaceholder_ytrsld.webp' }}
+                    source={{ uri: post.user?.image || 'https://res.cloudinary.com/gippolito/image/upload/v1697039397/profilePlaceholder_ytrsld.webp' }}
                     title="Hi"
                 // containerStyle={styles.avatarContainer}
                 />
 
-                <Text>John Doe</Text>
-                <Text>( + 18 replies )</Text>
+                <Text>{post.user?.name}</Text>
+                {/* <Text>( + 18 replies )</Text> */}
 
             </View>
 
@@ -86,7 +84,7 @@ const PostCard = ({ post }: PostCardPropsT) => {
                             }}
                         /> */}
                         {/* <Badge value='Pronouns' badgeStyle={{ height: 'auto' }} containerStyle={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center' }}></Badge> */}
-                        <Badge value={post.label} />
+                        {post.topic && <Badge value={post.topic} />}
                     </View>
                     {/* <View style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: sizes.XS }}> */}
 

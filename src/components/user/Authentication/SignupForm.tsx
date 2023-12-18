@@ -151,8 +151,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     return (
         <ScrollView style={styles.scrollView}>
             {checkingUserExistence ?
-                <View>
-                    <ActivityIndicator size="large" color="#00ff00" />
+                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: sizes.L }}>
+                    <ActivityIndicator size="large" color={colors.tertiary} />
                 </View>
                 : <Card containerStyle={styles.cardContainer}>
                     <Card.Title h3>{header}</Card.Title>

@@ -45,7 +45,7 @@ export const theme = createTheme({
         },
         Card: {
             containerStyle: {
-                maxWidth: 400,
+                maxWidth: 360,
                 borderRadius: 24,
                 padding: S
             }
@@ -64,7 +64,8 @@ export const theme = createTheme({
         CardImage: {
             style: {
                 borderRadius: XS,
-                marginBottom: S + 6
+                marginBottom: S + 6,
+                height: 226
             }
         },
         Badge: {

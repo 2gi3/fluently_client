@@ -12,7 +12,7 @@ export const globalStyles = StyleSheet.create({
         marginTop: StatusBar.currentHeight || 0,
         marginHorizontal: 'auto',
         flex: 1,
-        maxWidth: 800,
+        // maxWidth: 800,
         backgroundColor: secondary
     },
     container: {
