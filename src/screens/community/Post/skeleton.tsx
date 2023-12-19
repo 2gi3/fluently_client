@@ -6,7 +6,7 @@ import styles from "./styles"
 import { Card } from "@rneui/base"
 import colors from "../../../styles/variables/colors"
 
-const PostsGallerySkeleton = () => {
+const PostsSkeleton = () => {
     return (
         <View style={[styles.container, { margin: 'auto', marginBottom: sizes.S }]}>
             <Card containerStyle={{ borderRadius: sizes.S }} >
@@ -63,4 +63,4 @@ const PostsGallerySkeleton = () => {
         </View>
     )
 }
-export default PostsGallerySkeleton
+export default PostsSkeleton

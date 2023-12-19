@@ -11,6 +11,7 @@ import PublicProfile from '../screens/profile/publicProfile'
 import colors from '../styles/variables/colors'
 import PostsGallery from '../screens/community/postsGallery'
 import CreatePost from '../screens/community/CreatePost'
+import Post from '../screens/community/Post'
 
 
 
@@ -34,6 +35,8 @@ const Navigator = () => {
                 <Stack.Screen name='Students' component={StudentsList} />
                 <Stack.Screen name='Student' component={PublicProfile} />
                 <Stack.Screen name='Create-post' component={CreatePost} />
+                <Stack.Screen name='Post' component={Post} />
+
 
             </Stack.Navigator>
         </NavigationContainer>

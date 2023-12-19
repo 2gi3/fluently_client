@@ -5,9 +5,11 @@ import { PostCardPropsT } from '../../../types/community'
 import { sizes } from '../../../styles/variables/measures'
 import { Avatar } from '@rneui/base'
 import colors from '../../../styles/variables/colors'
+import { useNavigation, useRoute } from '@react-navigation/native'
+
 
 const PostCard = ({ post }: PostCardPropsT) => {
-    console.log(post)
+    const navigation = useNavigation()
     return (
         <Card >
             <Icon
@@ -113,6 +115,9 @@ const PostCard = ({ post }: PostCardPropsT) => {
                 //     />
                 // }
                 title="VIEW NOW"
+                // @ts-ignore
+                onPress={() => navigation.navigate('Post', { id: post.id })}
+
             />
         </Card>
     )

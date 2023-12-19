@@ -54,7 +54,6 @@ export const useCreatePost = () => {
 
 export const useGetAllPosts = () => {
     const getAllPostsEndpoint = `${baseUrl}/api/community/post`
-    const [loading, setLoading] = useState(false);
 
     const fetcher = async () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
@@ -78,8 +77,36 @@ export const useGetAllPosts = () => {
     const refreshData = () => {
         mutate(getAllPostsEndpoint);
     };
-    console.log({ posts })
-    // return { createPost, loading, error };
     return { loading: !posts && !error, error, posts, refreshData, isValidating };
+
+};
+
+export const useGetOnePost = (postId: string) => {
+    const getAllPostsEndpoint = `${baseUrl}/api/community/post/${postId}`
+
+    const fetcher = async () => {
+        const accessToken = await AsyncStorage.getItem('speaky-access-token')
+        const response = await fetch(getAllPostsEndpoint, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': JSON.parse(accessToken!),
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch post');
+        }
+        const data = await response.json();
+        return data;
+    }
+    const { data: post, error, isValidating } = useSWR<void | PostT | undefined>(getAllPostsEndpoint, fetcher, {
+        revalidateOnMount: true,
+    });
+
+    const refreshData = () => {
+        mutate(getAllPostsEndpoint);
+    };
+
+    return { loading: !post && !error, error, post, refreshData, isValidating };
 
 };

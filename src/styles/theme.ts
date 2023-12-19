@@ -15,6 +15,19 @@ export const theme = createTheme({
     // },
     // mode: 'light',
     components: {
+        Text: {
+            style: {
+                lineHeight: 15
+            },
+            h1Style: {
+                color: primaryFont,
+                fontSize: 24,
+                lineHeight: 29,
+                fontWeight: '600',
+                marginTop: -XS + 1,
+                marginBottom: S
+            }
+        },
         ListItem: {
             containerStyle: {
                 backgroundColor: secondary,
@@ -70,11 +83,14 @@ export const theme = createTheme({
         },
         Badge: {
             badgeStyle: {
+                height: 19,
                 backgroundColor: secondaryFont,
                 paddingHorizontal: XS,
                 paddingTop: 2,
-                paddingBottom: 3,
-                borderRadius: S
+                paddingBottom: 5,
+                borderRadius: S,
+                alignSelf: 'flex-start',
+                borderWidth: 0
             }
         },
         CheckBox: {
@@ -94,6 +110,19 @@ export const theme = createTheme({
                 margin: 0,
                 color: secondaryFont
             }
+        },
+        Image: {
+            style: {
+                margin: 'auto',
+                aspectRatio: 1,
+                width: '100%',
+                maxWidth: 360,
+                flex: 1,
+                borderRadius: XS
+            },
+            // containerStyle: {
+            //     marginHorizontal: S
+            // }
         }
     },
 });

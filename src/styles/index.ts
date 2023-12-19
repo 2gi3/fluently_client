@@ -16,7 +16,18 @@ export const globalStyles = StyleSheet.create({
         backgroundColor: secondary
     },
     container: {
-        padding: M
+        paddingHorizontal: S,
+        paddingVertical: M,
+        backgroundColor: secondary
+    },
+    tagsListContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: XS
+    },
+    elementContainer: {
+        padding: S,
+        // backgroundColor: secondary
     },
     whideButton: {
         marginLeft: 0,

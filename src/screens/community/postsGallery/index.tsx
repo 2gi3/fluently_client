@@ -13,7 +13,7 @@ const PostsGallery = () => {
 
 
     const renderItem = ({ item }: { item: PostT }) => (
-        <Pressable
+        <View
             // @ts-ignore
             // onPress={() => navigation.navigate('Chat', {
             //     id: item.id!.toString(),
@@ -23,14 +23,18 @@ const PostsGallery = () => {
             <PostCard
                 post={item}
             />
-        </Pressable>
+        </View>
     );
 
 
     return (
-        loading ?
-            <PostsGallerySkeleton />
-            : (<SafeAreaView style={{ flex: 1, flexDirection: 'row' }}>
+        loading ? (
+            <SafeAreaView style={{ flex: 1 }}>
+                <PostsGallerySkeleton />
+                <PostsGallerySkeleton />
+            </SafeAreaView>
+        ) : (
+            <SafeAreaView style={{ flex: 1, flexDirection: 'row', maxWidth: sizes.XXXL, margin: 'auto' }}>
                 <FlatList
                     data={posts!}
                     renderItem={renderItem}

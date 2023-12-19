@@ -11,6 +11,7 @@ export type RootStackParamList = {
     'Profile/Login': undefined
     Community: undefined
     'Create-post': undefined
+    Post: undefined
 };
 
 export interface TopTabButtonProps {
