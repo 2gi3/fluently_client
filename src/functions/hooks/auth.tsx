@@ -28,6 +28,7 @@ export const useTokenRefresher = () => {
                             }
                         });
                         setAccessToken(newAccessToken);
+                        clearInterval(intervalId)
                     }
                 }
             } catch (error) {

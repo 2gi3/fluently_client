@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from '../../redux/slices/statusSlice';
 import { logOut } from '../../redux/slices/statusSlice';
-import { setUser } from '../../redux/slices/userSlice';
+import { clearUser, setUser } from '../../redux/slices/userSlice';
 
 import { UserT } from '../../types/user';
 import { clearNewUser } from '../../redux/slices/newUserSlice';
@@ -60,6 +60,7 @@ export const useLogOut = () => {
             await AsyncStorage.clear();
             dispatch(logOut());
             dispatch(clearNewUser());
+            dispatch(clearUser())
         } catch (error) {
             console.error('Error clearing local storage:', error);
         }
