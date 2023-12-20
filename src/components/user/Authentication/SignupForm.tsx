@@ -22,6 +22,7 @@ import { globalStyles } from '../../../styles';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { setAccessToken } from '../../../functions/auth';
 import ConfirmationOverlay from '../ConfirmationOverlay';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -29,7 +30,7 @@ import ConfirmationOverlay from '../ConfirmationOverlay';
 
 const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
     const count = useSelector((state: RootState) => state.counter.value);
-
+    const navigation = useNavigation()
     const { primaryFont, secondary } = colors
     const [city, country, loading, error] = useLocation()
     const dispatch = useDispatch();
@@ -44,7 +45,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [nativeLanguage, setNativeLanguage] = useState('');
     const [teachingLanguage, setTeachingLanguage] = useState('');
     const [learningLanguage, setLearningLanguage] = useState('');
-    const [header, setHeader] = useState('Start learning')
+    const [header, setHeader] = useState('Join our community')
     const [checkingUserExistence, setCheckingUserExistence] = useState(false)
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>()
@@ -137,7 +138,11 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
 
     useEffect(() => {
         if (newUser.email && newUser.password) {
-            setHeader('About yourself')
+            setHeader('Tell us about yourself')
+        } else {
+            navigation.setOptions({
+                title: 'The best time to start learning is now'
+            })
         }
 
     }, [newUser.email, newUser.password]);
@@ -159,13 +164,13 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: sizes.L }}>
                     <ActivityIndicator size="large" color={colors.tertiary} />
                 </View>
-                : <Card containerStyle={styles.cardContainer}>
-                    <Card.Title h3>{header}</Card.Title>
+                : <Card containerStyle={styles.cardContainer}                >
+                    <Card.Title style={{ textAlign: 'center' }}>{header}</Card.Title>
                     <Card.Divider />
 
                     {!authAdded ?
                         <View style={{
-                            marginVertical: sizes.M,
+                            // marginVertical: sizes.M,
                         }}>
                             {showCount && <View style={{ margin: 'auto' }}>
                                 <Text style={{ color: colors.danger, fontSize: 14, fontWeight: '500' }}>Remaining attempts: {count}</Text>

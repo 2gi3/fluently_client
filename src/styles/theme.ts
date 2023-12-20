@@ -60,7 +60,7 @@ export const theme = createTheme({
             containerStyle: {
                 maxWidth: 360,
                 borderRadius: 24,
-                padding: S
+                padding: S,
             }
         },
         CardTitle: {
@@ -79,6 +79,11 @@ export const theme = createTheme({
                 borderRadius: XS,
                 marginBottom: S + 6,
                 height: 226
+            }
+        },
+        CardDivider: {
+            style: {
+                marginBottom: sizes.S
             }
         },
         Badge: {

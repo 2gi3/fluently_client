@@ -3,18 +3,30 @@ import { sizes } from "../../../styles/variables/measures";
 import colors from "../../../styles/variables/colors";
 
 
-const { XS, S, M, L, XL } = sizes
+const { XS, S, M, L, XL, XXL, XXXL } = sizes
 const { secondary, secondaryFont, tertiary, primary, danger } = colors
 
 
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: primary,
+        backgroundColor: 'transparent',
+        display: 'flex',
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-evenly',
+        maxWidth: 900,
+        margin: 'auto'
+
     },
-    listItemContent: {
-        alignItems: 'center',
-        paddingVertical: S,
+    content: {
+        alignItems: 'flex-start',
+        padding: S,
+        backgroundColor: secondary,
+        borderRadius: S,
+        margin: S,
+        minWidth: XXL,
+        maxWidth: XXXL
     },
     avatarContainer: {
         backgroundColor: primary,

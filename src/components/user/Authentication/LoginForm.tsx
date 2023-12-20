@@ -111,9 +111,9 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
     return (
         <ScrollView style={styles.scrollView}>
             <Card containerStyle={styles.cardContainer}>
-                <Card.Title h3>Welcome back!</Card.Title>
+                <Card.Title style={{ textAlign: 'center' }}>Welcome back!</Card.Title>
                 <Card.Divider />
-                <View style={{ marginVertical: sizes.M }}>
+                <View>
 
                     <AuthInput
                         autoFocus={true}

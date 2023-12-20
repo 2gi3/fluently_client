@@ -40,7 +40,8 @@ const Tabs = () => {
 
     return (
         <Tabs.Navigator
-            initialRouteName={user.user ? "Community" : "Profile"}
+            // initialRouteName={user.user ? "Community" : "Profile"}
+            initialRouteName={"Profile"}
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
                 headerStyle: {
@@ -101,6 +102,11 @@ const Tabs = () => {
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
                     tabBarLabel: 'Profile',
                     title: 'Let your true self shine',
+                    headerTitleStyle: {
+                        color: colors.secondaryFont,
+                        fontSize: 14,
+                    },
+                    headerTitleAlign: 'center',
                     headerRight: () => (
                         user.user?.id ? <LogoutButton style={{ marginRight: sizes.S }} />
                             : null

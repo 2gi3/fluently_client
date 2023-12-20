@@ -1,4 +1,4 @@
-import { Avatar, Button, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, } from "@rneui/themed"
+import { Avatar, Button, Card, Dialog, Divider, Icon, Input, ListItem, Overlay, Text, } from "@rneui/themed"
 import { Image, ScrollView, TextInput, View } from "react-native"
 import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
@@ -116,9 +116,11 @@ const Dashboard = ({ user }: { user: UserT }) => {
     }, [socketUrl])
 
     return (
-        <ScrollView style={styles.container}>
-            <ListItem>
-                <ListItem.Content style={styles.listItemContent}>
+        <ScrollView contentContainerStyle={styles.container}>
+            {/* <Card> */}
+            <View style={styles.content}>
+                <View style={{ margin: 'auto' }}>
+
                     <Avatar
                         size={sizes.XL}
                         rounded
@@ -147,42 +149,39 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         />
                     )}
                     <View>
-                        <View>
-                            <Text h3 style={{ marginTop: sizes.S }}>{user.name}</Text>
-                            <Avatar.Accessory size={18} onPress={() => setNameVisible(!nameVisible)} />
-                            <Dialog isVisible={nameVisible} onBackdropPress={() => setNameVisible(!nameVisible)} overlayStyle={styles.dialogOverlay}>
-                                <AuthInput
-                                    autoFocus={true}
-                                    placeholder="Name"
-                                    value={name}
-                                    onChangeText={(text) => setName(text)}
-                                    onBlur={() => setDispleyNameErrors(true)}
-                                    errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
+                        <Card.Title h3 >{user.name}</Card.Title>
+                        <Avatar.Accessory size={18} onPress={() => setNameVisible(!nameVisible)} />
+                        <Dialog isVisible={nameVisible} onBackdropPress={() => setNameVisible(!nameVisible)} overlayStyle={styles.dialogOverlay}>
+                            <AuthInput
+                                autoFocus={true}
+                                placeholder="Name"
+                                value={name}
+                                onChangeText={(text) => setName(text)}
+                                onBlur={() => setDispleyNameErrors(true)}
+                                errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
+                            />
+                            <Dialog.Actions>
+                                <Dialog.Button
+                                    title="Upload name"
+                                    onPress={async () => {
+                                        const data: UpdatedUserResponse = await updateUser({ name: name }, updateUserEndpoint);
+                                        console.log({ data });
+                                        logIn(data.updatedUser);
+                                        setNameVisible(false);
+                                    }}
                                 />
-                                <Dialog.Actions>
-                                    <Dialog.Button
-                                        title="Upload name"
-                                        onPress={async () => {
-                                            const data: UpdatedUserResponse = await updateUser({ name: name }, updateUserEndpoint);
-                                            console.log({ data });
-                                            logIn(data.updatedUser);
-                                            setNameVisible(false);
-                                        }}
-                                    />
-                                </Dialog.Actions>
-                            </Dialog>
-                        </View>
-                        <Text>{user.country}</Text>
+                            </Dialog.Actions>
+                        </Dialog>
                     </View>
-                </ListItem.Content>
-            </ListItem>
-            <Divider />
-            <ConnectionManagerButtons />
+                    <Text>{user.country}</Text>
+                </View>
+            </View>
+            {/* </Card> */}
 
-            <View style={{ marginBottom: sizes.M }}>
+            <View style={styles.content}>
                 <ListItem>
                     <ListItem.Content style={{ paddingBottom: sizes.M }}>
-                        <ListItem.Title>About yourself</ListItem.Title>
+                        <Card.Title h4>About yourself</Card.Title>
                         <Avatar.Accessory size={23} onPress={() => setDescriptionVisible(!descriptionVisible)} />
                         <Dialog isVisible={descriptionVisible} onBackdropPress={() => setDescriptionVisible(!descriptionVisible)} overlayStyle={{ backgroundColor: secondary }}>
                             <TextInput
@@ -215,8 +214,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 </ListItem>
                 <Divider />
             </View>
-            <ListItem>
-                <ListItem.Content style={{ paddingVertical: sizes.S }}>
+            <View>
+                <ListItem.Content style={styles.content}>
                     <ListItem.Title>Personal details:</ListItem.Title>
                     <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
                         Email: <Text style={{ color: '#666666' }}>{user.email}</Text>{' '}
@@ -229,16 +228,21 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     </ListItem.Subtitle>
                     <ListItem.Subtitle style={styles.personalDetailsSubtitle}>You are learning: {user.learning_language}</ListItem.Subtitle>
                 </ListItem.Content>
-            </ListItem>
-            <Button
-                size="md"
-                type="outline"
-                onPress={() => setOverlayVisible(!overlayVisible)}
-                titleStyle={{ color: 'red' }}
-                buttonStyle={styles.deleteButton}
-            >
-                Delete your profile
-            </Button>
+            </View>
+            <View style={styles.content}>
+                <ConnectionManagerButtons />
+
+                <Button
+                    size="md"
+                    type="outline"
+                    onPress={() => setOverlayVisible(!overlayVisible)}
+                    titleStyle={{ color: 'red' }}
+                    buttonStyle={styles.deleteButton}
+                    containerStyle={{ margin: 'auto' }}
+                >
+                    Delete your profile
+                </Button>
+            </View>
             <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(!overlayVisible)} overlayStyle={styles.overlayContainer}>
                 <Text style={styles.overlayText}>⚠️ Warning: This action is irreversible!</Text>
                 <Text style={styles.overlayText}>
