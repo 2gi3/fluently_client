@@ -35,7 +35,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const dispatch = useDispatch();
     const newUser = useSelector((state: RootState) => state.newUser.newUser);
     const logIn = useLogIn()
-    const [email, setEmail] = useState('');
+    // const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [age, setAge] = useState(0);
@@ -64,10 +64,15 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const [inputError, setInputError] = useState<string | undefined>()
     const [confirmationInput, setConfirmationInput] = useState('');
     const [emailChecked, setEmailChecked] = useState(false);
-
+    const [authAdded, setAuthAdded] = useState(false)
+    const email = newUser.email
+    const setEmail = (email: string) => {
+        dispatch(updateNewUserField({ key: 'email', value: email }));
+    }
 
     const handleSetNewUser = async () => {
         if (emailRegex.test(email) && passwordRegex.test(password)) {
+            setAuthAdded(true)
             const newUserData: NewUserT = {
                 email,
                 password,
@@ -138,7 +143,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     }, [newUser.email, newUser.password]);
 
     useEffect(() => {
-        if (count && count < 5) {
+        if (count && count < 6) {
             setShowCount(true)
         }
         console.log({ count })
@@ -158,7 +163,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                     <Card.Title h3>{header}</Card.Title>
                     <Card.Divider />
 
-                    {!newUser.email && !newUser.password ?
+                    {!authAdded ?
                         <View style={{
                             marginVertical: sizes.M,
                         }}>
@@ -313,7 +318,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
             }
 
             {confirmationOverlayVisible && <ConfirmationOverlay
-                warning={`This account already exists`}
+                warning={`Account already exists`}
                 isVisible={confirmationOverlayVisible}
                 onBackdropPress={() => setConfirmationOverlayVisible(!confirmationOverlayVisible)}
                 onConfirm={() => toggleLoginState(true)}

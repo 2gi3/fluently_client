@@ -1,5 +1,5 @@
 export interface NewUserT {
-    email: string | null;
+    email: string;
     password: string | null;
     name: string | null;
     age: number | null;

@@ -10,7 +10,39 @@ import { useEffect, useState } from "react";
 import { RootState } from "../../redux/store";
 import * as Location from 'expo-location'
 import useSWR, { mutate } from 'swr';
+import { emailRegex } from '../../regex';
+import { setAmount } from '../../redux/slices/counterSlice';
 
+
+
+export const useCheckUserExistence = () => {
+    const dispatch = useDispatch();
+    const [checkingUserExistence, setCheckingUserExistence] = useState(false);
+    const [emailChecked, setEmailChecked] = useState(false);
+    const email = useSelector((state: RootState) => state.newUser.newUser.email);
+    const url = process.env.SERVER_URL!
+    useEffect(() => {
+        setEmailChecked(false)
+        console.log({ email })
+    }, [email])
+
+    const checkUserExistence = async () => {
+        if (emailRegex.test(email) && !checkingUserExistence && !emailChecked) {
+            setCheckingUserExistence(true);
+            const response = await fetch(`${url}/api/user/exists/${email}`, {
+                method: 'GET',
+            });
+            setCheckingUserExistence(false);
+            const userExists = await response.json();
+            dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
+
+            setEmailChecked(true);
+            return userExists.exists;
+        }
+    }
+
+    return { checkingUserExistence, emailChecked, checkUserExistence };
+};
 
 
 

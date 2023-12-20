@@ -4,7 +4,7 @@ import { Gender, NewUserT } from '../../types/user';
 
 export interface NewUserState {
     newUser: {
-        email: string | null;
+        email: string;
         password: string | null;
         name: string | null;
         age: number | null;
@@ -19,7 +19,7 @@ export interface NewUserState {
 
 const initialState: NewUserState = {
     newUser: {
-        email: null,
+        email: '',
         password: null,
         name: null,
         age: null,
@@ -39,15 +39,15 @@ export const newUserSlice = createSlice({
         setNewUser: (state, action: PayloadAction<NewUserT>) => {
             state.newUser = action.payload;
         },
-        updateNewUserField: (state, action: PayloadAction<{ key: keyof NewUserT; value: any }>) => {
+        updateNewUserField: (state, action: PayloadAction<{ key: any; value: NewUserT[keyof NewUserT] }>) => {
             const { key, value } = action.payload;
             if (state.newUser) {
-                state.newUser[key] = value;
+                state.newUser[key] = value as any;
             }
         },
         clearNewUser: (state) => {
             state.newUser = {
-                email: null,
+                email: '',
                 password: null,
                 name: null,
                 age: null,

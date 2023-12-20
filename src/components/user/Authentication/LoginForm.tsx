@@ -1,9 +1,9 @@
 import { Button, Card, Icon, Input, Overlay } from "@rneui/themed"
 import { sizes } from "../../../styles/variables/measures"
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, } from "react-native"
-import { useLogIn } from "../../../functions/hooks/user"
+import { useCheckUserExistence, useLogIn } from "../../../functions/hooks/user"
 import React, { useEffect, useState } from 'react'
-import { clearNewUser } from "../../../redux/slices/newUserSlice"
+import { clearNewUser, updateNewUserField } from "../../../redux/slices/newUserSlice"
 import { useDispatch, useSelector } from 'react-redux';
 import { emailRegex, passwordRegex } from "../../../regex"
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -15,6 +15,7 @@ import styles from "./styles"
 import { globalStyles } from "../../../styles"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { setAccessToken } from "../../../functions/auth"
+import ConfirmationOverlay from "../ConfirmationOverlay"
 
 
 
@@ -23,18 +24,21 @@ import { setAccessToken } from "../../../functions/auth"
 
 const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
     const count = useSelector((state: RootState) => state.counter.value);
+    const newUser = useSelector((state: RootState) => state.newUser.newUser);
 
     const dispatch = useDispatch();
     const { primaryFont, secondary } = colors
-
+    const { checkingUserExistence, emailChecked, checkUserExistence } = useCheckUserExistence()
     const logIn = useLogIn()
-    const [email, setEmail] = useState('');
+    const [inputError, setInputError] = useState<string | undefined>()
+    const [confirmationInput, setConfirmationInput] = useState('');
     const [password, setPassword] = useState('');
     const [visible, setVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState<string | null>()
     const [hideText, setHideText] = useState(true)
     const [displeyEmailErrors, setDispleyEmailErrors] = useState(false)
     const [displeyPasswordErrors, setDispleyPasswordErrors] = useState(false)
+    const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
     const toggleOverlay = () => {
         setErrorMessage(null)
         setVisible(!visible);
@@ -42,6 +46,11 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
     };
     const baseUrl = process.env.SERVER_URL
     const [showCount, setShowCount] = useState(false)
+
+    const email = newUser.email
+    const setEmail = (email: string) => {
+        dispatch(updateNewUserField({ key: 'email', value: email }));
+    }
 
     const handleLogin = async () => {
         if (!passwordRegex.test(password) || !emailRegex.test(email)) {
@@ -55,7 +64,6 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    // credentials: 'include',
                     body: JSON.stringify({
                         email: email.trim(),
                         password: password.trim()
@@ -112,7 +120,19 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                         placeholder="Email"
                         value={email}
                         onChangeText={(text) => setEmail(text.trim())}
-                        onBlur={() => setDispleyEmailErrors(true)}
+                        onBlur={async () => {
+                            console.log({ emailChecked })
+
+                            if (emailRegex.test(email) || !emailChecked) {
+                                const userExists = await checkUserExistence();
+                                console.log({ userExists })
+                                if (userExists === false) {
+                                    setConfirmationOverlayVisible(true)
+
+                                }
+                            }
+                            setDispleyEmailErrors(true)
+                        }}
                         errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
                     />
                     {showCount && <View style={{ margin: 'auto' }}>
@@ -174,6 +194,20 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                 </View>
 
             </Card>
+            {confirmationOverlayVisible && <ConfirmationOverlay
+                warning={`Account doesn\'t exist`}
+                isVisible={confirmationOverlayVisible}
+                onBackdropPress={() => setConfirmationOverlayVisible(false)}
+                onConfirm={() => toggleLoginState(false)}
+                onCancel={() => {
+                    setConfirmationOverlayVisible(false);
+                    setInputError(undefined);
+                    setConfirmationInput('');
+                }}
+                consfirmButtonTitle='Create Account'
+            />
+
+            }
         </ScrollView>
     )
 }
