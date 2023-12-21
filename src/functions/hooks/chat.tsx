@@ -5,11 +5,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../../types/user";
 import { useState, useEffect } from "react";
 import { ChatMessageT, ChatroomT, MessageT } from "../../types/chat";
-import { clearChatMessages } from "../../redux/slices/chatSlice";
+import { clearChatMessages, setPendingChats } from "../../redux/slices/chatSlice";
 
 
 export const useGetChats = () => {
     const user = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
     const baseUrl = `${process.env.SERVER_URL}`
     const url = `${baseUrl}/api/chat/${user.id}`
 
@@ -27,6 +28,18 @@ export const useGetChats = () => {
             throw new Error('Failed to fetch chatrooms');
         }
         const data: { chatrooms: ChatroomT[], lastMessages: ChatMessageT[] } = await response.json();
+        if (data.lastMessages && data.lastMessages?.length > 0) {
+            const hasUnread = data.lastMessages.some(message => message.status !== 'read');
+
+            if (hasUnread) {
+                const unreadChatIds = data.lastMessages
+                    .filter(message => message.status !== 'read')
+                    .map(message => message.chatId);
+                console.log({ unreadChatIds })
+                dispatch(setPendingChats(unreadChatIds));
+
+            }
+        }
         return data;
     };
 

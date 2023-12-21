@@ -49,7 +49,7 @@ const ChatsList = () => {
 
             setSortedChatrooms(filteredChatrooms);
         }
-    }, [chatrooms, activeChat, pendingChats]);
+    }, [chatrooms, activeChat]);
 
 
     const renderItem = ({ item }: { item: ChatroomT }) => (

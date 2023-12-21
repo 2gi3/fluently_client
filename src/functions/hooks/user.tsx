@@ -23,7 +23,6 @@ export const useCheckUserExistence = () => {
     const url = process.env.SERVER_URL!
     useEffect(() => {
         setEmailChecked(false)
-        console.log({ email })
     }, [email])
 
     const checkUserExistence = async () => {

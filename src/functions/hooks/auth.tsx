@@ -35,6 +35,12 @@ export const useTokenRefresher = () => {
                 console.error('Error while updating access token:', error);
             }
         };
+        const handleVisibilityChange = () => {
+            if (document.visibilityState === 'visible') {
+                updateAccessToken();
+            }
+        };
+        document.addEventListener('visibilitychange', handleVisibilityChange);
 
         updateAccessToken();
 

@@ -230,7 +230,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 </ListItem.Content>
             </View>
             <View style={styles.content}>
-                <ConnectionManagerButtons />
+                {/* <ConnectionManagerButtons /> */}
 
                 <Button
                     size="md"

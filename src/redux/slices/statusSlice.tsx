@@ -4,11 +4,12 @@ import { RootState } from '../store';
 import { StatusState } from '../../types';
 
 
+const socketUrlVar = process.env.WEB_SOCKET_URL
 
 const initialStatusState: StatusState = {
     loggedIn: false,
     connected: false,
-    socketUrl: null,
+    socketUrl: socketUrlVar!,
 };
 
 export const statusSlice = createSlice({
