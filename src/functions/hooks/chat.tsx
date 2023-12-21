@@ -28,18 +28,18 @@ export const useGetChats = () => {
             throw new Error('Failed to fetch chatrooms');
         }
         const data: { chatrooms: ChatroomT[], lastMessages: ChatMessageT[] } = await response.json();
-        if (data.lastMessages && data.lastMessages?.length > 0) {
-            const hasUnread = data.lastMessages.some(message => message.status !== 'read');
+        // if (data.lastMessages && data.lastMessages?.length > 0) {
+        //     const hasUnread = data.lastMessages.some(message => message.status !== 'read');
 
-            if (hasUnread) {
-                const unreadChatIds = data.lastMessages
-                    .filter(message => message.status !== 'read')
-                    .map(message => message.chatId);
-                console.log({ unreadChatIds })
-                dispatch(setPendingChats(unreadChatIds));
+        //     if (hasUnread) {
+        //         const unreadChatIds = data.lastMessages
+        //             .filter(message => message.status !== 'read' && message.userId !== user.id)
+        //             .map(message => message.chatId);
+        //         console.log({ unreadChatIds })
+        //         dispatch(setPendingChats(unreadChatIds));
 
-            }
-        }
+        //     }
+        // }
         return data;
     };
 
@@ -47,6 +47,7 @@ export const useGetChats = () => {
         revalidateOnMount: true,
         refreshWhenHidden: true
     });
+
 
     const refreshData = () => {
         mutate(url);

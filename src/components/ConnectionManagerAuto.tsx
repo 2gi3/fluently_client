@@ -27,7 +27,7 @@ export function ConnectionManagerAuto() {
 
       if (hasUnread) {
         const unreadChatIds = lastMessages
-          .filter(message => message.status !== 'read')
+          .filter(message => message.status !== 'read' && message.userId !== user.id)
           .map(message => message.chatId);
         console.log({ unreadChatIds })
         dispatch(setPendingChats(unreadChatIds));
@@ -69,6 +69,10 @@ export function ConnectionManagerAuto() {
     }
 
   }, [outgoingMessage])
+
+  useEffect(() => {
+    handlePendingChats()
+  }, [user, chatrooms])
 
   useEffect(() => {
     dispatch(setSocketUrl(socketUrlVar!));

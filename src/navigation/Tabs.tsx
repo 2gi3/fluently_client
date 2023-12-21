@@ -40,8 +40,7 @@ const Tabs = () => {
 
     return (
         <Tabs.Navigator
-            // initialRouteName={user.user ? "Community" : "Profile"}
-            initialRouteName={"Profile"}
+            initialRouteName={user.user ? "Community" : "Profile"}
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
                 headerStyle: {
