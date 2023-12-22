@@ -29,7 +29,9 @@ const NationalitySelector = () => {
                 borderBottomColor: 'rgb(134, 147, 158)',
                 borderStyle: 'solid',
                 paddingHorizontal: 0,
-                padding: sizes.XS
+                padding: sizes.XS,
+                marginTop: -12
+
             }}
             content={
                 <>
@@ -67,7 +69,7 @@ const NationalitySelector = () => {
                         }}
                         inputContainerStyle={{ borderWidth: 1, borderTopWidth: 0 }}
                         containerStyle={{
-                            marginTop: -sizes.M,
+                            marginTop: -10,
                         }}
                     />
                 )
@@ -87,7 +89,7 @@ const NationalitySelector = () => {
                             dispatch(updateNewUserField({ key: 'nationality', value: nationality }));
                             setExpanded(!expanded);
                         }} >
-                        <ListItem.Content>
+                        <ListItem.Content style={{ padding: 4 }}>
                             <ListItem.Title>{nationality}</ListItem.Title>
                         </ListItem.Content>
                     </ListItem>

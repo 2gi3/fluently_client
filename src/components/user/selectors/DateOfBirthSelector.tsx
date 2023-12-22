@@ -61,7 +61,7 @@ const DateOfBirthSelector = () => {
 
 
   return (
-    <SafeAreaView style={{ marginBottom: sizes.M, padding: sizes.XS }}>
+    <SafeAreaView style={{ marginBottom: 24, padding: sizes.XS }}>
       <View style={{ paddingHorizontal: sizes.XS, marginBottom: sizes.S }} >
         <Text style={globalStyles.elementTitle}>What is your date of birth?</Text>
       </View>
@@ -119,7 +119,7 @@ const DateOfBirthSelector = () => {
               dispatch(updateNewUserField({ key: 'age', value: `${year}-${month}-${day}` }));
               setShowYearPicker(false);
             }} >
-            <ListItem.Content>
+            <ListItem.Content style={{ padding: 4 }}>
               <ListItem.Title>{year}</ListItem.Title>
             </ListItem.Content>
           </ListItem>
@@ -134,7 +134,7 @@ const DateOfBirthSelector = () => {
             dispatch(updateNewUserField({ key: 'age', value: `${year}-${index + 1}-${day}` }));
             setShowMonthPicker(!showMonthPicker);
           }}>
-            <ListItem.Content>
+            <ListItem.Content style={{ padding: 4 }}>
               <ListItem.Title>{monthName}</ListItem.Title>
             </ListItem.Content>
           </ListItem>
@@ -152,7 +152,7 @@ const DateOfBirthSelector = () => {
                 setShowDayPicker(!showDayPicker);
               }}
             >
-              <ListItem.Content>
+              <ListItem.Content style={{ padding: 4 }}>
                 <ListItem.Title>{dayNumber}</ListItem.Title>
               </ListItem.Content>
             </ListItem>

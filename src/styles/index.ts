@@ -32,7 +32,7 @@ export const globalStyles = StyleSheet.create({
     whideButton: {
         marginLeft: 0,
         marginRight: 0,
-        marginBottom: M,
+        // marginBottom: S,
         marginTop: 0,
         maxWidth: 400
     },

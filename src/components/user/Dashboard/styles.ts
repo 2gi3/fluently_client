@@ -25,8 +25,8 @@ export const styles = StyleSheet.create({
         backgroundColor: secondary,
         borderRadius: S,
         margin: S,
-        minWidth: XXL,
-        maxWidth: XXXL
+        width: 276,
+        // maxWidth: XXXL
     },
     avatarContainer: {
         backgroundColor: primary,

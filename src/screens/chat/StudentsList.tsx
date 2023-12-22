@@ -3,7 +3,7 @@ import { FlatList, TouchableOpacity, Pressable, View, Text } from 'react-native'
 import chatsData from '../../../mock_data/chatsData.json'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import StudentCard from '../../components/chat/StudentCard';
-import { useGetUsers } from '../../functions/hooks/user';
+import { useGetUsers, useUserData } from '../../functions/hooks/user';
 import { UserT } from '../../types/user';
 import { Skeleton } from '@rneui/themed';
 import { sizes } from '../../styles/variables/measures';
@@ -22,6 +22,7 @@ const StudentsList = () => {
     const [connectedUsersArray, setConnectedUsersArray] = useState<UserT[] | null>()
     const [disconnectedUsersArray, setDisconnectedUsersArray] = useState<UserT[] | null>()
     const [combinedUsers, setCombinedUsers] = useState<UserT[] | null>(null)
+    const { user } = useUserData()
 
 
 
@@ -44,10 +45,9 @@ const StudentsList = () => {
     }, [route.params])
 
     useEffect(() => {
-        console.log({ connectedUsers })
         if (users && connectedUsers.length > 0) {
-            const connected = users.filter((user: UserT) => connectedUsers.includes(user.id! as number));
-            const disconnected = users.filter((user: UserT) => !connectedUsers.includes(user.id! as number));
+            const connected = users.filter((userDB: UserT) => connectedUsers.includes(userDB.id! as number) && userDB.id !== user?.id);
+            const disconnected = users.filter((userDB: UserT) => !connectedUsers.includes(userDB.id! as number) && userDB.id !== user?.id);
 
             // setConnectedUsersArray(connected);
             // setDisconnectedUsersArray(disconnected);

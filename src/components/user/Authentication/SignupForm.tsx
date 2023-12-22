@@ -7,7 +7,7 @@ import { RootState } from "../../../redux/store";
 import { useDispatch, useSelector } from 'react-redux';
 import { clearNewUser, setNewUser, updateNewUserField } from '../../../redux/slices/newUserSlice';
 import { Gender, NewUserT } from '../../../types/user';
-import { useLocation, useLogIn } from '../../../functions/hooks/user';
+import { useLogIn } from '../../../functions/hooks/user';
 import { emailRegex, passwordRegex, studentName } from '../../../regex';
 import AuthInput from './AuthInput';
 import LearnLanguageSelector from '../selectors/LearnLanguageSelector';
@@ -32,7 +32,6 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
     const count = useSelector((state: RootState) => state.counter.value);
     const navigation = useNavigation()
     const { primaryFont, secondary } = colors
-    const [city, country, loading, error] = useLocation()
     const dispatch = useDispatch();
     const newUser = useSelector((state: RootState) => state.newUser.newUser);
     const logIn = useLogIn()
@@ -81,7 +80,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 age,
                 gender,
                 nationality,
-                country: `${city}, ${country}`,
+                country: null,
                 native_language: nativeLanguage,
                 teaching_language: teachingLanguage,
                 learning_language: learningLanguage,
@@ -102,7 +101,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 age: newUser.age,
                 gender: newUser.gender,
                 nationality: newUser.nationality,
-                country: `${city}, ${country}`,
+                country: null,
                 native_language: newUser.native_language,
                 teaching_language: teachingLanguage,
                 learning_language: newUser.learning_language,
@@ -136,16 +135,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
         }
     };
 
-    useEffect(() => {
-        if (newUser.email && newUser.password) {
-            setHeader('Tell us about yourself')
-        } else {
-            navigation.setOptions({
-                title: 'The best time to start learning is now'
-            })
-        }
 
-    }, [newUser.email, newUser.password]);
 
     useEffect(() => {
         if (count && count < 6) {
@@ -262,22 +252,23 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                             </Overlay>
 
                         </View>
-                        : loading ?
-                            <View style={{ flexDirection: 'column', gap: sizes.S }} >
-                                <Skeleton animation="wave" width={180} height={60} />
-                                <Skeleton animation="wave" width={180} height={60} />
-                                <Skeleton animation="wave" width={180} height={60} />
-                            </View> :
-                            <View style={{ paddingTop: sizes.M }}>
-                                <AuthInput
-                                    autoFocus={true}
-                                    placeholder="Name"
-                                    value={name}
-                                    onChangeText={(text) => setName(text)}
-                                    onBlur={() => setDispleyNameErrors(true)}
-                                    errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
-                                />
-                                {/* <Input
+                        :
+                        //  loading ?
+                        //     <View style={{ flexDirection: 'column', gap: sizes.S }} >
+                        //         <Skeleton animation="wave" width={180} height={60} />
+                        //         <Skeleton animation="wave" width={180} height={60} />
+                        //         <Skeleton animation="wave" width={180} height={60} />
+                        //     </View> :
+                        <View style={{ paddingTop: sizes.XS }}>
+                            <AuthInput
+                                autoFocus={true}
+                                placeholder="Name"
+                                value={name}
+                                onChangeText={(text) => setName(text)}
+                                onBlur={() => setDispleyNameErrors(true)}
+                                errorMessage={!displeyNameErrors || studentName.test(name) || name === '' ? undefined : 'The name can be either Thai or English, minimum 2 and maximum 20 characters'}
+                            />
+                            {/* <Input
                             autoFocus={true}
                             placeholder="Name"
                             value={name}
@@ -291,10 +282,10 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 marginBottom: sizes.M,
                             }}
                         /> */}
-                                <NationalitySelector />
-                                <LanguageSelector />
+                            <NationalitySelector />
+                            <LanguageSelector />
 
-                                {/* <Input
+                            {/* <Input
                             placeholder="Teaching Language"
                             value={teachingLanguage}
                             onChangeText={(text) => setTeachingLanguage(text)}
@@ -307,17 +298,19 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 marginBottom: sizes.M,
                             }}
                         /> */}
-                                <LearnLanguageSelector />
-                                <GenderSelector />
-                                <DateOfBirthSelector />
+                            <LearnLanguageSelector />
+                            <GenderSelector />
+                            <DateOfBirthSelector />
 
-                                <Button
-                                    buttonStyle={globalStyles.whideButton}
-                                    title="Create your account"
-                                    onPress={createUser}
-                                />
+                            <Card.Divider />
 
-                            </View>}
+                            <Button
+                                buttonStyle={globalStyles.whideButton}
+                                title="Create your account"
+                                onPress={createUser}
+                            />
+
+                        </View>}
 
                 </Card>
             }

@@ -14,7 +14,7 @@ const GenderSelector = () => {
 
 
     return (
-        <View style={{ padding: sizes.XS, marginBottom: sizes.M }}>
+        <View style={{ padding: sizes.XS, marginBottom: sizes.S }}>
             <Text style={[styles.selectorTitle, globalStyles.elementTitle]}>
                 What is your gender?
             </Text>

@@ -15,10 +15,11 @@ import { ConnectionManagerButtons } from "../../ConnectionManagerButtons";
 import colors from "../../../styles/variables/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";
+import LocationSelector from "../selectors/LocationSelector";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
-    const { secondary, primary, tertiary, danger } = colors
+    const { secondary } = colors
     const socketUrl = useSelector((state: RootState) => state.status.socketUrl)
     const dispatch = useDispatch();
     const logIn = useLogIn()
@@ -148,9 +149,9 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             containerStyle={styles.buttonContainer}
                         />
                     )}
-                    <View>
+                    <View style={{ marginTop: sizes.S, marginBottom: 0 }}>
                         <Card.Title h3 >{user.name}</Card.Title>
-                        <Avatar.Accessory size={18} onPress={() => setNameVisible(!nameVisible)} />
+                        <Avatar.Accessory size={18} style={{ marginBottom: sizes.S }} onPress={() => setNameVisible(!nameVisible)} />
                         <Dialog isVisible={nameVisible} onBackdropPress={() => setNameVisible(!nameVisible)} overlayStyle={styles.dialogOverlay}>
                             <AuthInput
                                 autoFocus={true}
@@ -173,7 +174,12 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             </Dialog.Actions>
                         </Dialog>
                     </View>
-                    <Text>{user.country}</Text>
+                    {user.country
+                        ? <Text>{user.country}</Text>
+                        : user.id
+                            ? <LocationSelector userId={user.id} />
+                            : <Text>Share the name of your city</Text>
+                    }
                 </View>
             </View>
             {/* </Card> */}

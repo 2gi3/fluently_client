@@ -100,12 +100,12 @@ const Tabs = () => {
                 name="Profile" component={Profile} options={({ navigation }) => ({
                     tabBarIcon: useCustomTabIcon('MaterialIcons', 'person'),
                     tabBarLabel: 'Profile',
-                    title: 'Let your true self shine',
+                    title: 'Let you true rself shine!',
                     headerTitleStyle: {
                         color: colors.secondaryFont,
                         fontSize: 14,
                     },
-                    headerTitleAlign: 'center',
+                    headerTitleAlign: 'left',
                     headerRight: () => (
                         user.user?.id ? <LogoutButton style={{ marginRight: sizes.S }} />
                             : null

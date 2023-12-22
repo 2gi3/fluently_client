@@ -14,7 +14,7 @@ const LearnLanguageSelector = () => {
 
 
     return (
-        <View style={{ padding: sizes.XS, marginBottom: sizes.M }}>
+        <View style={{ padding: sizes.XS, marginBottom: sizes.S, marginTop: sizes.XS }}>
             <Text style={[styles.selectorTitle, globalStyles.elementTitle]}>
                 Which language are you learning?
             </Text>

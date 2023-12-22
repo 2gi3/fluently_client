@@ -36,7 +36,7 @@ const PublicProfile = () => {
     return (
         loading || loading1 ?
             <ProfileCardSkeleton /> :
-            <ScrollView>
+            (<ScrollView>
                 <ListItem containerStyle={styles.listItemContainer}>
                     <ListItem.Content style={styles.avatarContainer}>
                         <Avatar
@@ -50,17 +50,17 @@ const PublicProfile = () => {
 
                         <View>
                             <View>
-                                <Text h3 style={{ marginTop: S }}>{users.name}</Text>
+                                <Text h3 style={{ margin: S }}>{users.name}</Text>
 
                             </View>
-                            <Text>{users.country}</Text>
+                            <Text>{users.country === 'null, null' ? 'Location not shared' : users.country}</Text>
                         </View>
 
                     </ListItem.Content>
                 </ListItem>
 
                 <ListItem>
-                    <ListItem.Content style={{ paddingBottom: S }}>
+                    <ListItem.Content style={{ padding: S }}>
                         {/* <ListItem.Title>About yourself</ListItem.Title> */}
 
                         {users.description ?
@@ -111,7 +111,7 @@ const PublicProfile = () => {
                 />
 
 
-            </ScrollView>
+            </ScrollView>)
 
     )
 }

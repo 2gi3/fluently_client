@@ -92,6 +92,7 @@ export const useLogOut = () => {
             dispatch(logOut());
             dispatch(clearNewUser());
             dispatch(clearUser())
+            window.location.reload();
         } catch (error) {
             console.error('Error clearing local storage:', error);
         }
@@ -106,6 +107,7 @@ export const useUserData = () => {
     const [user, setUserData] = useState<UserT | null>(null);
     const [loading, setLoading] = useState(true)
     const loggedIn = useSelector((state: RootState) => state.status.loggedIn);
+    const existingUser = useSelector((state: RootState) => state.user);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -127,7 +129,7 @@ export const useUserData = () => {
         };
 
         fetchData();
-    }, [loggedIn, dispatch]);
+    }, [loggedIn, dispatch, existingUser]);
 
     return { user, loading };
 };
@@ -160,6 +162,10 @@ export const useLocation = () => {
             if (data && data.name && data.sys && data.sys.country) {
                 setCity(data.name);
                 setCountry(data.sys.country);
+                console.log({
+                    city: data.city,
+                    country: data.country
+                })
             }
         } catch {
             setError('Could not fetch location');

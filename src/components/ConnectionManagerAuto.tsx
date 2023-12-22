@@ -146,7 +146,7 @@ export function ConnectionManagerAuto() {
 
       newSocket.onclose = (event) => {
         dispatch(setConnected(false));
-        dispatch(clearSocketUrl());
+        // dispatch(clearSocketUrl());
         if (event.wasClean) {
           console.log('Closed cleanly, code=' + event.code + ', reason=' + event.reason);
         } else {
@@ -159,6 +159,9 @@ export function ConnectionManagerAuto() {
         dispatch(clearSocketUrl());
         dispatch(clearOutgoingMessage())
         // dispatch(clearSocket())
+        setTimeout(() => {
+          dispatch(setSocketUrl(socketUrlVar!));
+        }, 1000);
         setWebSocket(null)
       };
     }

@@ -65,7 +65,7 @@ const LanguageSelector = () => {
             }}
             inputContainerStyle={{ borderWidth: 1, borderTopWidth: 0 }}
             containerStyle={{
-              marginTop: -sizes.M,
+              marginTop: -10,
             }}
           />
         )
@@ -85,7 +85,7 @@ const LanguageSelector = () => {
               dispatch(updateNewUserField({ key: 'native_language', value: language }));
               setExpanded(!expanded);
             }} >
-            <ListItem.Content>
+            <ListItem.Content style={{ padding: 4 }}>
               <ListItem.Title>{language}</ListItem.Title>
             </ListItem.Content>
           </ListItem>
