@@ -50,7 +50,7 @@ const PublicProfile = () => {
 
                         <View>
                             <View>
-                                <Text h3 style={{ margin: S }}>{users.name}</Text>
+                                <Text h3 style={{ marginVertical: S }}>{users.name}</Text>
 
                             </View>
                             <Text>{users.country === 'null, null' ? 'Location not shared' : users.country}</Text>

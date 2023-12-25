@@ -68,6 +68,7 @@ export const useGetAllPosts = () => {
             throw new Error('Failed to fetch posts');
         }
         const data = await response.json();
+        console.log({ posts: data })
         return data;
     }
     const { data: posts, error, isValidating } = useSWR<void | PostT[] | undefined>(getAllPostsEndpoint, fetcher, {
