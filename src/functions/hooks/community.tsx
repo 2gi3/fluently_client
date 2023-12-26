@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { PostT } from "../../types/community";
+import { CommentT, PostT } from "../../types/community";
 import { useState } from "react";
 import useSWR, { mutate } from "swr";
 
@@ -110,4 +110,52 @@ export const useGetOnePost = (postId: string) => {
 
     return { loading: !post && !error, error, post, refreshData, isValidating };
 
+};
+
+export const useCreateComment = () => {
+    const createCommentEndpoint = `${baseUrl}/api/community/postComment`
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<boolean | null>(null);
+
+    const createComment = async (payload: CommentT) => {
+        console.log({ payload })
+        try {
+            setLoading(true);
+            setSuccess(null)
+            const accessToken = await AsyncStorage.getItem('speaky-access-token');
+            const response = await fetch(createCommentEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': JSON.parse(accessToken!),
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.ok) {
+                console.log('Comment created successfully');
+                setSuccess(true);
+                return await response.json();
+            } else {
+                const errorMessage = await response.text();
+                console.error('Failed to create comment:', errorMessage);
+
+                if (response.status >= 400 && response.status < 500) {
+                    setError('Client error: ' + errorMessage);
+                } else if (response.status >= 500 && response.status < 600) {
+                    setError('Server error: ' + errorMessage);
+                } else {
+                    setError('Unexpected error: ' + errorMessage);
+                }
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            setError('Network error: ' + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { createComment, loading, error, success };
 };

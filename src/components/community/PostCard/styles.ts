@@ -38,4 +38,15 @@ export const styles = StyleSheet.create({
         borderRadius: XS,
         fontSize: 12
     },
+    sendButton: {
+        backgroundColor: tertiary,
+    },
+    buttonTitle: {
+        fontWeight: 'bold',
+        fontSize: 23,
+    },
+    buttonContainer: {
+        margin: XS,
+        marginBottom: 0
+    },
 });
