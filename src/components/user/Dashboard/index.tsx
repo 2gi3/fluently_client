@@ -178,12 +178,11 @@ const Dashboard = ({ user }: { user: UserT }) => {
                             </Dialog.Actions>
                         </Dialog>
                     </View>
-                    {user.country
-                        ? <Text>{user.country}</Text>
-                        : user.id
-                            ? <LocationSelector userId={user.id} />
-                            : <Text>Share the name of your city</Text>
-                    }
+                    {user.country ? <Text>{user.country}</Text>
+                        : <Text>Share the name of your city</Text>}
+                    <LocationSelector userId={user.id!} />
+
+
                 </View>
             </View>
             {/* </Card> */}

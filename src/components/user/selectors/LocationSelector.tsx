@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Text } from "@rneui/themed"
+import { Button, Dialog, Text } from "@rneui/themed"
 import { View, ActivityIndicator } from "react-native"
 import { useLogIn } from '../../../functions/hooks/user'
 import { updateUser } from '../../../functions/user'
@@ -21,6 +21,7 @@ const LocationSelector = ({ userId }: { userId: string | number }) => {
 
 
 
+    const [dialogVisible, setDialogVisible] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>();
@@ -64,19 +65,56 @@ const LocationSelector = ({ userId }: { userId: string | number }) => {
         loading ? <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: sizes.L }}>
             <ActivityIndicator size="large" color={colors.tertiary} />
         </View> :
-            <View>
-                <Text>Share the name of</Text>
-                <Text>Your City</Text>
+            <View style={{ marginTop: sizes.XS }}>
+                {/* <Text>Share the name of</Text>
+                <Text>Your City</Text> */}
+                <Dialog
+                    isVisible={dialogVisible}
+                    onBackdropPress={() => setDialogVisible(!dialogVisible)}
+                    overlayStyle={{
+                        backgroundColor: colors.secondary,
+                        width: 'auto',
+                    }}>
+                    <View style={{
+                        marginBottom: sizes.S
+                    }}>
+                        <Text>
+                            We only detect the name of your city when you update it
+                        </Text>
+                    </View>
+                    <Dialog.Actions>
+
+                        <Dialog.Button
+                            type='solid'
+                            title="Update city"
+                            containerStyle={{
+                                marginLeft: sizes.S
+                            }}
+                            onPress={async () => {
+                                const country = await fetchLocationData();
+                                const data = await updateUser({ country }, updateUserEndpoint);
+                                console.log({ user: data })
+                                await AsyncStorage.setItem('@user', JSON.stringify(data.updatedUser));
+                                dispatch(setUser(data.updatedUser))
+                                setDialogVisible(!dialogVisible)
+                            }}
+                        />
+                        <Dialog.Button
+                            type='clear'
+                            title="Cancel"
+                            titleStyle={{
+                                color: colors.danger
+                            }}
+                            onPress={async () => {
+                                setDialogVisible(!dialogVisible)
+                            }}
+                        />
+                    </Dialog.Actions>
+                </Dialog>
                 <Button
-                    title="Share location"
-                    onPress={async () => {
-                        const country = await fetchLocationData();
-                        const data = await updateUser({ country }, updateUserEndpoint);
-                        console.log({ user: data })
-                        await AsyncStorage.setItem('@user', JSON.stringify(data.updatedUser));
-                        dispatch(setUser(data.updatedUser))
-                        console.log({ country: `${city}, ${country}` })
-                    }}
+                    type='outline'
+                    title="Update location"
+                    onPress={() => setDialogVisible(!dialogVisible)}
                 >
 
                 </Button>

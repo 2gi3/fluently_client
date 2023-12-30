@@ -36,24 +36,22 @@ const PostCard = ({ post }: PostCardPropsT) => {
             setCommentBody(null)
         }
     }, [success])
-    console.log({ savedPostsb: savedPosts })
 
 
 
     useEffect(() => {
         dispatch(fetchSavedPostsFromLocalStorage() as any)
-        console.log({ savedPostsA: savedPosts })
-
 
     }, [])
 
     useEffect(() => {
-        console.log({ savedPostsc: savedPosts })
 
-        if (savedPosts.some(item => item.postId === post.id)) {
-            setIsSaved(true);
-        } else {
-            setIsSaved(false);
+        if (savedPosts) {
+            if (savedPosts.some(item => item.postId === post.id)) {
+                setIsSaved(true);
+            } else {
+                setIsSaved(false);
+            }
         }
     }, [savedPosts])
 
