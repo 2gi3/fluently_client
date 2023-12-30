@@ -1,3 +1,5 @@
+import { PostT } from "./community";
+
 export interface NewUserT {
     email: string;
     password: string | null;
@@ -17,6 +19,8 @@ export interface UserT extends NewUserT {
     image?: string | null;
     description?: string | null;
     banned?: boolean | null;
+    posts?: PostT[]
+    savedPosts?: number[]
 }
 
 export interface UpdatedUserResponse {

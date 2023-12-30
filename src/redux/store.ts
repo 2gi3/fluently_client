@@ -5,6 +5,7 @@ import userReducer from './slices/userSlice'
 import statusReducer from './slices/statusSlice'
 import webSocketReducer from './slices/webSocketSlice'
 import chatReducer from './slices/chatSlice'
+import ownPostsReducer from './slices/ownPostsSlice'
 // import userReducer from './slices/userSlice'
 
 
@@ -15,7 +16,9 @@ export const store = configureStore({
     user: userReducer,
     status: statusReducer,
     webSocket: webSocketReducer,
-    chat: chatReducer
+    chat: chatReducer,
+    ownPosts: ownPostsReducer
+
   },
 })
 

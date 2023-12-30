@@ -10,26 +10,52 @@ import { styles } from './styles'
 
 import { useSelector } from "react-redux";
 import { RootState } from '../../../redux/store'
-import { useCreateComment } from '../../../functions/hooks/community'
+import { useCreateComment, useManageSavedPosts } from '../../../functions/hooks/community'
+import { useDispatch } from 'react-redux'
+import { fetchSavedPostsFromLocalStorage } from '../../../redux/slices/ownPostsSlice'
 
 const PostCard = ({ post }: PostCardPropsT) => {
     const navigation = useNavigation()
+    const dispatch = useDispatch()
     const manageOpenPost = () => {
         // @ts-ignore
         navigation.navigate('Post', { id: post.id })
     }
+    const { toggleSaveUnsavePost, loading: loadingSavedPost } = useManageSavedPosts()
 
     const { createComment, loading, error, success } = useCreateComment()
     const [localComments, setLocalComments] = useState<CommentT[] | undefined>(post.comments)
     const user = useSelector((state: RootState) => state.user);
+    const savedPosts = useSelector((state: RootState) => state.ownPosts.savedPosts);
     const [commentBody, setCommentBody] = useState<null | string>(null)
     const [postBodyExpand, setPostBodyExpand] = useState(false)
+    const [isSaved, setIsSaved] = useState(false)
 
     useEffect(() => {
         if (success === true) {
             setCommentBody(null)
         }
     }, [success])
+    console.log({ savedPostsb: savedPosts })
+
+
+
+    useEffect(() => {
+        dispatch(fetchSavedPostsFromLocalStorage() as any)
+        console.log({ savedPostsA: savedPosts })
+
+
+    }, [])
+
+    useEffect(() => {
+        console.log({ savedPostsc: savedPosts })
+
+        if (savedPosts.some(item => item.postId === post.id)) {
+            setIsSaved(true);
+        } else {
+            setIsSaved(false);
+        }
+    }, [savedPosts])
 
 
     return (
@@ -46,25 +72,27 @@ const PostCard = ({ post }: PostCardPropsT) => {
 
                 <Text>{post.user?.name}</Text>
                 {/* <Text>( + 18 replies )</Text> */}
-                <Icon
+                {user.id && <Icon
                     raised
-                    // reverse
-                    name="bookmark-outline"
+                    // key={isSaved ? 'saved' : 'not_saved'}
+                    reverse={isSaved}
+                    disabled={loadingSavedPost}
+                    name={!isSaved ? "bookmark" : "bookmark-outline"}
                     color={colors.tertiary}
                     size={14}
                     type='ionicon'
                     containerStyle={{
-                        // position: 'absolute',
-                        // top: sizes.XS,
-                        // right: sizes.XS,
-                        // zIndex: 2,
-                        // margin: 0,
                         marginRight: 0,
                         marginLeft: 'auto',
                         shadowColor: colors.tertiary
-
                     }}
-                />
+                    onPress={() => {
+                        toggleSaveUnsavePost({
+                            userId: user.id!,
+                            postId: post.id
+                        })
+                    }}
+                />}
 
             </View>
             <Card.Title h2 h2Style={{ fontSize: 16 }}>

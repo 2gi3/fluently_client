@@ -59,21 +59,23 @@ const CreatePost = () => {
         return (
             <ScrollView>
                 <Card >
-                    <Card.Title>What would you like to post?</Card.Title>
+                    <Card.Title>Would you like to:</Card.Title>
                     {/* <Card.Divider /> */}
 
                     <View style={{ display: 'flex', flexDirection: 'row', gap: sizes.S }}>
                         <CheckBox
-                            title="A question"
+                            title="Ask a question"
                             checkedIcon="dot-circle-o"
                             uncheckedIcon="circle-o"
+                            textStyle={{ fontWeight: 'normal' }}
                             checked={postType === 'question'}
                             onPress={() => setPostType('question')}
                         />
                         <CheckBox
-                            title="A moment"
+                            title="Share a moment"
                             checkedIcon="dot-circle-o"
                             uncheckedIcon="circle-o"
+                            textStyle={{ fontWeight: 'normal' }}
                             checked={postType === 'moment'}
                             onPress={() => setPostType('moment')}
                         />
@@ -162,7 +164,7 @@ const CreatePost = () => {
                                 uncheckedIcon="circle-o"
                                 checked={topic === 'Pronouns'}
                                 onPress={() => {
-                                    setTopic('question');
+                                    setTopic('Pronouns');
                                     setExpanded(false)
                                 }}
                             />
@@ -177,12 +179,12 @@ const CreatePost = () => {
                                 }}
                             />
                             <CheckBox
-                                title="questions"
+                                title="verbs"
                                 checkedIcon="dot-circle-o"
                                 uncheckedIcon="circle-o"
-                                checked={topic === 'questions'}
+                                checked={topic === 'verbs'}
                                 onPress={() => {
-                                    setTopic('questions');
+                                    setTopic('verbs');
                                     setExpanded(false)
                                 }}
                             />
@@ -192,7 +194,7 @@ const CreatePost = () => {
                                 uncheckedIcon="circle-o"
                                 checked={topic === 'Future tense'}
                                 onPress={() => {
-                                    setTopic('moment');
+                                    setTopic('Future tense');
                                     setExpanded(false)
                                 }}
                             />

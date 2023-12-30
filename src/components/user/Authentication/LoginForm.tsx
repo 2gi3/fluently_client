@@ -72,9 +72,10 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                 setAccessToken(response);
                 dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
 
-                const { user, refreshToken } = await response.json()
+                const { user, refreshToken, savedPosts, posts } = await response.json()
                 await AsyncStorage.setItem('speaky-refresh-token', JSON.stringify(refreshToken));
-
+                await AsyncStorage.setItem('savedPosts', JSON.stringify(savedPosts));
+                await AsyncStorage.setItem('posts', JSON.stringify(posts));
 
 
                 if (response.ok) {

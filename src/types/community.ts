@@ -39,3 +39,10 @@ export interface PostT {
     user?: Pick<UserT, 'name' | 'image'>;
     comments?: CommentT[];
 }
+
+export interface SavedPostT {
+    userId: UserT['id']
+    postId: PostT['id']
+    user?: Pick<UserT, 'name' | 'image'>
+    post?: Pick<PostT, 'title' | 'type'>
+}

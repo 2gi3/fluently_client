@@ -6,7 +6,9 @@ const baseUrl = process.env.SERVER_URL
 
 export const useTokenRefresher = () => {
     useEffect(() => {
+
         const updateAccessToken = async () => {
+            // await AsyncStorage.clear();
             try {
                 const accessToken = await AsyncStorage.getItem('speaky-access-token');
                 const refreshToken = await AsyncStorage.getItem('speaky-refresh-token');

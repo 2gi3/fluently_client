@@ -16,6 +16,7 @@ import colors from "../../../styles/variables/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";
 import LocationSelector from "../selectors/LocationSelector";
+import { useManageSavedPosts } from "../../../functions/hooks/community";
 
 
 const Dashboard = ({ user }: { user: UserT }) => {
@@ -25,7 +26,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const logIn = useLogIn()
     const logOut = useLogOut();
     const { XS, S, M, L, XL } = sizes
-
+    const { savedPosts } = useManageSavedPosts()
     const [overlayVisible, setOverlayVisible] = useState(false);
     const confirmationSentence: string = 'delete'
     const [confirmationInput, setConfirmationInput] = useState('')
@@ -115,6 +116,9 @@ const Dashboard = ({ user }: { user: UserT }) => {
         }
 
     }, [socketUrl])
+    useEffect(() => {
+        console.log({ 's.p.': savedPosts })
+    }, [savedPosts])
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -248,6 +252,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 >
                     Delete your profile
                 </Button>
+                <ConnectionManagerButtons />
             </View>
             <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(!overlayVisible)} overlayStyle={styles.overlayContainer}>
                 <Text style={styles.overlayText}>⚠️ Warning: This action is irreversible!</Text>
