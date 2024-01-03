@@ -33,7 +33,7 @@ const StudentsList = () => {
                     disabled={isValidating}
                     onPress={() => refreshData}
                     iconName="refresh"
-                    isLoading={loading}
+                    isLoading={loading || isValidating}
                 />
             ),
         });

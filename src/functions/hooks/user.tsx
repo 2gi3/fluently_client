@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useDispatch, useSelector } from 'react-redux';
-import { logIn } from '../../redux/slices/statusSlice';
+import { logIn, setSocketUrl } from '../../redux/slices/statusSlice';
 import { logOut } from '../../redux/slices/statusSlice';
 import { clearUser, setUser } from '../../redux/slices/userSlice';
 
@@ -13,6 +13,7 @@ import useSWR, { mutate } from 'swr';
 import { emailRegex } from '../../regex';
 import { setAmount } from '../../redux/slices/counterSlice';
 
+const socketUrlVar = process.env.WEB_SOCKET_URL
 
 
 export const useCheckUserExistence = () => {
@@ -187,6 +188,8 @@ export const useLocation = () => {
 
 
 export const useGetUsers = (url: string) => {
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
 
     const fetcher = async () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
@@ -206,9 +209,21 @@ export const useGetUsers = (url: string) => {
 
     const { data: users, error, isValidating } = useSWR(url, fetcher);
 
-    const refreshData = () => {
-        mutate(url);
+    const refreshData = async () => {
+        setLoading(true)
+        dispatch(setSocketUrl(null));
+        await mutate(url, undefined, true);
+        setTimeout(() => {
+            dispatch(setSocketUrl(socketUrlVar!));
+            setLoading(false)
+        }, 1000);
     };
+
+    useEffect(() => {
+        if (!users && !error) {
+            setLoading(true)
+        }
+    }, [users, error])
 
     return { loading: !users && !error, error, users, refreshData, isValidating };
 };

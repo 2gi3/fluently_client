@@ -77,9 +77,9 @@ export function ConnectionManagerAuto() {
   useEffect(() => {
     dispatch(setSocketUrl(socketUrlVar!));
 
-
+    let newSocket
     if (socketUrl && user.id) {
-      const newSocket = new WebSocket(socketUrl);
+      newSocket = new WebSocket(socketUrl);
       newSocket.onopen = () => {
         dispatch(setConnected(true));
         // dispatch(setSocket(newSocket));
@@ -126,13 +126,17 @@ export function ConnectionManagerAuto() {
               console.log({
                 check: moment(parsedObject.time).format('hh:mm:ss'),
                 connectedUsers: parsedObject.connectedUsers.toString(),
+                readyState: newSocket.readyState
               })
               if (parsedObject.connectedUsers.length < 2) {
                 console.log(parsedObject.connectedUsers.length)
-                newSocket.close();
+                // newSocket.close();
+                dispatch(setSocketUrl(null));
+
                 setTimeout(() => {
                   dispatch(setSocketUrl(socketUrlVar!));
-                }, 1000);
+                  console.log({ readyState: newSocket.readyState })
+                }, 2000);
               }
             } else {
               console.log({ parsedObject })

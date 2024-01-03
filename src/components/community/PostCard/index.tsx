@@ -82,7 +82,7 @@ const PostCard = ({ post }: PostCardPropsT) => {
                     containerStyle={{
                         marginRight: 0,
                         marginLeft: 'auto',
-                        shadowColor: colors.tertiary
+                        shadowColor: colors.secondaryFont
                     }}
                     onPress={() => {
                         toggleSaveUnsavePost({
