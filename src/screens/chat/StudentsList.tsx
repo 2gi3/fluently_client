@@ -34,6 +34,7 @@ const StudentsList = () => {
                     onPress={() => refreshData}
                     iconName="refresh"
                     isLoading={loading || isValidating}
+                    type="outline"
                 />
             ),
         });

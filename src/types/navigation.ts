@@ -20,4 +20,5 @@ export interface TopTabButtonProps {
     iconName: string;
     disabled?: boolean
     isLoading?: boolean
+    type?: "outline" | "solid"
 }

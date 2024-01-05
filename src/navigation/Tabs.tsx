@@ -42,7 +42,7 @@ const Tabs = () => {
 
     return (
         <Tabs.Navigator
-            initialRouteName={user.user ? "Community" : "Profile"}
+            initialRouteName={user.user ? "Chats" : "Profile"}
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
                 headerStyle: {
@@ -73,6 +73,7 @@ const Tabs = () => {
                                 onPress={() => navigation.navigate('Students')}
                                 iconName="handshake-outline"
                                 label="Find a partner"
+                                type={chatrooms && chatrooms?.chatrooms.length > 0 ? "outline" : "solid"}
                             />
                         )
                     })}

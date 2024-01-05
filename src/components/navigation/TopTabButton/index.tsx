@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { TopTabButtonProps } from '../../../types/navigation';
 import { styles } from './styles';
 
-const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = false }: TopTabButtonProps) => {
+const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = false, type = 'outline' }: TopTabButtonProps) => {
     if (isLoading) {
         return (
             <ActivityIndicator style={styles.activityIndicator} />
@@ -14,7 +14,7 @@ const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = 
         return (
             <Button
                 disabled={disabled}
-                type="outline"
+                type={type}
                 onPress={onPress}
                 style={styles.container}
             >
