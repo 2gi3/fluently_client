@@ -13,7 +13,6 @@ import { sizes } from '../../styles/variables/measures';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useEffect, useState } from 'react'
-import { ConnectionManagerButtons } from '../../components/ConnectionManagerButtons';
 
 export interface ChatroomT {
     id?: number;
@@ -23,12 +22,11 @@ export interface ChatroomT {
 }
 
 
-const ChatsList = () => {
+const ChatsList = ({ loading, error, chatrooms, refreshData, isValidating }: { loading, error, chatrooms, refreshData, isValidating }) => {
     const navigation = useNavigation()
     const user = useSelector((state: RootState) => state.user);
     const activeChat = useSelector((state: RootState) => state.chat.activeChat);
     const pendingChats = useSelector((state: RootState) => state.chat.pendingChats);
-    const { loading, error, chatrooms, refreshData, isValidating } = useGetChats();
     const [sortedChatrooms, setSortedChatrooms] = useState<ChatroomT[] | null>(null)
 
 

@@ -6,11 +6,8 @@ import { clearOutgoingMessage, setConnectedUsers } from '../redux/slices/webSock
 import { addMessage, addToPendingChats, setPendingChats } from '../redux/slices/chatSlice';
 import { notifyUser } from '../functions/chat';
 import moment from 'moment';
-import { useGetChats } from '../functions/hooks/chat';
-import { ChatMessageT } from '../types/chat';
 
 export function ConnectionManagerAuto() {
-  const { chatrooms } = useGetChats()
   const dispatch = useDispatch();
   const socketUrl = useSelector(selectSocketUrl);
   const user = useSelector((state: RootState) => state.user);
@@ -20,48 +17,26 @@ export function ConnectionManagerAuto() {
   const socketUrlVar = process.env.WEB_SOCKET_URL
   const [webSocket, setWebSocket] = useState<null | WebSocket>()
 
-  const handlePendingChats = () => {
-    const lastMessages = chatrooms?.lastMessages
-    if (lastMessages && lastMessages?.length > 0) {
-      const hasUnread = lastMessages.some(message => message.status !== 'read');
+  // const handleVisibilityChange = () => {
+  //   if (document.visibilityState === 'visible') {
 
-      if (hasUnread) {
-        const unreadChatIds = lastMessages
-          .filter(message => message.status !== 'read' && message.userId !== user.id)
-          .map(message => message.chatId);
-        console.log({ unreadChatIds })
-        dispatch(setPendingChats(unreadChatIds));
+  //     if (socketUrl) {
+  //       console.log('WebSocket is already connected.');
+  //       return;
+  //     }
 
-        // unreadChatIds.forEach(chatId => {
-        //   dispatch(setPendingChats(unreadChatIds));
-        //   // notifyUser(`New message: ${}`)
+  //     dispatch(setSocketUrl(socketUrlVar!));
 
-        // });
-      }
-    }
-  };
-
-  const handleVisibilityChange = () => {
-    if (document.visibilityState === 'visible') {
-      handlePendingChats()
-
-      if (socketUrl) {
-        console.log('WebSocket is already connected.');
-        return;
-      }
-
-      // const newSocketUrl = replaceHttpWithWs(serverUrl);
-      dispatch(setSocketUrl(socketUrlVar!));
-
-    }
-  };
-  document.addEventListener('visibilitychange', handleVisibilityChange);
+  //   }
+  // };
+  // document.addEventListener('visibilitychange', handleVisibilityChange);
 
   useEffect(() => {
     if (activeChat) {
       activeChatRef.current = activeChat;
     }
   }, [activeChat]);
+
   useEffect(() => {
     if (outgoingMessage && webSocket) {
       webSocket.send(outgoingMessage)
@@ -70,9 +45,6 @@ export function ConnectionManagerAuto() {
 
   }, [outgoingMessage])
 
-  useEffect(() => {
-    handlePendingChats()
-  }, [user, chatrooms])
 
   useEffect(() => {
     dispatch(setSocketUrl(socketUrlVar!));
@@ -82,7 +54,6 @@ export function ConnectionManagerAuto() {
       newSocket = new WebSocket(socketUrl);
       newSocket.onopen = () => {
         dispatch(setConnected(true));
-        // dispatch(setSocket(newSocket));
         setWebSocket(newSocket)
         newSocket.send(JSON.stringify({ connectedUserId: user.id }));
         console.log('Connected to the server via WebSocket');
@@ -130,7 +101,6 @@ export function ConnectionManagerAuto() {
               })
               if (parsedObject.connectedUsers.length < 2) {
                 console.log(parsedObject.connectedUsers.length)
-                // newSocket.close();
                 dispatch(setSocketUrl(null));
 
                 setTimeout(() => {
@@ -150,7 +120,6 @@ export function ConnectionManagerAuto() {
 
       newSocket.onclose = (event) => {
         dispatch(setConnected(false));
-        // dispatch(clearSocketUrl());
         if (event.wasClean) {
           console.log('Closed cleanly, code=' + event.code + ', reason=' + event.reason);
         } else {
@@ -162,7 +131,6 @@ export function ConnectionManagerAuto() {
         newSocket.close();
         dispatch(clearSocketUrl());
         dispatch(clearOutgoingMessage())
-        // dispatch(clearSocket())
         setTimeout(() => {
           dispatch(setSocketUrl(socketUrlVar!));
         }, 1000);

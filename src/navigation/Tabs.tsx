@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import colors from '../styles/variables/colors';
 import PostsGallery from '../screens/community/postsGallery';
+import { useGetChats } from '../functions/hooks/chat';
 
 const CustomTabLabel = ({ label, position }) => {
     const margin = position === 'beside-icon' ? sizes.S : null
@@ -29,6 +30,7 @@ const CustomTabLabel = ({ label, position }) => {
 const Tabs = () => {
     const Tabs = createBottomTabNavigator()
     const user = useUserData()
+    const { loading, error, chatrooms, refreshData, isValidating } = useGetChats();
     const pendingChats = useSelector((state: RootState) => state.chat.pendingChats);
 
 
@@ -60,7 +62,8 @@ const Tabs = () => {
         >
             {user.user && (
                 <Tabs.Screen
-                    name="Chats" component={ChatsList} options={({ navigation }) => ({
+                    name="Chats"
+                    options={({ navigation }) => ({
                         tabBarIcon: useCustomTabIcon('MaterialIcons', 'chat-bubble'),
                         tabBarLabel: 'Chats',
                         title: 'Use what you learn',
@@ -73,8 +76,21 @@ const Tabs = () => {
                             />
                         )
                     })}
+                >
+                    {(props) => {
+                        return (
+                            <ChatsList
+                                {...props}
+                                loading={loading}
+                                error={error}
+                                chatrooms={chatrooms}
+                                refreshData={refreshData}
+                                isValidating={isValidating}
+                            />
+                        );
+                    }}
+                </Tabs.Screen>
 
-                />
             )}
             {/* options={{
                         tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),

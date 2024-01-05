@@ -3,13 +3,14 @@ import useSWR, { mutate } from "swr";
 import { RootState } from "../../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { UserT } from "../../types/user";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { ChatMessageT, ChatroomT, MessageT } from "../../types/chat";
 import { clearChatMessages, setPendingChats } from "../../redux/slices/chatSlice";
 
 
 export const useGetChats = () => {
     const user = useSelector((state: RootState) => state.user);
+    const activeChat = useSelector((state: RootState) => state.chat.activeChat)
     const dispatch = useDispatch();
     const baseUrl = `${process.env.SERVER_URL}`
     const url = `${baseUrl}/api/chat/${user.id}`
@@ -18,7 +19,6 @@ export const useGetChats = () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
         const response = await fetch(url, {
             method: 'GET',
-            // credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': JSON.parse(accessToken!),
@@ -28,18 +28,7 @@ export const useGetChats = () => {
             throw new Error('Failed to fetch chatrooms');
         }
         const data: { chatrooms: ChatroomT[], lastMessages: ChatMessageT[] } = await response.json();
-        // if (data.lastMessages && data.lastMessages?.length > 0) {
-        //     const hasUnread = data.lastMessages.some(message => message.status !== 'read');
 
-        //     if (hasUnread) {
-        //         const unreadChatIds = data.lastMessages
-        //             .filter(message => message.status !== 'read' && message.userId !== user.id)
-        //             .map(message => message.chatId);
-        //         console.log({ unreadChatIds })
-        //         dispatch(setPendingChats(unreadChatIds));
-
-        //     }
-        // }
         return data;
     };
 
@@ -53,8 +42,35 @@ export const useGetChats = () => {
         mutate(url);
     };
 
+    const setUnreadMessageNavBedge = () => {
+        const lastMessages = chatrooms?.lastMessages;
+        if (lastMessages && lastMessages?.length > 0) {
+            const hasUnread = lastMessages.some(message => message.status !== 'read');
+
+            if (hasUnread) {
+                const unreadChatIds = lastMessages
+                    .filter(message => message.status !== 'read' && message.userId !== user.id)
+                    .map(message => message.chatId);
+                console.log({ unreadChatIds });
+                dispatch(setPendingChats(unreadChatIds));
+            }
+        }
+    }
+    useEffect(() => {
+        setUnreadMessageNavBedge()
+    }, [chatrooms, user, activeChat]);
+
+    const handleVisibilityChange = async () => {
+        if (document.visibilityState === 'visible') {
+            setUnreadMessageNavBedge()
+
+        }
+    };
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
     return { loading: !chatrooms && !error, error, chatrooms, refreshData, isValidating };
 };
+
 
 export const useGetMessages = (chatId: string | number) => {
     const dispatch = useDispatch()

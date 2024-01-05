@@ -11,7 +11,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync } from "expo-image-manipulator";
 import AuthInput from "./../Authentication/AuthInput";
 import { studentName } from "../../../regex";
-import { ConnectionManagerButtons } from "../../ConnectionManagerButtons";
 import colors from "../../../styles/variables/colors";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { styles } from "./styles";
@@ -239,7 +238,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 </ListItem.Content>
             </View>
             <View style={styles.content}>
-                {/* <ConnectionManagerButtons /> */}
 
                 <Button
                     size="md"
@@ -251,7 +249,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 >
                     Delete your profile
                 </Button>
-                <ConnectionManagerButtons />
             </View>
             <Overlay isVisible={overlayVisible} onBackdropPress={() => setOverlayVisible(!overlayVisible)} overlayStyle={styles.overlayContainer}>
                 <Text style={styles.overlayText}>⚠️ Warning: This action is irreversible!</Text>
