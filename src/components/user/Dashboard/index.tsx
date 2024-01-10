@@ -21,6 +21,7 @@ import { useManageSavedPosts } from "../../../functions/hooks/community";
 const Dashboard = ({ user }: { user: UserT }) => {
     const { secondary } = colors
     const socketUrl = useSelector((state: RootState) => state.status.socketUrl)
+    const readyState = useSelector((state: RootState) => state.webSocket.readyState)
     const dispatch = useDispatch();
     const logIn = useLogIn()
     const logOut = useLogOut();
@@ -130,7 +131,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         rounded
                         source={{ uri: image }}
                         title="Hi"
-                        containerStyle={styles.avatarContainer}
+                        containerStyle={[styles.avatarContainer, { borderWidth: readyState === 1 ? 1 : 0 }]}
                     >
                         <Avatar.Accessory
                             onPress={() => {
@@ -153,7 +154,7 @@ const Dashboard = ({ user }: { user: UserT }) => {
                         />
                     )}
                     <View style={{ marginTop: sizes.S, marginBottom: 0 }}>
-                        <Card.Title h3 >{user.name}</Card.Title>
+                        <Card.Title h3 >{`${user.name}`} </Card.Title>
                         <Avatar.Accessory size={18} style={{ marginBottom: sizes.S }} onPress={() => setNameVisible(!nameVisible)} />
                         <Dialog isVisible={nameVisible} onBackdropPress={() => setNameVisible(!nameVisible)} overlayStyle={styles.dialogOverlay}>
                             <AuthInput

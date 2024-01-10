@@ -1,20 +1,19 @@
 import { View, FlatList, SafeAreaView, Text, KeyboardAvoidingView, Platform } from "react-native"
-import Message from "../../components/chat/Message"
-// import { ChatMessageT } from "../../types"
-import chatData from "../../../mock_data/chatsData.json"
-import { sizes } from "../../styles/variables/measures";
-import ChatInput from "../../components/chat/ChatInput";
+import Message from "../../../components/chat/Message"
+import chatData from "../../../../mock_data/chatsData.json"
+import { sizes } from "../../../styles/variables/measures";
+import ChatInput from "../../../components/chat/ChatInput";
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
-import { createMessage } from "../../functions/chat";
-import { useGetMessages } from "../../functions/hooks/chat";
-import { setOutgoingMessage } from "../../redux/slices/webSocketSlice";
-import { useGetUsers } from "../../functions/hooks/user";
-import { addMessage, clearActiveChats, clearChatMessages, removeFromPendingChats, setActiveChat } from "../../redux/slices/chatSlice";
-import { MessageT } from "../../types/chat";
-import colors from "../../styles/variables/colors";
+import { RootState } from "../../../redux/store";
+import { createMessage } from "../../../functions/chat";
+import { useGetMessages } from "../../../functions/hooks/chat";
+import { setOutgoingMessage } from "../../../redux/slices/webSocketSlice";
+import { useGetUsers } from "../../../functions/hooks/user";
+import { addMessage, clearActiveChats, clearChatMessages, removeFromPendingChats, setActiveChat } from "../../../redux/slices/chatSlice";
+import { MessageT } from "../../../types/chat";
+import colors from "../../../styles/variables/colors";
 
 type ChatScreenRouteProp = {
     params: {
@@ -121,9 +120,6 @@ const ChatScreen = () => {
     }, [localMessages])
 
     if (messages) {
-        // setMessages(messagesDB)
-
-
 
         return (
             <SafeAreaView style={{ flex: 1 }}>

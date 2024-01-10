@@ -30,6 +30,9 @@ export const styles = StyleSheet.create({
     },
     avatarContainer: {
         backgroundColor: primary,
+        borderColor: 'green',
+        borderStyle: 'solid',
+        // borderWidth: 1,
     },
     buttonContainer: {
         marginTop: 25,

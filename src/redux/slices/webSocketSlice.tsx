@@ -9,7 +9,8 @@ const websocketSlice = createSlice({
     initialState: {
         // socket: null as WebSocketType,
         connectedUsers: [] as connectedUsersTyps,
-        outgoingMessage: null
+        outgoingMessage: null,
+        readyState: null
     },
     reducers: {
         // setSocket: (state, action) => {
@@ -44,10 +45,13 @@ const websocketSlice = createSlice({
                 state.connectedUsers = action.payload;
             }
         },
+        setReadyState: (state, action) => {
+            state.readyState = action.payload
+        },
     },
 });
 
 export const {
     // setSocket, clearSocket, sendMessage,
-    addUser, removeUser, setConnectedUsers, setOutgoingMessage, clearOutgoingMessage } = websocketSlice.actions;
+    addUser, removeUser, setConnectedUsers, setOutgoingMessage, clearOutgoingMessage, setReadyState } = websocketSlice.actions;
 export default websocketSlice.reducer;

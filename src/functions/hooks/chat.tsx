@@ -51,22 +51,30 @@ export const useGetChats = () => {
                 const unreadChatIds = lastMessages
                     .filter(message => message.status !== 'read' && message.userId !== user.id)
                     .map(message => message.chatId);
-                console.log({ unreadChatIds });
+                // console.log({ unreadChatIds });
                 dispatch(setPendingChats(unreadChatIds));
             }
         }
     }
-    useEffect(() => {
-        setUnreadMessageNavBedge()
-    }, [chatrooms, user, activeChat]);
+
 
     const handleVisibilityChange = async () => {
         if (document.visibilityState === 'visible') {
             setUnreadMessageNavBedge()
-
         }
     };
     document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    useEffect(() => {
+        setUnreadMessageNavBedge()
+
+        const cleanup = () => {
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        };
+
+        return cleanup
+
+    }, [chatrooms, user, activeChat]);
 
     return { loading: !chatrooms && !error, error, chatrooms, refreshData, isValidating };
 };
