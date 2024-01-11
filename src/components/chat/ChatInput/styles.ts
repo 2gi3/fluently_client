@@ -4,7 +4,7 @@ import colors from "../../../styles/variables/colors";
 
 
 const { XS, S, M, L, XL } = sizes
-const { secondary, secondaryFont, tertiary } = colors
+const { primary, secondary, secondaryFont, tertiary } = colors
 
 
 
@@ -35,6 +35,9 @@ export const styles = StyleSheet.create({
     },
     sendButton: {
         backgroundColor: tertiary,
+    },
+    microphoneButton: {
+        backgroundColor: secondary
     },
     buttonTitle: {
         fontWeight: 'bold',
