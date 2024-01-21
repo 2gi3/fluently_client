@@ -1,12 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Audio } from 'expo-av';
-import { View, TextInput, Animated, Easing, DimensionValue } from "react-native"
-import { Button, Icon, Text } from '@rneui/themed';
+import { View, TextInput, DimensionValue } from "react-native"
+import { Button, Icon, Slider, Text } from '@rneui/themed';
 import { sizes } from "../../../styles/variables/measures";
 import { ChatInputProps } from "../../../types/chat";
 import colors from '../../../styles/variables/colors';
 import { styles } from './styles';
 import { useStopWatch } from '../../../functions/hooks';
+import Animated, {
+    useSharedValue,
+    withTiming,
+    useAnimatedStyle,
+    Easing,
+} from 'react-native-reanimated';
 
 
 
@@ -20,7 +26,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
         resetCountdown,
         timeElapsed
     } = useStopWatch();
-    const { secondary, secondaryFont, tertiary } = colors
+    const { primary, secondary, secondaryFont, tertiary, danger } = colors
     const inputRef = useRef<TextInput | null>(null);
     const [recording, setRecording] = useState<Audio.Recording | undefined>();
     const [permissionResponse, requestPermission] = Audio.usePermissions();
@@ -30,13 +36,28 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
     });
     const [progress, setProgress] = useState(0)
 
+    const randomWidth = useSharedValue(0);
 
+    const config = {
+        duration: 500,
+        easing: Easing.linear,
+    };
 
+    const testStyle = useAnimatedStyle(() => {
+        return {
+            //   width: withTiming(randomWidth.value, config),
+            flexBasis: withTiming(`${progress}%`, config) as DimensionValue,
+            justifyContent: 'flex-start',
+            backgroundColor: secondaryFont,
+            height: 8,
+        };
+    });
 
     useEffect(() => {
 
         console.log({
-            progress
+            progress,
+            val: randomWidth.value
         })
     }, [progress])
 
@@ -87,7 +108,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                 { uri: recording.getURI()! },
                 {
                     shouldPlay: false,
-                    progressUpdateIntervalMillis: 1000
+                    // progressUpdateIntervalMillis: 100
                 }
             );
             ;
@@ -95,7 +116,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
 
             setSound({
                 soundObject: newSound,
-                duration: Math.ceil(status.durationMillis / 100) as number
+                duration: status.durationMillis as number
             });
         }
     }
@@ -115,17 +136,17 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
 
                 sound.soundObject.setOnPlaybackStatusUpdate(async (status: any) => {
 
-                    const position = Math.round(status.positionMillis / 100);
+                    const position = status.positionMillis;
 
 
 
-                    if (position !== prevPosition) {
-                        setProgress(Math.ceil((position / sound.duration) * 100))
+                    // if (position !== prevPosition) {
+                    setProgress((position / sound.duration) * 100)
+                    randomWidth.value = (position / sound.duration) * 100
 
 
-
-                        prevPosition = position;
-                    }
+                    prevPosition = position;
+                    // }
                 });
 
 
@@ -196,57 +217,200 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
     // const courseProgress = startedCourses?.[course.id]?.length ?? 0;
     // const progressPercentage = Math.ceil((courseProgress / course.sessionsLength!) * 100);
     return (
-        <>{sound.duration &&
-            <View style={[styles.container, { justifyContent: 'flex-start', backgroundColor: 'blue', height: sizes.M }]}>
+        <>
+            {sound.soundObject &&
+                <View style={{
+                    margin: 'auto',
+                    marginVertical: sizes.S,
+                    padding: sizes.XS,
+                    backgroundColor: 'transparent',
+                    width: sizes.XXL,
+                    borderRadius: sizes.S
 
-                <View
-                    style={{ position: 'absolute', backgroundColor: 'lightgreen', top: 0, right: 0, bottom: 0, left: 0, }}>
-                    {/* <Text>
-                        {sound.duration.toString()}
-                    </Text> */}
+                }}>
+                    <View style={{
+                        flexDirection: 'row',
+                        marginBottom: sizes.XS,
+                        alignItems: 'center'
+
+                    }}>
+                        <Icon
+                            name='play'
+                            type="font-awesome"
+                            size={15}
+                            color={secondaryFont}
+                            iconStyle={{
+                                top: 8, left: 1
+                            }}
+                            containerStyle={[styles.buttonContainer, { marginHorizontal: sizes.S, width: sizes.M, height: sizes.M, borderRadius: sizes.S, backgroundColor: secondary }]}
+                            onPress={() => playSound()}
+                        />
+
+
+
+
+
+
+                        <View style={[styles.container, { paddingHorizontal: 0, flex: 1, justifyContent: 'flex-start', marginRight: sizes.S }]}>
+
+                            <View
+                                style={{ position: 'absolute', backgroundColor: secondary, top: 0, right: 0, bottom: 0, left: 0, }}>
+                                {/* <Text>
+{sound.duration.toString()}
+</Text> */}
+                            </View>
+
+                            <Animated.View
+                                style={testStyle}
+                            // style={{
+                            //     flexBasis: `${progress}%` as DimensionValue,
+                            //     justifyContent: 'flex-start',
+                            //     backgroundColor: 'red',
+                            //     height: 12,
+                            // }}                       
+                            >
+                                {/* <Text>
+audioCountdown {progress}
+</Text> */}
+                            </Animated.View>
+                        </View>
+
+
+
+
+                        {/* <Slider
+                            value={progress}
+                            // onValueChange={setValue}
+                            style={{
+                                flex: 1,
+                                marginRight: sizes.S
+                            }}
+                            maximumValue={100}
+                            minimumValue={0}
+                            step={1}
+                            allowTouchTrack
+                            trackStyle={{ height: 5, backgroundColor: 'transparent' }}
+                            thumbStyle={{ height: 10, width: 10, backgroundColor: 'red' }}
+                        /> */}
+
+                    </View>
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: sizes.S
+                        }}>
+                        {/* <Icon
+                            name='delete-outline'
+                            size={30}
+                            color={danger}
+                            containerStyle={[styles.buttonContainer, { flex: 1, borderColor: colors.danger, borderStyle: 'solid', borderWidth: 1, paddingVertical: 6, borderRadius: 6 }]}
+                            onPress={() => setSound({
+                                soundObject: undefined,
+                                duration: 0
+                            })}
+                        /> */}
+                        <Slider
+                            value={1}
+                            animateTransitions
+                            animationType="spring"
+                            maximumTrackTintColor={danger}
+                            maximumValue={1}
+                            minimumTrackTintColor={secondary}
+                            minimumValue={0}
+                            onSlidingComplete={() =>
+                                console.log("onSlidingComplete()")
+                            }
+                            onSlidingStart={() =>
+                                console.log("onSlidingStart()")
+                            }
+                            onValueChange={value =>
+                                console.log("onValueChange()", value)
+                            }
+                            orientation="horizontal"
+                            step={0}
+                            style={{ width: 96 }}
+                            thumbStyle={{
+                                height: 32,
+                                width: 40,
+                                borderRadius: 8,
+                                borderColor: danger,
+                                borderStyle: 'solid',
+                                borderWidth: 1
+                            }}
+                            thumbProps={{
+                                children: (
+                                    <Icon
+                                        name="trash-o"
+                                        type="font-awesome"
+                                        size={18}
+                                        containerStyle={{ top: 6 }}
+                                        color={secondaryFont}
+                                    />
+                                )
+                            }}
+                            thumbTintColor={secondary}
+
+                            thumbTouchSize={{ width: 40, height: 40 }}
+                            trackStyle={{ height: 32, borderRadius: 8, borderWidth: 1, borderStyle: 'solid', borderColor: danger }}
+                        />
+
+
+                        <Slider
+                            value={0}
+                            animateTransitions
+                            animationType="spring"
+                            maximumTrackTintColor={secondary}
+                            maximumValue={1}
+                            minimumTrackTintColor={tertiary}
+                            minimumValue={0}
+                            onSlidingComplete={() =>
+                                console.log("onSlidingComplete()")
+                            }
+                            onSlidingStart={() =>
+                                console.log("onSlidingStart()")
+                            }
+                            onValueChange={value =>
+                                console.log("onValueChange()", value)
+                            }
+                            orientation="horizontal"
+                            step={0}
+                            style={{ width: 96 }}
+                            thumbStyle={{
+                                height: 32,
+                                width: 40,
+                                borderRadius: 8,
+                                borderColor: tertiary,
+                                borderStyle: 'solid',
+                                borderWidth: 1
+                            }}
+                            thumbProps={{
+                                children: (
+                                    <Icon
+                                        name="send-o"
+                                        type="font-awesome"
+                                        size={18}
+                                        containerStyle={{ top: 6, right: 1 }}
+                                        color={secondary}
+                                    />
+                                )
+                            }}
+                            thumbTintColor={tertiary}
+                            thumbTouchSize={{ width: 40, height: 40 }}
+                            trackStyle={{ height: 32, borderRadius: 8, borderWidth: 1, borderStyle: 'solid', borderColor: tertiary }}
+                        />
+                    </View>
                 </View>
+            }
+            {/* <View style={{
+                padding: 20,
+                width: '100%',
+                justifyContent: 'center',
+                alignItems: 'stretch',
+            }}>
 
-                <View
-                    style={{
-                        flexBasis: `${progress}%` as DimensionValue,
-                        justifyContent: 'flex-start',
-                        backgroundColor: 'red',
-                        height: 12,
-                    }}                        >
-                    {/* <Text>
-                        audioCountdown {progress}
-                    </Text> */}
-                </View>
-            </View>
-        }
-            {sound.soundObject && <View
-                style={styles.container}>
-                <Icon
-                    name='delete-outline'
-                    size={30}
-                    color={secondaryFont}
-                    containerStyle={[styles.buttonContainer, { marginRight: sizes.S }]}
-                    onPress={() => setSound({
-                        soundObject: undefined,
-                        duration: 0
-                    })}
-                />
-                <Icon
-                    name='play-circle-outline'
-                    size={30}
-                    color={secondaryFont}
-                    containerStyle={[styles.buttonContainer, { marginRight: sizes.S }]}
-                    onPress={() => playSound()}
-                />
-
-                <Icon
-                    name='send'
-                    size={30}
-                    color={secondaryFont}
-                    containerStyle={styles.buttonContainer}
-                    onPress={() => sendAudioToBackend()}
-                />
-            </View>}
+            </View> */}
             <View style={styles.container}>
                 <Icon
                     name='add'
@@ -292,3 +456,6 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
 }
 
 export default ChatInput
+
+
+
