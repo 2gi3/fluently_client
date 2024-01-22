@@ -34,6 +34,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
         soundObject: undefined,
         duration: 0
     });
+    const [deleteSound, setDeleteSound] = useState(1)
     const [progress, setProgress] = useState(0)
 
     const randomWidth = useSharedValue(0);
@@ -218,6 +219,30 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
     // const progressPercentage = Math.ceil((courseProgress / course.sessionsLength!) * 100);
     return (
         <>
+            {recording && (
+                <Icon
+                    // type='outline'
+                    name={recording ? 'stop' : 'mic'}
+                    size={sizes.M}
+                    color={recording ? danger : secondaryFont}
+                    containerStyle={{
+                        margin: 'auto',
+                        marginVertical: sizes.S,
+                        justifyContent: 'center',
+                        padding: sizes.XS,
+                        backgroundColor: secondary,
+                        width: sizes.L,
+                        height: sizes.L,
+                        borderRadius: sizes.M,
+                        borderWidth: 2,
+                        borderStyle: 'solid',
+                        borderColor: danger
+
+                    }}
+                    onPress={recording ? stopRecording : startRecording}
+                />
+            )
+            }
             {sound.soundObject &&
                 <View style={{
                     margin: 'auto',
@@ -262,12 +287,6 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
 
                             <Animated.View
                                 style={testStyle}
-                            // style={{
-                            //     flexBasis: `${progress}%` as DimensionValue,
-                            //     justifyContent: 'flex-start',
-                            //     backgroundColor: 'red',
-                            //     height: 12,
-                            // }}                       
                             >
                                 {/* <Text>
 audioCountdown {progress}
@@ -312,21 +331,29 @@ audioCountdown {progress}
                             })}
                         /> */}
                         <Slider
-                            value={1}
+                            value={deleteSound}
                             animateTransitions
                             animationType="spring"
                             maximumTrackTintColor={danger}
                             maximumValue={1}
                             minimumTrackTintColor={secondary}
                             minimumValue={0}
-                            onSlidingComplete={() =>
-                                console.log("onSlidingComplete()")
+                            onSlidingComplete={() => {
+                                if (deleteSound === 0) {
+                                    setSound({
+                                        soundObject: undefined,
+                                        duration: 0
+                                    })
+                                } else {
+                                    setDeleteSound(1)
+                                }
                             }
-                            onSlidingStart={() =>
-                                console.log("onSlidingStart()")
                             }
+                            // onSlidingStart={() =>
+                            //     console.log("onSlidingStart()")
+                            // }
                             onValueChange={value =>
-                                console.log("onValueChange()", value)
+                                setDeleteSound(value)
                             }
                             orientation="horizontal"
                             step={0}
@@ -412,6 +439,7 @@ audioCountdown {progress}
 
             </View> */}
             <View style={styles.container}>
+
                 <Icon
                     name='add'
                     size={30}
@@ -444,12 +472,13 @@ audioCountdown {progress}
                     />
                     : <Icon
                         // type='outline'
-                        name={recording ? 'stop-circle' : 'mic'}
+                        name={recording ? 'stop' : 'mic'}
                         size={24}
-                        color={secondaryFont}
+                        color={recording ? danger : secondaryFont}
                         containerStyle={styles.buttonContainer}
                         onPress={recording ? stopRecording : startRecording}
-                    />}
+                    />
+                }
             </View>
         </>
     )
