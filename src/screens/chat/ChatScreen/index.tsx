@@ -43,8 +43,10 @@ const ChatScreen = () => {
     const baseUrl = process.env.SERVER_URL
     const url = `${baseUrl}/api/user/${route.params.user2id}`
     const { users: user2 } = useGetUsers(url);
-
     const [inputValue, setInputValue] = useState("");
+    const [messageType, setMessageType] = useState<"text" | "audio" | "image" | null>(null);
+    const [audio, setAudio] = useState<{ url: string; duration: number } | null>(null);
+    const audioRef = useRef<{ url: string; duration: number } | null>()
 
     const handleSend = async () => {
 
@@ -53,6 +55,10 @@ const ChatScreen = () => {
             userId: `${user.id}`,
             text: inputValue,
             status: 'sent',
+            type: messageType,
+            audioUrl: audioRef.current?.url,
+            audioDuration: audioRef.current?.duration,
+            imageUrl: null
         });
         dispatch(addMessage(newMessage))
 
@@ -81,7 +87,9 @@ const ChatScreen = () => {
 
     }
 
-
+    // useEffect(() => {
+    //     console.log({ audio, messageType })
+    // }, [audio, messageType])
 
     const renderItem = ({ item, index }: { item: MessageT, index: number }) => {
         const isLastMessage = index === messages.length - 1;
@@ -143,6 +151,11 @@ const ChatScreen = () => {
                         onSend={handleSend}
                         inputValue={inputValue}
                         setInputValue={setInputValue}
+                        messageType={messageType}
+                        setMessageType={setMessageType}
+                        audio={audio}
+                        setAudio={setAudio}
+                        audioRef={audioRef}
                     />
                 </KeyboardAvoidingView>
             </SafeAreaView>

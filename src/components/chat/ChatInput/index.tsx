@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Audio } from 'expo-av';
-import { View, TextInput, DimensionValue } from "react-native"
+import { View, TextInput, DimensionValue, Platform } from "react-native"
 import { Button, Icon, Slider, Text } from '@rneui/themed';
 import { sizes } from "../../../styles/variables/measures";
 import { ChatInputProps } from "../../../types/chat";
@@ -13,10 +13,31 @@ import Animated, {
     useAnimatedStyle,
     Easing,
 } from 'react-native-reanimated';
+import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+interface AudioFileT {
+    id: number;
+    userId: number | string;
+    audioUrl: string;
+    duration: number;
+    created_at?: Date;
+}
 
-const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
+const ChatInput = ({
+    onSend,
+    inputValue,
+    setInputValue,
+    messageType,
+    setMessageType,
+    audio,
+    setAudio,
+    audioRef
+
+}: ChatInputProps) => {
+    const baseUrl = process.env.SERVER_URL
+
     const {
         startStopWatch,
         stopStopWatch,
@@ -35,6 +56,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
         duration: 0
     });
     const [deleteSound, setDeleteSound] = useState(1)
+    const [sendSound, setSendSound] = useState(0)
     const [progress, setProgress] = useState(0)
 
     const randomWidth = useSharedValue(0);
@@ -68,7 +90,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
 
     const handleSend = async () => {
         if (inputValue.trim() !== "") {
-            onSend(inputValue);
+            onSend();
             setInputValue("");
             inputRef.current?.focus();
 
@@ -104,6 +126,8 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                 allowsRecordingIOS: false,
             });
             const status = await recording.getStatusAsync()
+            // const pcmData = status.isLoaded ? status.data : null;
+
             // Create a new sound instance from the recorded URI
             const { sound: newSound } = await Audio.Sound.createAsync(
                 { uri: recording.getURI()! },
@@ -112,8 +136,11 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                     // progressUpdateIntervalMillis: 100
                 }
             );
-            ;
-            console.log('Recording stopped and stored at', recording.getURI(), 'Duration:', status);
+            setMessageType('audio')
+
+
+
+            console.log('Recording stopped and stored at', recording.getURI(), newSound);
 
             setSound({
                 soundObject: newSound,
@@ -129,6 +156,7 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
             if (sound.soundObject && sound.duration) {
                 const asyncStatus = await sound.soundObject.getStatusAsync()
                 console.log({ asyncStatus })
+
                 await sound.soundObject.playAsync();
                 console.log('Playing Sound', sound);
 
@@ -138,7 +166,6 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
                 sound.soundObject.setOnPlaybackStatusUpdate(async (status: any) => {
 
                     const position = status.positionMillis;
-
 
 
                     // if (position !== prevPosition) {
@@ -176,43 +203,129 @@ const ChatInput = ({ onSend, inputValue, setInputValue }: ChatInputProps) => {
 
 
 
-
     const sendAudioToBackend = async () => {
+        const accessToken = await AsyncStorage.getItem('speaky-access-token')
+
         if (sound.soundObject) {
             try {
-                // Print the type of the audio file
                 const status = await sound.soundObject.getStatusAsync();
-                console.log('Audio file type:', status);
-                console.log('sound object:', sound.soundObject);
 
-                // Convert the audio data to a Blob
+                let audioBlob;
+
+                if (Platform.OS === 'web') {
+                    // For web, use fetch directly
+                    // @ts-ignore
+                    const response = await fetch(status.uri);
+                    console.log({ response })
+                    audioBlob = await response.blob();
+                } else {
+                    // For native, use Expo FileSystem
+                    const downloadResult = await FileSystem.downloadAsync(
+                        // @ts-ignore
+                        status.uri,
+                        FileSystem.documentDirectory + 'audiofile.wav'
+                    );
+
+                    if (downloadResult.status === 200) {
+                        audioBlob = await fetch(downloadResult.uri).then((response) => response.blob());
+
+                    } else {
+                        console.error('Failed to download audio file');
+                        return;
+                    }
+                }
 
 
-                // const audioBlob = await fetch(sound.soundObject.getURI()).then((response) => response.blob());
-
-                // Assuming you have a backend API endpoint to handle audio file upload
                 const formData = new FormData();
-                // formData.append('audio', audioBlob, 'audiofile.wav');
-
-                // Example: Replace 'YOUR_BACKEND_API_URL' with your actual backend API endpoint
-                const backendApiUrl = 'YOUR_BACKEND_API_URL';
+                formData.append('audio', audioBlob, 'audiofile.wav');
+                // @ts-ignore
+                // formData.append('audio', audioBlob, status.uri.split('/').pop()); // Use original file name
+                console.log({ audioBlob })
+                const backendApiUrl = `${baseUrl}/api/chat/audioFile`;
                 const response = await fetch(backendApiUrl, {
                     method: 'POST',
+                    headers: {
+                        // Multer middleware in the backend will not work if the 'Content-Type' header is set explicitly
+                        // 'Content-Type': 'multipart/form-data',
+                        'Authorization': JSON.parse(accessToken!),
+                    },
                     body: formData,
                 });
+                const data = await response.json()
+                setAudio(prev => prev = {
+                    url: data.audioFileUrl,
+                    duration: sound.duration
+                })
+                audioRef.current = {
+                    url: data.audioFileUrl,
+                    duration: sound.duration
+                }
 
                 if (response.ok) {
+
                     console.log('Audio file successfully sent to the backend');
                 } else {
                     console.error('Failed to send audio file to the backend');
                 }
             } catch (error) {
                 console.error('Error while processing audio file:', error);
+            } finally {
+                // console.log({ audioRef: audioRef.current, messageType })
+                onSend()
+                setSendSound(0)
+                setSound({
+                    soundObject: undefined,
+                    duration: 0
+                })
             }
         } else {
             console.error('No audio file available to send');
         }
     };
+    // useEffect(() => {
+    //     audioRef.current = audio;
+    // }, [audio]);
+    // useEffect(() => {
+    //     console.log({ audio, messageType })
+    // }, [audio, messageType])
+
+
+    // const sendAudioToBackend = async () => {
+    //     if (sound.soundObject) {
+    //         try {
+    //             console.log('sound object:', sound.soundObject);
+    //             // Print the type of the audio file
+    //             const status = await sound.soundObject.getStatusAsync();
+    //             console.log('Audio file type:', status);
+
+    //             // Convert the audio data to a Blob
+
+
+    //             const audioBlob = await fetch(status.uri).then((response) => response.blob());
+    //             console.log({ audioBlob })
+    //             // Assuming you have a backend API endpoint to handle audio file upload
+    //             const formData = new FormData();
+    //             // formData.append('audio', audioBlob, 'audiofile.wav');
+
+    //             // Example: Replace 'YOUR_BACKEND_API_URL' with your actual backend API endpoint
+    //             const backendApiUrl = `${baseUrl}/`;
+    //             const response = await fetch(backendApiUrl, {
+    //                 method: 'POST',
+    //                 body: formData,
+    //             });
+
+    //             if (response.ok) {
+    //                 console.log('Audio file successfully sent to the backend');
+    //             } else {
+    //                 console.error('Failed to send audio file to the backend');
+    //             }
+    //         } catch (error) {
+    //             console.error('Error while processing audio file:', error);
+    //         }
+    //     } else {
+    //         console.error('No audio file available to send');
+    //     }
+    // };
 
 
     // const courseProgress = startedCourses?.[course.id]?.length ?? 0;
@@ -385,21 +498,26 @@ audioCountdown {progress}
 
 
                         <Slider
-                            value={0}
+                            value={sendSound}
                             animateTransitions
                             animationType="spring"
                             maximumTrackTintColor={secondary}
                             maximumValue={1}
                             minimumTrackTintColor={tertiary}
                             minimumValue={0}
-                            onSlidingComplete={() =>
-                                console.log("onSlidingComplete()")
+                            onSlidingComplete={() => {
+                                if (sendSound === 1) {
+                                    sendAudioToBackend()
+                                } else {
+                                    setSendSound(0)
+                                }
                             }
-                            onSlidingStart={() =>
-                                console.log("onSlidingStart()")
                             }
+                            // onSlidingStart={() =>
+                            //     console.log("onSlidingStart()")
+                            // }
                             onValueChange={value =>
-                                console.log("onValueChange()", value)
+                                setSendSound(value)
                             }
                             orientation="horizontal"
                             step={0}

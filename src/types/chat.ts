@@ -1,9 +1,24 @@
 import { UserT } from "./user";
 
+// export interface ChatInputProps {
+//     onSend: (message: string) => void;
+//     inputValue: string;
+//     setInputValue: React.Dispatch<React.SetStateAction<string>>;
+// }
 export interface ChatInputProps {
-    onSend: (message: string) => void;
+    onSend: (message?: string) => void;
     inputValue: string;
     setInputValue: React.Dispatch<React.SetStateAction<string>>;
+    messageType: 'text' | 'audio' | 'image' | null;
+    setMessageType: React.Dispatch<React.SetStateAction<'text' | 'audio' | 'image' | null>>; // or whatever type setMessageType should be
+    audio: {
+        url: string,
+        duration: number
+    } | null;
+    setAudio: React.Dispatch<React.SetStateAction<{
+        url: string,
+        duration: number
+    } | null>>;
 }
 
 export type MessageT = {
@@ -13,6 +28,11 @@ export type MessageT = {
     text: string;
     status: string;
     created_at?: string;
+    type?: 'text' | 'audio' | 'image' | null
+    audioUrl?: string | null,
+    audioDuration?: number | null
+    imageUrl?: string | null
+
 };
 
 
@@ -47,4 +67,12 @@ export type MockChatType = {
 };
 export interface SocketState {
     url: string | null;
+}
+
+export interface AudioFileT {
+    id: number;
+    userId: number | string;
+    audioUrl: string;
+    duration: number;
+    created_at?: Date;
 }
