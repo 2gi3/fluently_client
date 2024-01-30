@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Text, View, DimensionValue } from "react-native"
 import { chatStyles } from "../../../styles/chat"
 import moment from "moment";
@@ -24,8 +24,11 @@ import { Audio } from 'expo-av';
 
 const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, messageRead: boolean, isLastMessage: boolean }) => {
     const user = useSelector((state: RootState) => state.user);
-    const { secondary, primary, confirmation, secondaryFont } = colors
+    const { secondary, primary, confirmation, secondaryFont, danger } = colors
     const [progress, setProgress] = useState(0)
+    const [soundIsPlaying, setSoundIsPlaying] = useState(false)
+    const soundRef = useRef<Audio.Sound | null>(null);
+
 
 
     const config = {
@@ -42,46 +45,67 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
         };
     });
 
-    async function playSound() {
 
+    async function playSound() {
         try {
             if (message.audioUrl && message.audioDuration) {
-                const { sound } = await Audio.Sound.createAsync({ uri: message.audioUrl });
-                // const asyncStatus = await sound.getStatusAsync()
-                // console.log({ asyncStatus })
-                const asyncStatus = await sound.getStatusAsync()
-                console.log({ asyncStatus })
-
-                await sound.playAsync();
-                console.log('Playing Sound', sound);
-
-                //             let prevDuration: number | null = null;
-                //             let prevPosition: number | null = null;
-
-                sound.setOnPlaybackStatusUpdate(async (status: any) => {
-
-                    const position = status.positionMillis;
-
-
-                    // if (position !== prevPosition) {
-                    setProgress((position / message.audioDuration!) * 100)
-                    //                 randomWidth.value = (position / sound.duration) * 100
-
-
-                    //                 prevPosition = position;
-                    // }
-                });
-
-
-
+                if (soundRef.current) {
+                    // Check if sound is already playing
+                    if (soundIsPlaying) {
+                        await soundRef.current.pauseAsync(); // Pause the sound
+                        setSoundIsPlaying(false);
+                    } else {
+                        await soundRef.current.playAsync(); // Start playing the sound
+                        setSoundIsPlaying(true);
+                    }
+                } else {
+                    soundRef.current = new Audio.Sound();
+                    await soundRef.current.loadAsync({ uri: message.audioUrl });
+                    await soundRef.current.playAsync();
+                    setSoundIsPlaying(true);
+                    soundRef.current.setOnPlaybackStatusUpdate((status: any) => {
+                        const position = status.positionMillis;
+                        setProgress((position / message.audioDuration!) * 100);
+                        setSoundIsPlaying(status.isPlaying);
+                    });
+                }
             }
         } catch (error) {
             console.error('Failed to play sound', error);
         }
     }
 
+    // async function playSound() {
+    //     try {
+    //         if (message.audioUrl && message.audioDuration) {
+    //             soundRef.current = new Audio.Sound();
+    //             await soundRef.current.loadAsync({ uri: message.audioUrl });
+    //             await soundRef.current.playAsync();
+    //             soundRef.current.setOnPlaybackStatusUpdate((status: any) => {
+    //                 const position = status.positionMillis;
+    //                 setProgress((position / message.audioDuration!) * 100);
+    //                 console.log({ status })
+    //                 setSoundIsPlaying(status.isPlaying)
 
+    //             });
+    //         }
+    //     } catch (error) {
+    //         console.error('Failed to play sound', error);
+    //     }
+    // }
+    // function stopSound() {
+    //     if (soundRef.current) {
+    //         soundRef.current.stopAsync();
+    //     }
+    // }
 
+    // useEffect(() => {
+    //     return () => {
+    //         if (soundRef.current) {
+    //             soundRef.current.unloadAsync();
+    //         }
+    //     };
+    // }, []);
 
     const isMyMessage = () => {
         if (user.id) {
@@ -96,7 +120,11 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
         if (!isMyMessage() && message.status === 'sent' && messageRead === true) {
             updateMessageStatus(message.id!)
         }
-
+        return () => {
+            if (soundRef.current) {
+                soundRef.current.unloadAsync();
+            }
+        };
     }, [])
 
     return (
@@ -122,11 +150,23 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
                     alignItems: 'center'
 
                 }}>
+                    {/* {soundIsPlaying ?
+                        <Icon
+                            name='pause'
+                            type="font-awesome"
+                            size={15}
+                            color={danger}
+                            iconStyle={{
+                                top: 8, left: 1
+                            }}
+                            containerStyle={{ marginRight: sizes.S, width: sizes.M, height: sizes.M, borderRadius: sizes.S, backgroundColor: secondary }}
+                            onPress={() => stopSound()}
+                        /> */}
                     <Icon
-                        name='play'
+                        name={soundIsPlaying ? 'pause' : 'play'}
                         type="font-awesome"
                         size={15}
-                        color={secondaryFont}
+                        color={soundIsPlaying ? danger : secondaryFont}
                         iconStyle={{
                             top: 8, left: 1
                         }}
