@@ -31,7 +31,7 @@ export const styles = StyleSheet.create({
         height: 32,
         alignSelf: 'center',
         marginRight: sizes.S,
-        marginLeft: 4,
+        marginLeft: sizes.S,
         paddingHorizontal: sizes.S,
     },
     sendButton: {

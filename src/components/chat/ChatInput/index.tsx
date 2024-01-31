@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Audio } from 'expo-av';
-import { View, TextInput, DimensionValue, Platform } from "react-native"
-import { Button, Icon, Slider, Text } from '@rneui/themed';
+import { View, TextInput, DimensionValue, Platform, ActivityIndicator } from "react-native"
+import { Button, Icon, Image, Slider, Text } from '@rneui/themed';
 import { sizes } from "../../../styles/variables/measures";
 import { ChatInputProps } from "../../../types/chat";
 import colors from '../../../styles/variables/colors';
@@ -15,6 +15,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as ImagePicker from 'expo-image-picker';
+import { manipulateAsync } from "expo-image-manipulator";
 
 
 interface AudioFileT {
@@ -58,6 +60,35 @@ const ChatInput = ({
     const [deleteSound, setDeleteSound] = useState(1)
     const [sendSound, setSendSound] = useState(0)
     const [progress, setProgress] = useState(0)
+
+    const [visible, setVisible] = useState(false);
+    const [image, setImage] = useState<string | null>(null);
+    const [deleteImage, setDeleteImage] = useState(1)
+    const [sendImage, setSendImage] = useState(0)
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+
+        if (!result.canceled) {
+            if (result.assets && result.assets.length > 0) {
+                setVisible(true)
+                // The Back-End accepts images ok max 100KB ( Back-End can be modified )
+                const manipResult = await manipulateAsync(
+                    result.assets[0].uri,
+                    [{ resize: { width: 150 } }],
+                    { compress: 1 }
+                )
+                setImage(manipResult.uri);
+            }
+        }
+
+    };
 
     const randomWidth = useSharedValue(0);
 
@@ -433,16 +464,7 @@ audioCountdown {progress}
                             alignItems: 'center',
                             gap: sizes.S
                         }}>
-                        {/* <Icon
-                            name='delete-outline'
-                            size={30}
-                            color={danger}
-                            containerStyle={[styles.buttonContainer, { flex: 1, borderColor: colors.danger, borderStyle: 'solid', borderWidth: 1, paddingVertical: 6, borderRadius: 6 }]}
-                            onPress={() => setSound({
-                                soundObject: undefined,
-                                duration: 0
-                            })}
-                        /> */}
+
                         <Slider
                             value={deleteSound}
                             animateTransitions
@@ -556,15 +578,149 @@ audioCountdown {progress}
             }}>
 
             </View> */}
-            <View style={styles.container}>
+            {image &&
+                <View style={{
+                    margin: 'auto',
+                    marginVertical: sizes.S,
+                    padding: sizes.XS,
+                    backgroundColor: 'transparent',
+                    width: sizes.XXL,
+                    borderRadius: sizes.S
 
-                <Icon
-                    name='add'
-                    size={30}
-                    color={secondaryFont}
-                    containerStyle={styles.buttonContainer}
-                    onPress={() => playSound()}
-                />
+                }}>
+                    <Image
+                        source={{ uri: image }}
+                        containerStyle={{
+                            aspectRatio: 1,
+                            width: '100%',
+                            flex: 1,
+                            marginBottom: sizes.S
+                        }}
+                        PlaceholderContent={<ActivityIndicator />}
+                    />
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: sizes.S
+                        }}>
+
+                        <Slider
+                            value={deleteImage}
+                            animateTransitions
+                            animationType="spring"
+                            maximumTrackTintColor={danger}
+                            maximumValue={1}
+                            minimumTrackTintColor={secondary}
+                            minimumValue={0}
+                            onSlidingComplete={() => {
+                                if (deleteImage === 0) {
+                                    setImage(null)
+                                    setDeleteImage(1)
+                                } else {
+                                    setDeleteImage(1)
+                                }
+                            }
+                            }
+                            // onSlidingStart={() =>
+                            //     console.log("onSlidingStart()")
+                            // }
+                            onValueChange={value =>
+                                setDeleteImage(value)
+                            }
+                            orientation="horizontal"
+                            step={0}
+                            style={{ width: 96 }}
+                            thumbStyle={{
+                                height: 32,
+                                width: 40,
+                                borderRadius: 8,
+                                borderColor: danger,
+                                borderStyle: 'solid',
+                                borderWidth: 1
+                            }}
+                            thumbProps={{
+                                children: (
+                                    <Icon
+                                        name="trash-o"
+                                        type="font-awesome"
+                                        size={18}
+                                        containerStyle={{ top: 6 }}
+                                        color={secondaryFont}
+                                    />
+                                )
+                            }}
+                            thumbTintColor={secondary}
+
+                            thumbTouchSize={{ width: 40, height: 40 }}
+                            trackStyle={{ height: 32, borderRadius: 8, borderWidth: 1, borderStyle: 'solid', borderColor: danger }}
+                        />
+
+
+                        <Slider
+                            value={sendImage}
+                            animateTransitions
+                            animationType="spring"
+                            maximumTrackTintColor={secondary}
+                            maximumValue={1}
+                            minimumTrackTintColor={tertiary}
+                            minimumValue={0}
+                            onSlidingComplete={() => {
+                                if (sendImage === 1) {
+                                    console.log('send image ')
+                                } else {
+                                    setSendImage(0)
+                                }
+                            }
+                            }
+                            // onSlidingStart={() =>
+                            //     console.log("onSlidingStart()")
+                            // }
+                            onValueChange={value =>
+                                setSendImage(value)
+                            }
+                            orientation="horizontal"
+                            step={0}
+                            style={{ width: 96 }}
+                            thumbStyle={{
+                                height: 32,
+                                width: 40,
+                                borderRadius: 8,
+                                borderColor: tertiary,
+                                borderStyle: 'solid',
+                                borderWidth: 1
+                            }}
+                            thumbProps={{
+                                children: (
+                                    <Icon
+                                        name="send-o"
+                                        type="font-awesome"
+                                        size={18}
+                                        containerStyle={{ top: 6, right: 1 }}
+                                        color={secondary}
+                                    />
+                                )
+                            }}
+                            thumbTintColor={tertiary}
+                            thumbTouchSize={{ width: 40, height: 40 }}
+                            trackStyle={{ height: 32, borderRadius: 8, borderWidth: 1, borderStyle: 'solid', borderColor: tertiary }}
+                        />
+                    </View>
+                </View>
+            }
+            {!image && <View style={styles.container}>
+                {inputValue.length === 0 &&
+                    <Icon
+                        name='image'
+                        type="font-awesome"
+                        size={24}
+                        color={secondaryFont}
+                        containerStyle={styles.buttonContainer}
+                        onPress={() => pickImage()}
+                    />
+                }
+
                 <TextInput
                     autoFocus
                     ref={inputRef}
@@ -597,7 +753,7 @@ audioCountdown {progress}
                         onPress={recording ? stopRecording : startRecording}
                     />
                 }
-            </View>
+            </View>}
         </>
     )
 }
