@@ -17,7 +17,7 @@ const ConfirmationOverlay = ({
     warning: string
     onBackdropPress: () => void
     onConfirm: () => void
-    onCancel: () => void
+    onCancel?: () => void
     confirmationSentence?: string
     consfirmButtonTitle: string
 
@@ -59,7 +59,7 @@ const ConfirmationOverlay = ({
                 </>
             )}
             <View style={styles.buttonContainer}>
-                <Button
+                {onCancel && <Button
                     type="outline"
                     icon={<Icon name="close" type="material-icons" />}
                     onPress={() => {
@@ -67,7 +67,7 @@ const ConfirmationOverlay = ({
                         setInputError(undefined);
                         setConfirmationInput('');
                     }}
-                />
+                />}
                 <Button
                     title={consfirmButtonTitle}
                     onPress={() => {

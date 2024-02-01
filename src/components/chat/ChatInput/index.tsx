@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { Audio } from 'expo-av';
-import { View, TextInput, DimensionValue, Platform, ActivityIndicator } from "react-native"
+import { View, TextInput, DimensionValue, Platform, ActivityIndicator, FlatList, Alert } from "react-native"
 import { Button, Icon, Image, Slider, Text } from '@rneui/themed';
 import { sizes } from "../../../styles/variables/measures";
 import { ChatInputProps } from "../../../types/chat";
@@ -17,6 +17,7 @@ import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync } from "expo-image-manipulator";
+import ConfirmationOverlay from '../../user/ConfirmationOverlay';
 
 
 interface AudioFileT {
@@ -62,9 +63,45 @@ const ChatInput = ({
     const [progress, setProgress] = useState(0)
 
     const [visible, setVisible] = useState(false);
-    const [image, setImage] = useState<string | null>(null);
-    const [deleteImage, setDeleteImage] = useState(1)
-    const [sendImage, setSendImage] = useState(0)
+    const [images, setImages] = useState<string[] | null>(null);
+    const [deleteImages, setDeleteImages] = useState(1)
+    const [sendImages, setSendImages] = useState(0)
+
+    const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
+
+
+
+    // const pickImage = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //         allowsEditing: true,
+    //         aspect: [4, 3],
+    //         quality: 1,
+    //         allowsMultipleSelection: true,
+
+    //         selectionLimit: 6 - (images ? images.length : 0),
+    //     });
+
+    //     if (!result.canceled) {
+    //         if (result.assets && result.assets.length > 0) {
+    //             setVisible(true);
+    //             let manipulatedImages: string[] = [];
+    //             result.assets.forEach(async (asset) => {
+    //                 // Manipulate and handle each image as needed
+    //                 const manipResult = await manipulateAsync(
+    //                     asset.uri,
+    //                     [{ resize: { width: 300 } }],
+    //                     { compress: 1 }
+    //                 );
+    //                 // Handle each manipulated image
+    //                 manipulatedImages.push(manipResult.uri);
+    //                 console.log("Manipulated image URI:", manipResult.uri);
+    //             });
+    //             setImages(prevImages => [...(prevImages || []), ...manipulatedImages]); // Append new images to existing ones
+    //         }
+    //     }
+    // };
+
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -72,19 +109,50 @@ const ChatInput = ({
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
+            allowsMultipleSelection: true,
+            selectionLimit: 6,
+
         });
+
+
 
 
         if (!result.canceled) {
             if (result.assets && result.assets.length > 0) {
+                console.log({ len: result.assets.length })
                 setVisible(true)
                 // The Back-End accepts images ok max 100KB ( Back-End can be modified )
-                const manipResult = await manipulateAsync(
-                    result.assets[0].uri,
-                    [{ resize: { width: 150 } }],
-                    { compress: 1 }
-                )
-                setImage(manipResult.uri);
+                // const manipResult = await manipulateAsync(
+                //     result.assets[0].uri,
+                //     [{ resize: { width: 150 } }],
+                //     { compress: 1 }
+                // )
+                // setImage(manipResult.uri);
+                let manipulatedImages: string[] = [];
+                for (let i = 0; i < result.assets.length && i < 6; i++) {
+                    const asset = result.assets[i];
+                    const manipResult = await manipulateAsync(
+                        asset.uri,
+                        [{ resize: { width: 300 } }],
+                        { compress: 1 }
+                    );
+                    manipulatedImages.push(manipResult.uri);
+                }
+                // result.assets.forEach(async (asset) => {
+                //     const manipResult = await manipulateAsync(
+                //         asset.uri,
+                //         [{ resize: { width: 300 } }],
+                //         { compress: 1 }
+                //     );
+                //     // Handle each manipulated image
+                //     manipulatedImages.push(manipResult.uri);
+                //     console.log("Manipulated image URI:", manipResult.uri);
+                // });
+                setImages(manipulatedImages);
+                if (result.assets && result.assets.length > 6) {
+                    setConfirmationOverlayVisible(true)
+                }
+
             }
         }
 
@@ -313,56 +381,24 @@ const ChatInput = ({
             console.error('No audio file available to send');
         }
     };
-    // useEffect(() => {
-    //     audioRef.current = audio;
-    // }, [audio]);
-    // useEffect(() => {
-    //     console.log({ audio, messageType })
-    // }, [audio, messageType])
 
 
-    // const sendAudioToBackend = async () => {
-    //     if (sound.soundObject) {
-    //         try {
-    //             console.log('sound object:', sound.soundObject);
-    //             // Print the type of the audio file
-    //             const status = await sound.soundObject.getStatusAsync();
-    //             console.log('Audio file type:', status);
-
-    //             // Convert the audio data to a Blob
-
-
-    //             const audioBlob = await fetch(status.uri).then((response) => response.blob());
-    //             console.log({ audioBlob })
-    //             // Assuming you have a backend API endpoint to handle audio file upload
-    //             const formData = new FormData();
-    //             // formData.append('audio', audioBlob, 'audiofile.wav');
-
-    //             // Example: Replace 'YOUR_BACKEND_API_URL' with your actual backend API endpoint
-    //             const backendApiUrl = `${baseUrl}/`;
-    //             const response = await fetch(backendApiUrl, {
-    //                 method: 'POST',
-    //                 body: formData,
-    //             });
-
-    //             if (response.ok) {
-    //                 console.log('Audio file successfully sent to the backend');
-    //             } else {
-    //                 console.error('Failed to send audio file to the backend');
-    //             }
-    //         } catch (error) {
-    //             console.error('Error while processing audio file:', error);
-    //         }
-    //     } else {
-    //         console.error('No audio file available to send');
-    //     }
-    // };
-
-
-    // const courseProgress = startedCourses?.[course.id]?.length ?? 0;
-    // const progressPercentage = Math.ceil((courseProgress / course.sessionsLength!) * 100);
     return (
         <>
+            {confirmationOverlayVisible && <ConfirmationOverlay
+                warning={`You can send maximum 6 images at the time`}
+                isVisible={confirmationOverlayVisible}
+                onBackdropPress={() => setConfirmationOverlayVisible(false)}
+                onConfirm={() => setConfirmationOverlayVisible(false)}
+                // onCancel={() => {
+                //     setConfirmationOverlayVisible(false);
+                //     setInputError(undefined);
+                //     setConfirmationInput('');
+                // }}
+                consfirmButtonTitle='OK'
+            />
+
+            }
             {recording && (
                 <Icon
                     // type='outline'
@@ -578,7 +614,7 @@ audioCountdown {progress}
             }}>
 
             </View> */}
-            {image &&
+            {images &&
                 <View style={{
                     margin: 'auto',
                     marginVertical: sizes.S,
@@ -588,7 +624,7 @@ audioCountdown {progress}
                     borderRadius: sizes.S
 
                 }}>
-                    <Image
+                    {/* <Image
                         source={{ uri: image }}
                         containerStyle={{
                             aspectRatio: 1,
@@ -597,6 +633,31 @@ audioCountdown {progress}
                             marginBottom: sizes.S
                         }}
                         PlaceholderContent={<ActivityIndicator />}
+                    /> */}
+                    <FlatList
+                        data={images}
+                        style={{
+                            width: '100%',
+                            backgroundColor: colors.secondary,
+                            marginBottom: sizes.S
+
+                        }}
+                        numColumns={2}
+                        keyExtractor={(e) => e}
+                        renderItem={({ item }) => (
+                            <Image
+                                source={{ uri: item }}
+                                containerStyle={{
+                                    aspectRatio: 1,
+                                    width: '100%',
+                                    flex: 1,
+                                    margin: 1,
+                                    maxHeight: sizes.XL
+                                }}
+                                style={{ borderRadius: sizes.XS, maxHeight: sizes.XL }}
+                                PlaceholderContent={<ActivityIndicator />}
+                            />
+                        )}
                     />
                     <View
                         style={{
@@ -607,7 +668,7 @@ audioCountdown {progress}
                         }}>
 
                         <Slider
-                            value={deleteImage}
+                            value={deleteImages}
                             animateTransitions
                             animationType="spring"
                             maximumTrackTintColor={danger}
@@ -615,11 +676,11 @@ audioCountdown {progress}
                             minimumTrackTintColor={secondary}
                             minimumValue={0}
                             onSlidingComplete={() => {
-                                if (deleteImage === 0) {
-                                    setImage(null)
-                                    setDeleteImage(1)
+                                if (deleteImages === 0) {
+                                    setImages(null)
+                                    setDeleteImages(1)
                                 } else {
-                                    setDeleteImage(1)
+                                    setDeleteImages(1)
                                 }
                             }
                             }
@@ -627,7 +688,7 @@ audioCountdown {progress}
                             //     console.log("onSlidingStart()")
                             // }
                             onValueChange={value =>
-                                setDeleteImage(value)
+                                setDeleteImages(value)
                             }
                             orientation="horizontal"
                             step={0}
@@ -659,7 +720,7 @@ audioCountdown {progress}
 
 
                         <Slider
-                            value={sendImage}
+                            value={sendImages}
                             animateTransitions
                             animationType="spring"
                             maximumTrackTintColor={secondary}
@@ -667,10 +728,10 @@ audioCountdown {progress}
                             minimumTrackTintColor={tertiary}
                             minimumValue={0}
                             onSlidingComplete={() => {
-                                if (sendImage === 1) {
+                                if (sendImages === 1) {
                                     console.log('send image ')
                                 } else {
-                                    setSendImage(0)
+                                    setSendImages(0)
                                 }
                             }
                             }
@@ -678,7 +739,7 @@ audioCountdown {progress}
                             //     console.log("onSlidingStart()")
                             // }
                             onValueChange={value =>
-                                setSendImage(value)
+                                setSendImages(value)
                             }
                             orientation="horizontal"
                             step={0}
@@ -709,7 +770,7 @@ audioCountdown {progress}
                     </View>
                 </View>
             }
-            {!image && <View style={styles.container}>
+            {!images && <View style={styles.container}>
                 {inputValue.length === 0 &&
                     <Icon
                         name='image'
