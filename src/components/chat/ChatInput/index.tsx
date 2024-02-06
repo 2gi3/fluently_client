@@ -16,8 +16,10 @@ import Animated, {
 import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
-import { manipulateAsync } from "expo-image-manipulator";
+import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
 import ConfirmationOverlay from '../../user/ConfirmationOverlay';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/store';
 
 
 interface AudioFileT {
@@ -50,6 +52,8 @@ const ChatInput = ({
         resetCountdown,
         timeElapsed
     } = useStopWatch();
+    const user = useSelector((state: RootState) => state.user);
+
     const { primary, secondary, secondaryFont, tertiary, danger } = colors
     const inputRef = useRef<TextInput | null>(null);
     const [recording, setRecording] = useState<Audio.Recording | undefined>();
@@ -63,45 +67,12 @@ const ChatInput = ({
     const [progress, setProgress] = useState(0)
 
     const [visible, setVisible] = useState(false);
-    const [images, setImages] = useState<string[] | null>(null);
+    const [images, setImages] = useState<any[] | null>(null);
     const [deleteImages, setDeleteImages] = useState(1)
     const [sendImages, setSendImages] = useState(0)
+    let manipulatedImages: any[] = [];
 
     const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
-
-
-
-    // const pickImage = async () => {
-    //     let result = await ImagePicker.launchImageLibraryAsync({
-    //         mediaTypes: ImagePicker.MediaTypeOptions.All,
-    //         allowsEditing: true,
-    //         aspect: [4, 3],
-    //         quality: 1,
-    //         allowsMultipleSelection: true,
-
-    //         selectionLimit: 6 - (images ? images.length : 0),
-    //     });
-
-    //     if (!result.canceled) {
-    //         if (result.assets && result.assets.length > 0) {
-    //             setVisible(true);
-    //             let manipulatedImages: string[] = [];
-    //             result.assets.forEach(async (asset) => {
-    //                 // Manipulate and handle each image as needed
-    //                 const manipResult = await manipulateAsync(
-    //                     asset.uri,
-    //                     [{ resize: { width: 300 } }],
-    //                     { compress: 1 }
-    //                 );
-    //                 // Handle each manipulated image
-    //                 manipulatedImages.push(manipResult.uri);
-    //                 console.log("Manipulated image URI:", manipResult.uri);
-    //             });
-    //             setImages(prevImages => [...(prevImages || []), ...manipulatedImages]); // Append new images to existing ones
-    //         }
-    //     }
-    // };
-
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -121,33 +92,16 @@ const ChatInput = ({
             if (result.assets && result.assets.length > 0) {
                 console.log({ len: result.assets.length })
                 setVisible(true)
-                // The Back-End accepts images ok max 100KB ( Back-End can be modified )
-                // const manipResult = await manipulateAsync(
-                //     result.assets[0].uri,
-                //     [{ resize: { width: 150 } }],
-                //     { compress: 1 }
-                // )
-                // setImage(manipResult.uri);
-                let manipulatedImages: string[] = [];
                 for (let i = 0; i < result.assets.length && i < 6; i++) {
                     const asset = result.assets[i];
                     const manipResult = await manipulateAsync(
                         asset.uri,
-                        [{ resize: { width: 300 } }],
-                        { compress: 1 }
+                        [{ resize: { width: 360 } }],
+                        { compress: 1, format: SaveFormat.WEBP }
                     );
-                    manipulatedImages.push(manipResult.uri);
+                    manipulatedImages.push(manipResult);
+
                 }
-                // result.assets.forEach(async (asset) => {
-                //     const manipResult = await manipulateAsync(
-                //         asset.uri,
-                //         [{ resize: { width: 300 } }],
-                //         { compress: 1 }
-                //     );
-                //     // Handle each manipulated image
-                //     manipulatedImages.push(manipResult.uri);
-                //     console.log("Manipulated image URI:", manipResult.uri);
-                // });
                 setImages(manipulatedImages);
                 if (result.assets && result.assets.length > 6) {
                     setConfirmationOverlayVisible(true)
@@ -157,6 +111,48 @@ const ChatInput = ({
         }
 
     };
+
+
+
+
+    // const sendImagesToBackend = async (images: any[]) => {
+    //     const accessToken = await AsyncStorage.getItem('speaky-access-token');
+    //     console.log('a1')
+
+    //     try {
+    //         const formData = new FormData();
+    //         images.forEach((image, index) => {
+    //             const filename = image.uri.split('/').pop()!;
+    //             // formData.append(`image${index}`, {
+    //             //     uri: Platform.OS === 'android' ? uri : uri.replace('file://', ''),
+    //             //     name: filename,
+    //             //     type: 'image/webp' as string,
+    //             // });
+    //             formData.append(`image${index}`, image);
+    //         });
+    //         console.log('a2')
+
+    //         const backendApiUrl = `${baseUrl}/api/chat/imageFile`;
+    //         const response = await fetch(backendApiUrl, {
+    //             method: 'POST',
+    //             headers: {
+    //                 Authorization: JSON.parse(accessToken!),
+    //                 // Multer middleware in the backend will not work if the 'Content-Type' header is set explicitly
+    //                 // 'Content-Type': 'multipart/form-data',
+    //             },
+    //             body: formData,
+    //         });
+    //         console.log('a3')
+
+    //         if (response.ok) {
+    //             console.log('Images successfully uploaded to the backend');
+    //         } else {
+    //             console.error('Failed to upload images to the backend');
+    //         }
+    //     } catch (error) {
+    //         console.error('Error while uploading images:', error);
+    //     }
+    // };
 
     const randomWidth = useSharedValue(0);
 
@@ -175,13 +171,13 @@ const ChatInput = ({
         };
     });
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        console.log({
-            progress,
-            val: randomWidth.value
-        })
-    }, [progress])
+    //     console.log({
+    //         progress,
+    //         val: randomWidth.value
+    //     })
+    // }, [progress])
 
 
 
@@ -300,6 +296,57 @@ const ChatInput = ({
 
 
 
+    const sendImagesToBackend = async (images: any[]) => {
+        const accessToken = await AsyncStorage.getItem('speaky-access-token');
+
+        try {
+            const formData = new FormData();
+            for (let i = 0; i < images.length; i++) {
+                const image = images[i];
+                const currentDate = new Date();
+                const timestamp = currentDate.getTime();
+                const filename = `image${i}_u${user.id}_${timestamp}.webp`
+                // const filename = image.uri.split('/').pop()!;
+                if (Platform.OS === 'web') {
+                    // For web, use fetch directly
+                    const response = await fetch(image.uri);
+                    const imgBlob = await response.blob();
+                    formData.append(`images`, imgBlob, filename);
+                } else {
+                    // For native, use Expo FileSystem
+                    const downloadResult = await FileSystem.downloadAsync(
+                        image.uri,
+                        FileSystem.documentDirectory + 'image.webp'
+                    );
+
+                    if (downloadResult.status === 200) {
+                        const imgBlob = await fetch(downloadResult.uri).then((response) => response.blob());
+                        formData.append(`images`, imgBlob, filename);
+                    } else {
+                        console.error('Failed to download image file');
+                        return;
+                    }
+                }
+            }
+
+            const backendApiUrl = `${baseUrl}/api/chat/imageFile`;
+            const response = await fetch(backendApiUrl, {
+                method: 'POST',
+                headers: {
+                    Authorization: JSON.parse(accessToken!),
+                },
+                body: formData,
+            });
+
+            if (response.ok) {
+                console.log('Images successfully uploaded to the backend');
+            } else {
+                console.error('Failed to upload images to the backend');
+            }
+        } catch (error) {
+            console.error('Error while uploading images:', error);
+        }
+    };
 
 
     const sendAudioToBackend = async () => {
@@ -646,7 +693,7 @@ audioCountdown {progress}
                         keyExtractor={(e) => e}
                         renderItem={({ item }) => (
                             <Image
-                                source={{ uri: item }}
+                                source={{ uri: item.uri }}
                                 containerStyle={{
                                     aspectRatio: 1,
                                     width: '100%',
@@ -729,7 +776,7 @@ audioCountdown {progress}
                             minimumValue={0}
                             onSlidingComplete={() => {
                                 if (sendImages === 1) {
-                                    console.log('send image ')
+                                    sendImagesToBackend(images)
                                 } else {
                                     setSendImages(0)
                                 }
