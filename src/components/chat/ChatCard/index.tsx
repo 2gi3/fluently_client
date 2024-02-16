@@ -78,7 +78,7 @@ const ChatCard = ({ chatroom, lastMessages }: { chatroom: ChatroomT, lastMessage
                         <ListItem.Title>
                             <Text>{user2.name}</Text>
                         </ListItem.Title>
-                        <ListItem.Subtitle>
+                        <ListItem.Subtitle numberOfLines={2}>
                             <Text>{lastMessage ? lastMessage.text : `Help ${user2.name} practice your native language`}</Text>
                         </ListItem.Subtitle>
                     </ListItem.Content>

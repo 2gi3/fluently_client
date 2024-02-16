@@ -47,18 +47,22 @@ const ChatScreen = () => {
     const [messageType, setMessageType] = useState<"text" | "audio" | "image" | null>(null);
     const [audio, setAudio] = useState<{ url: string; duration: number } | null>(null);
     const audioRef = useRef<{ url: string; duration: number } | null>()
+    // const [imageUrls, setImageUrls] = useState<string[] | null>(null)
+    const imageUrls = useRef<string[] | null>(null)
 
     const handleSend = async () => {
+        console.log({ imageUrlsState: imageUrls })
+
 
         const { newMessage } = await createMessage({
             chatId: route.params!.id,
             userId: `${user.id}`,
             text: inputValue,
             status: 'sent',
-            type: messageType,
+            type: inputValue.length > 0 ? 'text' : messageType,
             audioUrl: audioRef.current?.url,
             audioDuration: audioRef.current?.duration,
-            imageUrl: null
+            imageUrls: imageUrls.current
         });
         dispatch(addMessage(newMessage))
 
@@ -84,6 +88,9 @@ const ChatScreen = () => {
                 viewPosition: 1,
             });
         }
+        setMessageType(null)
+        audioRef.current = null
+        imageUrls.current = null
 
     }
 
@@ -155,6 +162,7 @@ const ChatScreen = () => {
                         setMessageType={setMessageType}
                         audio={audio}
                         setAudio={setAudio}
+                        imageUrls={imageUrls}
                         audioRef={audioRef}
                     />
                 </KeyboardAvoidingView>

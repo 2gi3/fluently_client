@@ -38,6 +38,7 @@ const ChatInput = ({
     setMessageType,
     audio,
     setAudio,
+    imageUrls,
     audioRef
 
 }: ChatInputProps) => {
@@ -68,6 +69,7 @@ const ChatInput = ({
 
     const [visible, setVisible] = useState(false);
     const [images, setImages] = useState<any[] | null>(null);
+    // const [imageUrls, setImageUrls] = useState<string[] | null>(null);
     const [deleteImages, setDeleteImages] = useState(1)
     const [sendImages, setSendImages] = useState(0)
     let manipulatedImages: any[] = [];
@@ -89,6 +91,7 @@ const ChatInput = ({
 
 
         if (!result.canceled) {
+            setMessageType('image')
             if (result.assets && result.assets.length > 0) {
                 console.log({ len: result.assets.length })
                 setVisible(true)
@@ -115,45 +118,6 @@ const ChatInput = ({
 
 
 
-    // const sendImagesToBackend = async (images: any[]) => {
-    //     const accessToken = await AsyncStorage.getItem('speaky-access-token');
-    //     console.log('a1')
-
-    //     try {
-    //         const formData = new FormData();
-    //         images.forEach((image, index) => {
-    //             const filename = image.uri.split('/').pop()!;
-    //             // formData.append(`image${index}`, {
-    //             //     uri: Platform.OS === 'android' ? uri : uri.replace('file://', ''),
-    //             //     name: filename,
-    //             //     type: 'image/webp' as string,
-    //             // });
-    //             formData.append(`image${index}`, image);
-    //         });
-    //         console.log('a2')
-
-    //         const backendApiUrl = `${baseUrl}/api/chat/imageFile`;
-    //         const response = await fetch(backendApiUrl, {
-    //             method: 'POST',
-    //             headers: {
-    //                 Authorization: JSON.parse(accessToken!),
-    //                 // Multer middleware in the backend will not work if the 'Content-Type' header is set explicitly
-    //                 // 'Content-Type': 'multipart/form-data',
-    //             },
-    //             body: formData,
-    //         });
-    //         console.log('a3')
-
-    //         if (response.ok) {
-    //             console.log('Images successfully uploaded to the backend');
-    //         } else {
-    //             console.error('Failed to upload images to the backend');
-    //         }
-    //     } catch (error) {
-    //         console.error('Error while uploading images:', error);
-    //     }
-    // };
-
     const randomWidth = useSharedValue(0);
 
     const config = {
@@ -170,17 +134,6 @@ const ChatInput = ({
             height: 8,
         };
     });
-
-    // useEffect(() => {
-
-    //     console.log({
-    //         progress,
-    //         val: randomWidth.value
-    //     })
-    // }, [progress])
-
-
-
 
 
     const handleSend = async () => {
@@ -306,7 +259,6 @@ const ChatInput = ({
                 const currentDate = new Date();
                 const timestamp = currentDate.getTime();
                 const filename = `image${i}_u${user.id}_${timestamp}.webp`
-                // const filename = image.uri.split('/').pop()!;
                 if (Platform.OS === 'web') {
                     // For web, use fetch directly
                     const response = await fetch(image.uri);
@@ -338,6 +290,10 @@ const ChatInput = ({
                 body: formData,
             });
 
+            const data = await response.json()
+            console.log({ data })
+            imageUrls.current = data.imageUrls
+
             if (response.ok) {
                 console.log('Images successfully uploaded to the backend');
             } else {
@@ -345,6 +301,10 @@ const ChatInput = ({
             }
         } catch (error) {
             console.error('Error while uploading images:', error);
+        } finally {
+            onSend()
+            setImages(null)
+            setSendImages(0)
         }
     };
 
@@ -362,7 +322,6 @@ const ChatInput = ({
                     // For web, use fetch directly
                     // @ts-ignore
                     const response = await fetch(status.uri);
-                    console.log({ response })
                     audioBlob = await response.blob();
                 } else {
                     // For native, use Expo FileSystem
@@ -386,7 +345,6 @@ const ChatInput = ({
                 formData.append('audio', audioBlob, 'audiofile.wav');
                 // @ts-ignore
                 // formData.append('audio', audioBlob, status.uri.split('/').pop()); // Use original file name
-                console.log({ audioBlob })
                 const backendApiUrl = `${baseUrl}/api/chat/audioFile`;
                 const response = await fetch(backendApiUrl, {
                     method: 'POST',
@@ -416,13 +374,13 @@ const ChatInput = ({
             } catch (error) {
                 console.error('Error while processing audio file:', error);
             } finally {
-                // console.log({ audioRef: audioRef.current, messageType })
                 onSend()
                 setSendSound(0)
                 setSound({
                     soundObject: undefined,
                     duration: 0
                 })
+                setMessageType(null)
             }
         } else {
             console.error('No audio file available to send');
@@ -562,6 +520,7 @@ audioCountdown {progress}
                                         soundObject: undefined,
                                         duration: 0
                                     })
+                                    setSendSound(0)
                                 } else {
                                     setDeleteSound(1)
                                 }
@@ -690,7 +649,7 @@ audioCountdown {progress}
 
                         }}
                         numColumns={2}
-                        keyExtractor={(e) => e}
+                        keyExtractor={(item, index) => `${item.uri}_${index}`}
                         renderItem={({ item }) => (
                             <Image
                                 source={{ uri: item.uri }}

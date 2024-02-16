@@ -19,6 +19,9 @@ export interface ChatInputProps {
         url: string,
         duration: number
     } | null>>;
+    // imageUrls: React.RefObject<React.SetStateAction<string[] | null>>;
+    imageUrls: any;
+    audioRef: any
 }
 
 export type MessageT = {
@@ -31,7 +34,7 @@ export type MessageT = {
     type?: 'text' | 'audio' | 'image' | null
     audioUrl?: string | null,
     audioDuration?: number | null
-    imageUrl?: string | null
+    imageUrls?: string[] | null
 
 };
 

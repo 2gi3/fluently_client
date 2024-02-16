@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react'
-import { Text, View, DimensionValue } from "react-native"
+import { Text, View, DimensionValue, ActivityIndicator, FlatList } from "react-native"
 import { chatStyles } from "../../../styles/chat"
 import moment from "moment";
 import { MessageT } from "../../../types/chat";
@@ -17,7 +17,7 @@ import Animated, {
     useAnimatedStyle,
     Easing,
 } from 'react-native-reanimated';
-import { Icon } from '@rneui/themed';
+import { Avatar, Icon, Image } from '@rneui/themed';
 import { Audio } from 'expo-av';
 
 
@@ -133,7 +133,9 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
             style={[chatStyles.message,
             {
                 backgroundColor: isMyMessage() ? primary : secondary,
-                alignSelf: isMyMessage() ? 'flex-end' : 'flex-start'
+                // alignSelf: isMyMessage() ? 'flex-end' : 'flex-start',
+                marginLeft: isMyMessage() ? 'auto' : sizes.S,
+                marginRight: isMyMessage() ? sizes.S : 'auto'
             }]}
         >
 
@@ -214,6 +216,44 @@ audioCountdown {progress}
                     }}>
                 </View>
             </View>}
+            {message.type === 'image' && (
+                <View style={{
+                    // margin: 'auto',
+                    // marginVertical: sizes.S,
+                    // padding: sizes.XS,
+                    backgroundColor: 'transparent',
+                    width: sizes.XXL,
+                    borderRadius: sizes.S
+
+                }}>
+                    <FlatList
+                        data={message.imageUrls}
+                        style={{
+                            width: '100%',
+                            backgroundColor: isMyMessage() ? colors.primary : colors.secondary,
+                            marginBottom: sizes.S
+
+                        }}
+                        numColumns={2}
+                        keyExtractor={(item, index) => `${item}_${index}`}
+                        renderItem={({ item }) => (
+                            <Image
+                                source={{ uri: item }}
+                                containerStyle={{
+                                    aspectRatio: 1,
+                                    // width: '100%',
+                                    flex: 1,
+                                    margin: 1,
+                                    maxHeight: sizes.XL
+                                }}
+                                style={{ borderRadius: sizes.XS, maxHeight: sizes.XL }}
+                                PlaceholderContent={<ActivityIndicator />}
+                            />
+                        )}
+                    />
+                </View>
+
+            )}
 
             <Text style={[styles.timestamp, isMyMessage() ? styles.myMessage : styles.otherMessage]}>
                 {moment(message.created_at).fromNow()}

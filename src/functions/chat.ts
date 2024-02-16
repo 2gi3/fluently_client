@@ -38,7 +38,7 @@ export const createNewChatroom = async (endpoint: string, user1Id: number, user2
 
 }
 
-export const createMessage = async ({ chatId, userId, text, status, type, audioUrl, audioDuration, imageUrl }: MessageT) => {
+export const createMessage = async ({ chatId, userId, text, status, type, audioUrl, audioDuration, imageUrls }: MessageT) => {
     const accessToken = await AsyncStorage.getItem('speaky-access-token')
     const baseUlr = process.env.SERVER_URL
 
@@ -58,7 +58,7 @@ export const createMessage = async ({ chatId, userId, text, status, type, audioU
                 type,
                 audioUrl,
                 audioDuration,
-                imageUrl
+                imageUrls
             }),
         });
         const message = await response.json();
