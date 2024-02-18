@@ -51,7 +51,6 @@ const ChatScreen = () => {
     const imageUrls = useRef<string[] | null>(null)
 
     const handleSend = async () => {
-        console.log({ imageUrlsState: imageUrls })
 
 
         const { newMessage } = await createMessage({
@@ -64,6 +63,10 @@ const ChatScreen = () => {
             audioDuration: audioRef.current?.duration,
             imageUrls: imageUrls.current
         });
+        console.log({ newMessage })
+        if (imageUrls.current && imageUrls.current?.length > 0) {
+            newMessage.imageUrls = imageUrls.current
+        }
         dispatch(addMessage(newMessage))
 
         setMessages((prevMessages: MessageT[]) => [
@@ -131,7 +134,7 @@ const ChatScreen = () => {
                 ...localMessages
             ]);
         }
-
+        console.log({ messages })
     }, [localMessages])
 
     if (messages) {

@@ -73,10 +73,12 @@ const ChatInput = ({
     const [deleteImages, setDeleteImages] = useState(1)
     const [sendImages, setSendImages] = useState(0)
     let manipulatedImages: any[] = [];
+    const [manipulatingImages, setManipulatingImages] = useState(false)
 
     const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
 
     const pickImage = async () => {
+
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
@@ -88,9 +90,8 @@ const ChatInput = ({
         });
 
 
-
-
         if (!result.canceled) {
+            setManipulatingImages(true)
             setMessageType('image')
             if (result.assets && result.assets.length > 0) {
                 console.log({ len: result.assets.length })
@@ -109,9 +110,9 @@ const ChatInput = ({
                 if (result.assets && result.assets.length > 6) {
                     setConfirmationOverlayVisible(true)
                 }
-
             }
         }
+        setManipulatingImages(false)
 
     };
 
@@ -388,6 +389,7 @@ const ChatInput = ({
     };
 
 
+
     return (
         <>
             {confirmationOverlayVisible && <ConfirmationOverlay
@@ -620,6 +622,7 @@ audioCountdown {progress}
             }}>
 
             </View> */}
+
             {images &&
                 <View style={{
                     margin: 'auto',
@@ -630,16 +633,7 @@ audioCountdown {progress}
                     borderRadius: sizes.S
 
                 }}>
-                    {/* <Image
-                        source={{ uri: image }}
-                        containerStyle={{
-                            aspectRatio: 1,
-                            width: '100%',
-                            flex: 1,
-                            marginBottom: sizes.S
-                        }}
-                        PlaceholderContent={<ActivityIndicator />}
-                    /> */}
+
                     <FlatList
                         data={images}
                         style={{
@@ -776,7 +770,21 @@ audioCountdown {progress}
                     </View>
                 </View>
             }
-            {!images && <View style={styles.container}>
+            {manipulatingImages && (
+                <View style={{
+                    margin: 'auto',
+                    marginVertical: sizes.S,
+                    padding: sizes.XS,
+                    backgroundColor: 'transparent',
+                    width: sizes.XXL,
+                    borderRadius: sizes.S
+
+                }}>
+
+                    <ActivityIndicator />
+                </View>
+            )}
+            {!images && !manipulatingImages && <View style={styles.container}>
                 {inputValue.length === 0 &&
                     <Icon
                         name='image'
