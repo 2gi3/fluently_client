@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, View, Pressable, Text } from 'react-native';
+import { FlatList, View, Pressable, Text, SafeAreaView, ScrollView } from 'react-native';
 // import { ChatT } from '../../types';
 import ChatCard from '../../../components/chat/ChatCard';
 import { Divider } from '@rneui/themed';
@@ -45,31 +45,40 @@ const ChatsList = ({ loading, error, chatrooms, refreshData, isValidating }: { l
 
 
     const renderItem = ({ item }: { item: ChatroomT }) => (
-        <Pressable
-            // @ts-ignore
-            onPress={() => navigation.navigate('Chat', {
-                id: item.id!.toString(),
-                user2id: user.id == item.user2Id ? item.user1Id : item.user2Id,
-            })}
-            style={{ maxWidth: 440, maxHeight: 108, minWidth: 300 }}
-        >
-            <ChatCard
-                chatroom={item}
-                lastMessages={chatrooms!.lastMessages}
-            />        </Pressable>
+        <View>
+            <Pressable
+                // @ts-ignore
+                onPress={() => navigation.navigate('Chat', {
+                    id: item.id!.toString(),
+                    user2id: user.id == item.user2Id ? item.user1Id : item.user2Id,
+                })}
+                style={{ maxWidth: 440, maxHeight: 108, minWidth: 300 }}
+            >
+                <ChatCard
+                    chatroom={item}
+                    lastMessages={chatrooms!.lastMessages}
+                />
+            </Pressable>
+        </View>
     );
 
     if (loading) {
         return (
-            <ChatsListSkeleton />
+            <View>
+                <ChatsListSkeleton />
+            </View>
         )
     } else if (chatrooms && sortedChatrooms && sortedChatrooms.length > 0) {
         return (
-            <FlatList
-                data={sortedChatrooms}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id!.toString()}
-            />
+            <SafeAreaView style={{ flex: 1 }}>
+                <ScrollView>
+                    <FlatList
+                        data={sortedChatrooms}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id!.toString()}
+                    />
+                </ScrollView>
+            </SafeAreaView>
         );
     } else {
         return (

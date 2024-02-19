@@ -44,7 +44,7 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
             height: 8,
         };
     });
-
+    const [position, setPosition] = useState(0)
 
     async function playSound() {
         try {
@@ -65,6 +65,7 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
                     setSoundIsPlaying(true);
                     soundRef.current.setOnPlaybackStatusUpdate((status: any) => {
                         const position = status.positionMillis;
+                        setPosition(position)
                         setProgress((position / message.audioDuration!) * 100);
                         setSoundIsPlaying(status.isPlaying);
                     });
@@ -75,37 +76,7 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
         }
     }
 
-    // async function playSound() {
-    //     try {
-    //         if (message.audioUrl && message.audioDuration) {
-    //             soundRef.current = new Audio.Sound();
-    //             await soundRef.current.loadAsync({ uri: message.audioUrl });
-    //             await soundRef.current.playAsync();
-    //             soundRef.current.setOnPlaybackStatusUpdate((status: any) => {
-    //                 const position = status.positionMillis;
-    //                 setProgress((position / message.audioDuration!) * 100);
-    //                 console.log({ status })
-    //                 setSoundIsPlaying(status.isPlaying)
 
-    //             });
-    //         }
-    //     } catch (error) {
-    //         console.error('Failed to play sound', error);
-    //     }
-    // }
-    // function stopSound() {
-    //     if (soundRef.current) {
-    //         soundRef.current.stopAsync();
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     return () => {
-    //         if (soundRef.current) {
-    //             soundRef.current.unloadAsync();
-    //         }
-    //     };
-    // }, []);
 
     const isMyMessage = () => {
         if (user.id) {
@@ -189,12 +160,6 @@ const Message = ({ message, messageRead, isLastMessage }: { message: MessageT, m
                         position: 'relative'
                     }, { paddingHorizontal: 0, flex: 1, justifyContent: 'flex-start', marginRight: sizes.S }]}>
 
-                        <View
-                            style={{ position: 'absolute', backgroundColor: secondary, top: 0, right: 0, bottom: 0, left: 0, }}>
-                            {/* <Text>
-                                {message.audioDuration ? message.audioDuration.toString() : 'helloworld'}
-                            </Text> */}
-                        </View>
 
                         <Animated.View
                             style={testStyle}
@@ -214,6 +179,12 @@ audioCountdown {progress}
                         alignItems: 'center',
                         gap: sizes.S
                     }}>
+                </View>
+                <View
+                    style={{ position: 'absolute', bottom: -sizes.S, left: 0, }}>
+                    <Text>
+                        {message.audioDuration ? `${(Math.floor((message.audioDuration - position) / 1000))} s` : ''}
+                    </Text>
                 </View>
             </View>}
             {message.type === 'image' && (
@@ -256,6 +227,7 @@ audioCountdown {progress}
             )}
 
             <Text style={[styles.timestamp, isMyMessage() ? styles.myMessage : styles.otherMessage]}>
+                { }
                 {moment(message.created_at).fromNow()}
             </Text>
 

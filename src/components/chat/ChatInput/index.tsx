@@ -391,7 +391,7 @@ const ChatInput = ({
 
 
     return (
-        <>
+        <View>
             {confirmationOverlayVisible && <ConfirmationOverlay
                 warning={`You can send maximum 6 images at the time`}
                 isVisible={confirmationOverlayVisible}
@@ -626,9 +626,10 @@ audioCountdown {progress}
             {images &&
                 <View style={{
                     margin: 'auto',
-                    marginVertical: sizes.S,
+                    marginTop: sizes.S,
+                    marginBottom: sizes.M,
                     padding: sizes.XS,
-                    backgroundColor: 'transparent',
+                    backgroundColor: colors.primary,
                     width: sizes.XXL,
                     borderRadius: sizes.S
 
@@ -662,7 +663,7 @@ audioCountdown {progress}
                     <View
                         style={{
                             flexDirection: 'row',
-                            justifyContent: 'center',
+                            justifyContent: 'space-between',
                             alignItems: 'center',
                             gap: sizes.S
                         }}>
@@ -773,7 +774,8 @@ audioCountdown {progress}
             {manipulatingImages && (
                 <View style={{
                     margin: 'auto',
-                    marginVertical: sizes.S,
+                    marginTop: sizes.S,
+                    marginBottom: sizes.M,
                     padding: sizes.XS,
                     backgroundColor: 'transparent',
                     width: sizes.XXL,
@@ -829,7 +831,7 @@ audioCountdown {progress}
                     />
                 }
             </View>}
-        </>
+        </View>
     )
 }
 
