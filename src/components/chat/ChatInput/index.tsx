@@ -137,13 +137,14 @@ const ChatInput = ({
     });
 
 
-    const handleSend = async () => {
+    const handleSend = () => {
         if (inputValue.trim() !== "") {
             onSend();
             setInputValue("");
-            inputRef.current?.focus();
-
         }
+        setTimeout(() => {
+            inputRef.current?.focus();
+        }, 100);
     };
 
     async function startRecording() {
@@ -805,6 +806,7 @@ audioCountdown {progress}
                     value={inputValue}
                     onChangeText={(text) => setInputValue(text)}
                     style={styles.input}
+                    onSubmitEditing={() => handleSend()}
                 />
                 {inputValue.length > 0
                     ? <Button
