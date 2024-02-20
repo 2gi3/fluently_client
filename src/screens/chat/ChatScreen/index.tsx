@@ -65,7 +65,6 @@ const ChatScreen = () => {
             audioDuration: audioRef.current?.duration,
             imageUrls: imageUrls.current
         });
-        console.log({ newMessage })
         if (imageUrls.current && imageUrls.current?.length > 0) {
             newMessage.imageUrls = imageUrls.current
         }
@@ -170,7 +169,7 @@ const ChatScreen = () => {
                                 data={messages}
                                 renderItem={renderItem}
                                 keyExtractor={(item: MessageT, index: number) =>
-                                    item.id ? item.id.toString() : item.created_at || `i-${index.toString()}`
+                                    `i-${index}-${item.id ? item.id : 'noId'}`
                                 }
 
                             />

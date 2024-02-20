@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useEffect } from 'react';
 import { setAccessToken } from '../auth';
+import { AppState } from 'react-native'
+
 
 const baseUrl = process.env.SERVER_URL
 
@@ -37,20 +39,29 @@ export const useTokenRefresher = () => {
                 console.error('Error while updating access token:', error);
             }
         };
-        const handleVisibilityChange = () => {
-            if (document.visibilityState === 'visible') {
-                updateAccessToken();
-            }
-        };
-        document.addEventListener('visibilitychange', handleVisibilityChange);
+
+        // const handleVisibilityChange = () => {
+        //     if (document.visibilityState === 'visible') {
+        //         updateAccessToken();
+        //     }
+        // };
+        // document.addEventListener('visibilitychange', handleVisibilityChange);
 
         updateAccessToken();
-
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            console.log({ nextAppState })
+            if (nextAppState === 'active') {
+                updateAccessToken();
+            }
+        });
         const TOKEN_REFRESH_INTERVAL = 29 * 60 * 1000; // 29 minutes
 
         const intervalId = setInterval(updateAccessToken, TOKEN_REFRESH_INTERVAL);
 
-        return () => clearInterval(intervalId);
+        return () => {
+            clearInterval(intervalId);
+            subscription.remove();
+        };
     }, []);
 };
 

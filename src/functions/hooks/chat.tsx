@@ -1,4 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
+import { AppState } from 'react-native'
 import useSWR, { mutate } from "swr";
 import { RootState } from "../../redux/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -57,24 +58,38 @@ export const useGetChats = () => {
         }
     }
 
-
-    const handleVisibilityChange = async () => {
-        if (document.visibilityState === 'visible') {
-            setUnreadMessageNavBedge()
-        }
-    };
-    document.addEventListener('visibilitychange', handleVisibilityChange);
-
     useEffect(() => {
         setUnreadMessageNavBedge()
 
-        const cleanup = () => {
-            document.removeEventListener('visibilitychange', handleVisibilityChange);
+        const subscription = AppState.addEventListener('change', nextAppState => {
+            console.log({ nextAppState })
+            if (nextAppState === 'active') {
+                setUnreadMessageNavBedge()
+            }
+        });
+
+        return () => {
+            subscription.remove();
         };
+    }, []);
 
-        return cleanup
+    // const handleVisibilityChange = async () => {
+    //     if (document.visibilityState === 'visible') {
+    //         setUnreadMessageNavBedge()
+    //     }
+    // };
+    // document.addEventListener('visibilitychange', handleVisibilityChange);
 
-    }, [chatrooms, user, activeChat]);
+    // useEffect(() => {
+    //     setUnreadMessageNavBedge()
+
+    //     const cleanup = () => {
+    //         document.removeEventListener('visibilitychange', handleVisibilityChange);
+    //     };
+
+    //     return cleanup
+
+    // }, [chatrooms, user, activeChat]);
 
     return { loading: !chatrooms && !error, error, chatrooms, refreshData, isValidating };
 };
