@@ -62,7 +62,6 @@ export const useGetChats = () => {
         setUnreadMessageNavBedge()
 
         const subscription = AppState.addEventListener('change', nextAppState => {
-            console.log({ nextAppState })
             if (nextAppState === 'active') {
                 setUnreadMessageNavBedge()
             }

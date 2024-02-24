@@ -21,8 +21,7 @@ const ChatCard = ({ chatroom, lastMessages }: { chatroom: ChatroomT, lastMessage
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
     const pendingChats = useSelector((state: RootState) => state.chat.pendingChats)
     const user = useSelector((state: RootState) => state.user);
-    const baseUrl = process.env.SERVER_URL
-    const url = `${baseUrl}/api/user/${user.id == chatroom.user1Id ?
+    const url = `/api/user/${user.id == chatroom.user1Id ?
         chatroom.user2Id
         : chatroom.user1Id
         }`

@@ -116,9 +116,6 @@ const Dashboard = ({ user }: { user: UserT }) => {
         }
 
     }, [socketUrl])
-    useEffect(() => {
-        console.log({ 's.p.': savedPosts })
-    }, [savedPosts])
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
@@ -235,7 +232,12 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
                         Native Language: <Text style={{ color: '#666666' }}>{user.native_language}</Text>
                     </ListItem.Subtitle>
-                    <ListItem.Subtitle style={styles.personalDetailsSubtitle}>You are learning: {user.learning_language}</ListItem.Subtitle>
+                    <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
+                        You are learning: {user.learning_language}
+                    </ListItem.Subtitle>
+                    {/* <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
+                        Your user-id: <Text style={{ color: '#666666' }}>{user.id}</Text>
+                    </ListItem.Subtitle> */}
                 </ListItem.Content>
             </View>
             <View style={styles.content}>

@@ -41,9 +41,7 @@ const ChatScreen = () => {
     const localMessages = useSelector((state: RootState) => state.chat.chatMessages);
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
 
-
-    const baseUrl = process.env.SERVER_URL
-    const url = `${baseUrl}/api/user/${route.params.user2id}`
+    const url = `/api/user/${route.params.user2id}`
     const { users: user2 } = useGetUsers(url);
     const [inputValue, setInputValue] = useState("");
     const [messageType, setMessageType] = useState<"text" | "audio" | "image" | null>(null);
@@ -102,15 +100,15 @@ const ChatScreen = () => {
     //     console.log({ audio, messageType })
     // }, [audio, messageType])
 
-    const renderItem = ({ item, index }: { item: MessageT, index: number }) => {
-        const isLastMessage = index === messages.length - 1;
+    // const renderItem = ({ item, index }: { item: MessageT, index: number }) => {
+    //     const isLastMessage = index === messages.length - 1;
 
-        return (
-            <View>
-                <Message message={item} messageRead={true} isLastMessage={isLastMessage} />
-            </View>
-        );
-    };
+    //     return (
+    //         <View>
+    //             <Message message={item} messageRead={true} isLastMessage={isLastMessage} />
+    //         </View>
+    //     );
+    // };
 
 
 
@@ -148,49 +146,51 @@ const ChatScreen = () => {
     if (messages) {
 
         return (
-            <SafeAreaView style={{ flex: 1 }}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={{ flex: 1 }}
+            <KeyboardAvoidingView
+                // behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={{ flex: 1 }}
+            >
+                <ScrollView
+                    ref={scrollViewRef}
+                    // style={{ flex: 1 }}
+                    // onScrollToTop={}
+                    onLayout={() => {
+                        scrollViewRef.current?.scrollToEnd({ animated: true });
+                    }}
+                    onContentSizeChange={() => {
+                        scrollViewRef.current?.scrollToEnd({ animated: true });
+                    }}
                 >
-                    <ScrollView
-                        ref={scrollViewRef}
-                        // onScrollToTop={}
-                        onLayout={() => {
-                            scrollViewRef.current?.scrollToEnd({ animated: true });
-                        }}
-                        onContentSizeChange={() => {
-                            scrollViewRef.current?.scrollToEnd({ animated: true });
-                        }}
-                    ><View>
-                            <FlatList
-                                // ref={flatListRef}
-                                style={{ backgroundColor: colors.primary }}
-                                data={messages}
-                                renderItem={renderItem}
-                                keyExtractor={(item: MessageT, index: number) =>
-                                    `i-${index}-${item.id ? item.id : 'noId'}`
-                                }
+                    <View
+                    // style={{ flex: 1 }}
+                    >
+                        {messages.map((message, index) => {
+                            const isLastMessage = index === messages.length - 1;
 
-                            />
-                        </View>
+                            return (
+                                <View key={`${message.id}-${index}`}>
+                                    <Message message={message} messageRead={true} isLastMessage={isLastMessage} />
+                                </View>
+                            )
+                        })}
 
-                    </ScrollView>
-                    <View>
-                        <ChatInput
-                            onSend={handleSend}
-                            inputValue={inputValue}
-                            setInputValue={setInputValue}
-                            messageType={messageType}
-                            setMessageType={setMessageType}
-                            audio={audio}
-                            setAudio={setAudio}
-                            imageUrls={imageUrls}
-                            audioRef={audioRef}
-                        />
                     </View>
-                </KeyboardAvoidingView>
-            </SafeAreaView>
+                </ScrollView>
+                <SafeAreaView >
+
+                    <ChatInput
+                        onSend={handleSend}
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        messageType={messageType}
+                        setMessageType={setMessageType}
+                        audio={audio}
+                        setAudio={setAudio}
+                        imageUrls={imageUrls}
+                        audioRef={audioRef}
+                    />
+                </SafeAreaView>
+            </KeyboardAvoidingView>
         )
     } else {
         return (

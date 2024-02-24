@@ -38,7 +38,7 @@ const LanguageSelector = () => {
           </ListItem.Content>
           {newUser.native_language && (
             <View style={{ paddingHorizontal: sizes.XS }} >
-              <Text style={{ color: 'blakc', fontSize: 14 }}>
+              <Text style={{ color: 'black', fontSize: 14 }}>
                 {newUser.native_language}
               </Text>
             </View>

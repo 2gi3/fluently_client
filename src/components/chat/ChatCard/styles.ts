@@ -42,7 +42,7 @@ export const styles = StyleSheet.create<any>({
     },
     subtitle: {
         fontSize: 12,
-        color: '8e8e8f',
+        color: '#8e8e8f',
     },
     listItemContentSubtitle: {
         maxWidth: 74,

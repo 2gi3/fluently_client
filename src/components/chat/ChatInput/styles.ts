@@ -17,7 +17,8 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: sizes.S,
-        position: 'relative'
+        position: 'relative',
+        backgroundColor: 'red'
     },
     addButton: {
         backgroundColor: 'transparent',

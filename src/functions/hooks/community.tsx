@@ -79,7 +79,6 @@ export const useGetAllPosts = () => {
             throw new Error('Failed to fetch posts');
         }
         const data = await response.json();
-        console.log({ posts: data })
         return data;
     }
     const { data: posts, error, isValidating } = useSWR<void | PostT[] | undefined>(getAllPostsEndpoint, fetcher, {
@@ -194,7 +193,8 @@ export const useManageSavedPosts = () => {
     const getSavedPosts = async () => {
         setLoading(true)
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
-        const response = await fetch(`${savedPostsEndpoint}/${user.id}`, {
+        const userId = user.id
+        const response = await fetch(`${savedPostsEndpoint}/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

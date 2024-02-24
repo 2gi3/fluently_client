@@ -42,7 +42,7 @@ const NationalitySelector = () => {
                     </ListItem.Content>
                     {newUser.nationality && (
                         <View style={{ paddingHorizontal: sizes.XS }} >
-                            <Text style={{ color: 'blakc', fontSize: 14 }}>
+                            <Text style={{ color: 'black', fontSize: 14 }}>
                                 {newUser.nationality}
                             </Text>
                         </View>

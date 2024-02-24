@@ -171,30 +171,30 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                                 placeholder="Email"
                                 value={email}
                                 onChangeText={(text) => setEmail(text.trim())}
-                                onBlur={async () => {
-                                    if (emailRegex.test(email) && !checkingUserExistence && !confirmationOverlayVisible && !emailChecked) {
-                                        setCheckingUserExistence(true)
-                                        const response: any = await fetch(`${url}/api/user/exists/${email}`, {
-                                            method: 'GET',
-                                            // credentials: 'include',
-                                        });
-                                        setCheckingUserExistence(false)
+                                // onBlur={async () => {
+                                //     if (emailRegex.test(email) && !checkingUserExistence && !confirmationOverlayVisible && !emailChecked) {
+                                //         setCheckingUserExistence(true)
+                                //         const response: any = await fetch(`${url}/api/user/exists/${email}`, {
+                                //             method: 'GET',
+                                //             // credentials: 'include',
+                                //         });
+                                //         setCheckingUserExistence(false)
 
-                                        const userExists = await response.json();
-                                        dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
-                                        setEmailChecked(true)
-                                        // if (!userExists.ok) {
-                                        //     throw new Error('We are having server problems, please try again later');
-                                        // }
-                                        if (userExists.exists) {
-                                            setConfirmationOverlayVisible(true)
-                                            // setEmail('')
-                                        } else {
-                                            setConfirmationOverlayVisible(false)
-                                        }
-                                    }
-                                    setDispleyEmailErrors(true)
-                                }}
+                                //         const userExists = await response.json();
+                                //         dispatch(setAmount(Number(response.headers.get('Ratelimit-Remaining'))))
+                                //         setEmailChecked(true)
+                                //         // if (!userExists.ok) {
+                                //         //     throw new Error('We are having server problems, please try again later');
+                                //         // }
+                                //         if (userExists.exists) {
+                                //             setConfirmationOverlayVisible(true)
+                                //             // setEmail('')
+                                //         } else {
+                                //             setConfirmationOverlayVisible(false)
+                                //         }
+                                //     }
+                                //     setDispleyEmailErrors(true)
+                                // }}
                                 errorMessage={emailRegex.test(email) || email === '' || !displeyEmailErrors ? undefined : 'Please provide a valid email'}
                             />
                             <AuthInput

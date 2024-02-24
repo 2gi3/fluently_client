@@ -17,9 +17,10 @@ import StudentsListSkeleton from './skeleton';
 const StudentsList = () => {
     const route = useRoute()
     const navigation = useNavigation()
-    const url = process.env.SERVER_URL
+
+    // const url = 'https://fluently-server-ca2a31c868a0.herokuapp.com'
     const connectedUsers = useSelector((state: RootState) => state.webSocket.connectedUsers)
-    const { loading, error, users, refreshData, isValidating } = useGetUsers(`${url}/api/user`);
+    const { loading, error, users, refreshData, isValidating } = useGetUsers(`/api/user`);
     const [connectedUsersArray, setConnectedUsersArray] = useState<UserT[] | null>()
     const [disconnectedUsersArray, setDisconnectedUsersArray] = useState<UserT[] | null>()
     const [combinedUsers, setCombinedUsers] = useState<UserT[] | null>(null)
@@ -51,11 +52,6 @@ const StudentsList = () => {
             const connected = users.filter((userDB: UserT) => connectedUsers.includes(userDB.id! as number) && userDB.id !== user?.id);
             const disconnected = users.filter((userDB: UserT) => !connectedUsers.includes(userDB.id! as number) && userDB.id !== user?.id);
             setCombinedUsers([...connected, ...disconnected]);
-            console.log(users)
-            console.log({ connected })
-            console.log({ disconnected })
-            console.log({ combinedUsers })
-
         } else
             setCombinedUsers(users)
 
@@ -77,11 +73,13 @@ const StudentsList = () => {
     return (
         !combinedUsers ?
             <StudentsListSkeleton /> :
-            <FlatList
-                data={combinedUsers}
-                renderItem={renderItem}
-                keyExtractor={(item: UserT, index: number) => (item.id ? item.id.toString() : `user-${index.toString()}`)}
-            />
+            <View>
+                <FlatList
+                    data={combinedUsers}
+                    renderItem={renderItem}
+                    keyExtractor={(item: UserT, index: number) => (item.id ? item.id.toString() : `user-${index.toString()}`)}
+                />
+            </View>
     );
 };
 

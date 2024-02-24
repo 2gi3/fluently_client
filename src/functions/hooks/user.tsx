@@ -14,7 +14,11 @@ import { emailRegex } from '../../regex';
 import { setAmount } from '../../redux/slices/counterSlice';
 
 const socketUrlVar = process.env.WEB_SOCKET_URL
+const serverUrl = process.env.SERVER_URL
 
+if (!serverUrl) {
+    throw new Error('process.env.SERVER_URL is undefined, make sure that all environment variables are set correctlys');
+}
 
 export const useCheckUserExistence = () => {
     const dispatch = useDispatch();
@@ -93,7 +97,7 @@ export const useLogOut = () => {
             dispatch(logOut());
             dispatch(clearNewUser());
             dispatch(clearUser())
-            window.location.reload();
+            // window.location.reload();
         } catch (error) {
             console.error('Error clearing local storage:', error);
         }
@@ -187,9 +191,11 @@ export const useLocation = () => {
 
 
 
-export const useGetUsers = (url: string) => {
+export const useGetUsers = (uri: string | null = null) => {
+
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(false);
+    const url = uri ? serverUrl + uri : serverUrl
 
     const fetcher = async () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
@@ -200,6 +206,8 @@ export const useGetUsers = (url: string) => {
                 'Authorization': JSON.parse(accessToken!),
             }
         });
+        console.log({ response })
+
         if (!response.ok) {
             throw new Error('Failed to fetch users');
         }

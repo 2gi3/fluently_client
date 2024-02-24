@@ -28,7 +28,7 @@ export function ConnectionManagerAuto() {
 
     const logMessage = () => {
       if (!lastCheckTimestamp) {
-        console.log('timestamp', lastCheckTimestamp);
+        console.log('Timestamp', lastCheckTimestamp);
         // warn user and reload the page
         dispatch(setSocketUrl(null));
 

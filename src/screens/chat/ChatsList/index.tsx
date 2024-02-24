@@ -71,13 +71,13 @@ const ChatsList = ({ loading, error, chatrooms, refreshData, isValidating }: { l
     } else if (chatrooms && sortedChatrooms && sortedChatrooms.length > 0) {
         return (
             <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView>
-                    <FlatList
-                        data={sortedChatrooms}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id!.toString()}
-                    />
-                </ScrollView>
+                {/* <ScrollView> */}
+                <FlatList
+                    data={sortedChatrooms}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id!.toString()}
+                />
+                {/* </ScrollView> */}
             </SafeAreaView>
         );
     } else {

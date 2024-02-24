@@ -139,10 +139,7 @@ const ChatInput = ({
 
     const handleSend = (e) => {
         e.preventDefault()
-        setTimeout(() => {
-            // This won't work without setTimeout
-            inputRef.current?.focus();
-        }, 10);
+
 
         if (inputValue.trim() !== "") {
             onSend();
@@ -396,7 +393,9 @@ const ChatInput = ({
 
 
     return (
-        <View>
+        <View
+        // style={{ flex: 1 }}
+        >
             {confirmationOverlayVisible && <ConfirmationOverlay
                 warning={`You can send maximum 6 images at the time`}
                 isVisible={confirmationOverlayVisible}
@@ -791,52 +790,54 @@ audioCountdown {progress}
                     <ActivityIndicator />
                 </View>
             )}
-            {!images && !manipulatingImages && <View style={styles.container}>
-                {inputValue.length === 0 &&
-                    <Icon
-                        name='image'
-                        type="font-awesome"
-                        size={24}
-                        color={secondaryFont}
-                        containerStyle={styles.buttonContainer}
-                        onPress={() => pickImage()}
-                    />
-                }
+            {!images && !manipulatingImages &&
+                <View style={styles.container}>
+                    {inputValue.length === 0 &&
+                        <Icon
+                            name='image'
+                            type="font-awesome"
+                            size={24}
+                            color={secondaryFont}
+                            containerStyle={styles.buttonContainer}
+                            onPress={() => pickImage()}
+                        />
+                    }
 
-                <TextInput
-                    autoFocus
-                    ref={inputRef}
-                    placeholder="Type away..."
-                    value={inputValue}
-                    onChangeText={(text) => setInputValue(text)}
-                    style={styles.input}
-                    onSubmitEditing={(e) => handleSend(e)}
-                />
-                {inputValue.length > 0
-                    ? <Button
-                        loading={false}
-                        loadingProps={{ size: 'small', color: secondary }}
-                        icon={{
-                            name: 'send',
-                            type: 'material-ui-icons',
-                            size: 15,
-                            color: secondary,
-                        }}
-                        buttonStyle={styles.sendButton}
-                        titleStyle={styles.buttonTitle}
-                        containerStyle={styles.buttonContainer}
-                        onPress={(e) => handleSend(e)}
+                    <TextInput
+                        autoFocus
+                        blurOnSubmit={false}
+                        ref={inputRef}
+                        placeholder="Type away..."
+                        value={inputValue}
+                        onChangeText={(text) => setInputValue(text)}
+                        style={styles.input}
+                        onSubmitEditing={(e) => handleSend(e)}
                     />
-                    : <Icon
-                        // type='outline'
-                        name={recording ? 'stop' : 'mic'}
-                        size={24}
-                        color={recording ? danger : secondaryFont}
-                        containerStyle={styles.buttonContainer}
-                        onPress={recording ? stopRecording : startRecording}
-                    />
-                }
-            </View>}
+                    {inputValue.length > 0
+                        ? <Button
+                            loading={false}
+                            loadingProps={{ size: 'small', color: secondary }}
+                            icon={{
+                                name: 'send',
+                                type: 'material-ui-icons',
+                                size: 15,
+                                color: secondary,
+                            }}
+                            buttonStyle={styles.sendButton}
+                            titleStyle={styles.buttonTitle}
+                            containerStyle={styles.buttonContainer}
+                            onPress={(e) => handleSend(e)}
+                        />
+                        : <Icon
+                            // type='outline'
+                            name={recording ? 'stop' : 'mic'}
+                            size={24}
+                            color={recording ? danger : secondaryFont}
+                            containerStyle={styles.buttonContainer}
+                            onPress={recording ? stopRecording : startRecording}
+                        />
+                    }
+                </View>}
         </View>
     )
 }

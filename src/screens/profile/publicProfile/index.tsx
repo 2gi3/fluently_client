@@ -21,8 +21,7 @@ const PublicProfile = () => {
         console.log('waiting for id')
     }
 
-    const url = process.env.SERVER_URL
-    const { loading, error, users, refreshData, isValidating } = useGetUsers(`${url}/api/user/${studentId}`);
+    const { loading, error, users, refreshData, isValidating } = useGetUsers(`/api/user/${studentId}`);
 
 
 
