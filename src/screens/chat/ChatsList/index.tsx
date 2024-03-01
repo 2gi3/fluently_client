@@ -70,7 +70,7 @@ const ChatsList = ({ loading, error, chatrooms, refreshData, isValidating }: { l
         )
     } else if (chatrooms && sortedChatrooms && sortedChatrooms.length > 0) {
         return (
-            <SafeAreaView style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: colors.primaryLight }}>
                 {/* <ScrollView> */}
                 <FlatList
                     data={sortedChatrooms}

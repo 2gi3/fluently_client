@@ -15,6 +15,7 @@ import { setAmount } from '../../redux/slices/counterSlice';
 
 const socketUrlVar = process.env.WEB_SOCKET_URL
 const serverUrl = process.env.SERVER_URL
+const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 if (!serverUrl) {
     throw new Error('process.env.SERVER_URL is undefined, make sure that all environment variables are set correctlys');
@@ -84,6 +85,7 @@ export const useLogOut = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'authorization': JSON.parse(accessToken!),
+                    origin
                 },
             });
 
@@ -204,9 +206,9 @@ export const useGetUsers = (uri: string | null = null) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': JSON.parse(accessToken!),
+                origin
             }
         });
-        console.log({ response })
 
         if (!response.ok) {
             throw new Error('Failed to fetch users');

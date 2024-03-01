@@ -5,6 +5,8 @@ import { RootState } from "../redux/store";
 
 export const updateUser = async (payload: Partial<UserT>, endpoint: string) => {
     const accessToken = await AsyncStorage.getItem('speaky-access-token')
+    const origin = process.env.ORIGIN || 'http://localhost:8081'
+
 
     try {
         const response = await fetch(endpoint, {
@@ -12,6 +14,7 @@ export const updateUser = async (payload: Partial<UserT>, endpoint: string) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': JSON.parse(accessToken!),
+                origin
             },
             // credentials: 'include',
             body: JSON.stringify(payload),

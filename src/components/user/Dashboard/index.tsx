@@ -69,13 +69,23 @@ const Dashboard = ({ user }: { user: UserT }) => {
     };
 
 
+    const [access, setAccess] = useState<string | null>()
+    const [refresh, setRefresh] = useState<string | null>()
 
-
-
+    useEffect(() => {
+        const fetchTokens = async () => {
+            const accessToken = await AsyncStorage.getItem('speaky-access-token');
+            const refreshToken = await AsyncStorage.getItem('speaky-refresh-token');
+            setAccess(accessToken)
+            setRefresh(refreshToken)
+        }
+        fetchTokens()
+    }, [])
 
 
     const handleDeleteAccount = async () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
+        const origin = process.env.ORIGIN || 'http://localhost:8081'
 
         if (confirmationSentence === confirmationInput.trim().toLocaleLowerCase()) {
             try {
@@ -85,6 +95,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': JSON.parse(accessToken!),
+                        origin
+
 
                     }
                 });
@@ -224,24 +236,36 @@ const Dashboard = ({ user }: { user: UserT }) => {
                 <ListItem.Content style={styles.content}>
                     <ListItem.Title>Personal details:</ListItem.Title>
                     <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
-                        Email: <Text style={{ color: '#666666' }}>{user.email}</Text>{' '}
+                        Email: <Text style={{ color: colors.primaryFont }}>{user.email}</Text>{' '}
                     </ListItem.Subtitle>
                     <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
-                        Nationality: <Text style={{ color: '#666666' }}>{user.nationality}</Text>
+                        Nationality: <Text style={{ color: colors.primaryFont }}>{user.nationality}</Text>
                     </ListItem.Subtitle>
                     <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
-                        Native Language: <Text style={{ color: '#666666' }}>{user.native_language}</Text>
+                        Native Language: <Text style={{ color: colors.primaryFont }}>{user.native_language}</Text>
                     </ListItem.Subtitle>
                     <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
                         You are learning: {user.learning_language}
                     </ListItem.Subtitle>
                     {/* <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
-                        Your user-id: <Text style={{ color: '#666666' }}>{user.id}</Text>
+                        Your user-id: <Text style={{ color: colors.primaryFont}}>{user.id}</Text>
                     </ListItem.Subtitle> */}
                 </ListItem.Content>
             </View>
-            <View style={styles.content}>
 
+            <View>
+                <ListItem.Content style={styles.content}>
+                    <ListItem.Title>Debugging purposes:</ListItem.Title>
+                    {access && <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
+                        Access token: <Text style={{ color: colors.primaryFont }}>{access}</Text>{' '}
+                    </ListItem.Subtitle>}
+                    {refresh && <ListItem.Subtitle style={styles.personalDetailsSubtitle}>
+                        Refresh token: <Text style={{ color: colors.primaryFont }}>{refresh}</Text>
+                    </ListItem.Subtitle>}
+                </ListItem.Content>
+            </View>
+
+            <View style={styles.content}>
                 <Button
                     size="md"
                     type="outline"

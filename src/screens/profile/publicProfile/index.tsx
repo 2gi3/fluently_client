@@ -81,7 +81,7 @@ const PublicProfile = () => {
                     title="Exchange language"
                     onPress={async () => {
                         //@ts-ignore
-                        const newChatroom = await createNewChatroom(`${url}/api/chat`, user1?.id, users.id);
+                        const newChatroom = await createNewChatroom(user1?.id, users.id);
                         if (newChatroom.message === "Chatroom already exists") {
                             if (user1?.id === newChatroom?.chatroom?.user1Id) {
                                 // @ts-ignore

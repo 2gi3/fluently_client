@@ -6,6 +6,7 @@ import { Buffer } from "buffer";
 
 
 const baseUrl = process.env.SERVER_URL
+const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 export const useTokenRefresher = () => {
     useEffect(() => {
@@ -34,6 +35,7 @@ export const useTokenRefresher = () => {
                             headers: {
                                 'Content-Type': 'application/json',
                                 // 'Authorization': JSON.parse(accessToken!),
+                                origin
                             }
                         });
                         setAccessToken(newAccessToken);

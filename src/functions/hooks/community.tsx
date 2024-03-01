@@ -12,6 +12,7 @@ import { fetchSavedPostsFromLocalStorage } from "../../redux/slices/ownPostsSlic
 const baseUrl = process.env.SERVER_URL
 
 export const useCreatePost = () => {
+    const origin = process.env.ORIGIN || 'http://localhost:8081'
     const navigation = useNavigation()
     const createPostEndpoint = `${baseUrl}/api/community/post`
     const [loading, setLoading] = useState(false);
@@ -19,6 +20,10 @@ export const useCreatePost = () => {
     const [success, setSuccess] = useState<boolean | null>(null);
 
     const createPost = async (payload: PostT) => {
+        console.log({
+            payload,
+            createPostEndpoint
+        })
         try {
             setLoading(true);
             const accessToken = await AsyncStorage.getItem('speaky-access-token');
@@ -27,6 +32,7 @@ export const useCreatePost = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': JSON.parse(accessToken!),
+                    origin
                 },
                 body: JSON.stringify(payload),
             });
@@ -73,8 +79,10 @@ export const useGetAllPosts = () => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': JSON.parse(accessToken!),
+                origin
             }
         });
+        console.log({ allPosts: response })
         if (!response.ok) {
             throw new Error('Failed to fetch posts');
         }
@@ -113,6 +121,7 @@ export const useGetOnePost = (postId: string) => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': JSON.parse(accessToken!),
+                origin
             }
         });
         if (!response.ok) {
@@ -150,6 +159,7 @@ export const useCreateComment = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': JSON.parse(accessToken!),
+                    origin
                 },
                 body: JSON.stringify(payload),
             });
@@ -199,6 +209,7 @@ export const useManageSavedPosts = () => {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': JSON.parse(accessToken!),
+                origin
             }
         });
         if (!response.ok) {
@@ -220,6 +231,7 @@ export const useManageSavedPosts = () => {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': JSON.parse(accessToken!),
+                    origin
                 },
                 body: JSON.stringify(data),
             });

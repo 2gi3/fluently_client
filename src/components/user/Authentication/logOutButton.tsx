@@ -2,6 +2,7 @@ import React from 'react'
 import { View, ViewStyle } from "react-native";
 import { useLogOut } from "../../../functions/hooks/user";
 import { Button } from "@rneui/themed";
+import colors from '../../../styles/variables/colors';
 
 const LogoutButton = ({ style }: { style?: ViewStyle }) => {
     const logOut = useLogOut();
@@ -13,7 +14,7 @@ const LogoutButton = ({ style }: { style?: ViewStyle }) => {
     return (
         <View style={style}>
             <Button type="outline" title="Logout" onPress={handleLogout} titleStyle={{
-                color: '#666666',
+                color: colors.primaryFont,
             }} />
         </View>
     );

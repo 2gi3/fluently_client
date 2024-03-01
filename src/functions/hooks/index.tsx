@@ -1,9 +1,23 @@
 import { useState, useEffect, useRef } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync } from 'expo-image-manipulator';
+import * as FileSystem from 'expo-file-system';
+import { Platform } from 'react-native';
 
 export const useImagePicker = () => {
     const [image, setImage] = useState<undefined | string>(undefined);
+
+    const convertToBase64 = async (uri: string) => {
+        try {
+            const base64String = await FileSystem.readAsStringAsync(uri, {
+                encoding: FileSystem.EncodingType.Base64,
+            });
+            return `data:image/jpeg;base64,${base64String}`;
+        } catch (error) {
+            console.error('Error converting image to base64:', error);
+            return undefined;
+        }
+    };
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -20,18 +34,17 @@ export const useImagePicker = () => {
                     [{ resize: { width: 150 } }],
                     { compress: 1 }
                 );
-                setImage(manipResult.uri);
+                if (Platform.OS === 'android') {
+                    console.log('converting')
+                    const base64Image = await convertToBase64(manipResult.uri);
+                    console.log('converted')
+                    setImage(base64Image);
+                } else {
+                    setImage(manipResult.uri);
+                }
             }
         }
     };
-
-
-
-    // useEffect(() => {
-    //     console.log(image)
-    //     return () => {
-    //     };
-    // }, [visible, image]); 
 
     return { image, pickImage };
 };

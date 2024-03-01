@@ -134,7 +134,7 @@ const PostCard = ({ post }: PostCardPropsT) => {
                                         <Text>{comment.user?.name}</Text>
 
                                     </View>
-                                    <Text style={{ color: '#666666', fontSize: 12 }}>
+                                    <Text style={{ color: colors.primaryFont, fontSize: 12 }}>
                                         {comment.body}
                                     </Text>{' '}
                                 </ListItem.Subtitle>
@@ -201,7 +201,7 @@ const PostCard = ({ post }: PostCardPropsT) => {
                             <Text>{user.name}</Text>
 
                         </View>
-                        {/* <Text style={{ color: '#666666', fontSize: 12 }}>{comment.body}</Text>{' '} */}
+                        {/* <Text style={{ color: colors.primaryFont, fontSize: 12 }}>{comment.body}</Text>{' '} */}
                         <TextInput
                             placeholder={`${post.type === 'question'
                                 ? 'Answer'
@@ -210,7 +210,7 @@ const PostCard = ({ post }: PostCardPropsT) => {
                             }
                             multiline={true}
                             numberOfLines={commentBody ? 4 : 1}
-                            style={{ paddingLeft: 4, color: '#666666', fontSize: 12 }}
+                            style={{ paddingLeft: 4, color: colors.primaryFont, fontSize: 12 }}
                             onChangeText={(value) => setCommentBody(value)}
                         />
                     </ListItem.Subtitle>

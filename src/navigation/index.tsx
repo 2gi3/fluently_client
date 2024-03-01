@@ -23,7 +23,7 @@ const Navigator = () => {
         <NavigationContainer>
             <Stack.Navigator screenOptions={{
                 headerStyle: {
-                    backgroundColor: colors.primary,
+                    backgroundColor: colors.secondary,
                 },
                 headerTitleStyle: {
                     color: colors.secondaryFont,

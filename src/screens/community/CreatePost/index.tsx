@@ -272,7 +272,10 @@ const CreatePost = () => {
                             //     size: sizes.M,
                             //     color: colors.tertiary,
                             // }}
-                            onPress={() => createPost(postData)}
+                            onPress={() => {
+                                console.log({ postData });
+                                createPost(postData)
+                            }}
                         />
                     </>
                 }

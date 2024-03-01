@@ -4,13 +4,13 @@ import colors from "../../../styles/variables/colors";
 
 
 const { XS, S, M, L, XL, XXL, XXXL } = sizes
-const { secondary, secondaryFont, tertiary, primary, danger } = colors
+const { secondary, secondaryFont, tertiary, primary, primaryLight, primaryFont, danger } = colors
 
 
 
 export const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'transparent',
+        backgroundColor: primary,
         display: 'flex',
         flexDirection: 'row',
         flexWrap: 'wrap',
@@ -49,7 +49,7 @@ export const styles = StyleSheet.create({
     },
     personalDetailsSubtitle: {
         marginTop: 5,
-        color: '#666666',
+        color: primaryFont,
     },
     deleteButton: {
         borderColor: danger,

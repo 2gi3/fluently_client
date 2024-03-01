@@ -59,6 +59,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
 
     };
     const url = process.env.SERVER_URL!
+    const origin = process.env.ORIGIN || 'http://localhost:8081'
 
     const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
     const [inputError, setInputError] = useState<string | undefined>()
@@ -111,6 +112,7 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
                 // credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
+                    origin
                 },
                 body: JSON.stringify(newUserData),
             });

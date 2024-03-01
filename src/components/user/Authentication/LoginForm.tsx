@@ -25,6 +25,7 @@ import ConfirmationOverlay from "../ConfirmationOverlay"
 const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boolean) => void }) => {
     const count = useSelector((state: RootState) => state.counter.value);
     const newUser = useSelector((state: RootState) => state.newUser.newUser);
+    const origin = process.env.ORIGIN || 'http://localhost:8081'
 
     const dispatch = useDispatch();
     const { primaryFont, secondary } = colors
@@ -63,6 +64,7 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        origin
                     },
                     body: JSON.stringify({
                         email: email.trim(),

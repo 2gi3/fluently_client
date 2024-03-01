@@ -152,7 +152,7 @@ const ChatScreen = () => {
             >
                 <ScrollView
                     ref={scrollViewRef}
-                    // style={{ flex: 1 }}
+                    style={{ backgroundColor: colors.primaryLight }}
                     // onScrollToTop={}
                     onLayout={() => {
                         scrollViewRef.current?.scrollToEnd({ animated: true });

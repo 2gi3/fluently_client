@@ -4,7 +4,7 @@ import colors from "../../../styles/variables/colors";
 
 
 const { XS, S, M, L, XL } = sizes
-const { primary, secondary, secondaryFont, tertiary } = colors
+const { primary, primaryLight, secondary, secondaryFont, tertiary } = colors
 
 
 
@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: sizes.S,
         position: 'relative',
-        backgroundColor: 'red'
+        backgroundColor: primary
     },
     addButton: {
         backgroundColor: 'transparent',

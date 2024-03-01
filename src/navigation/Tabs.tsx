@@ -46,14 +46,14 @@ const Tabs = () => {
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
                 headerStyle: {
-                    backgroundColor: colors.primary,
+                    backgroundColor: colors.secondary,
                 },
                 headerTitleStyle: {
                     color: colors.secondaryFont,
                     fontSize: 14,
                 },
                 tabBarStyle: {
-                    backgroundColor: colors.primary,
+                    backgroundColor: colors.secondary,
                 },
                 tabBarLabelStyle: {
                     color: colors.secondaryFont

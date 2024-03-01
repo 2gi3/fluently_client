@@ -7,6 +7,7 @@ import PostCard from '../../../components/community/PostCard'
 // import posts from '../../../../mock_data/posts.json'
 import { useGetAllPosts } from '../../../functions/hooks/community'
 import PostsGallerySkeleton from './skeleton'
+import colors from '../../../styles/variables/colors'
 
 const PostsGallery = () => {
     const { loading, error, posts, refreshData, isValidating } = useGetAllPosts();
@@ -34,7 +35,7 @@ const PostsGallery = () => {
                 <PostsGallerySkeleton />
             </SafeAreaView>
         ) : (
-            <SafeAreaView style={{ flex: 1, flexDirection: 'row', maxWidth: sizes.XXXL, margin: 'auto' }}>
+            <SafeAreaView style={{ flex: 1, backgroundColor: colors.primaryLight, flexDirection: 'row', maxWidth: sizes.XXXL, margin: 'auto' }}>
                 <FlatList
                     data={posts!}
                     renderItem={renderItem}

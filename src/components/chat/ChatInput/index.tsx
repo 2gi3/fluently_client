@@ -43,6 +43,7 @@ const ChatInput = ({
 
 }: ChatInputProps) => {
     const baseUrl = process.env.SERVER_URL
+    const origin = process.env.ORIGIN || 'http://localhost:8081'
 
     const {
         startStopWatch,
@@ -289,6 +290,7 @@ const ChatInput = ({
                 method: 'POST',
                 headers: {
                     Authorization: JSON.parse(accessToken!),
+                    origin
                 },
                 body: formData,
             });
@@ -355,6 +357,7 @@ const ChatInput = ({
                         // Multer middleware in the backend will not work if the 'Content-Type' header is set explicitly
                         // 'Content-Type': 'multipart/form-data',
                         'Authorization': JSON.parse(accessToken!),
+                        origin
                     },
                     body: formData,
                 });

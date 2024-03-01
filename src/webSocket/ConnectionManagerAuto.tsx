@@ -19,7 +19,6 @@ export function ConnectionManagerAuto() {
 
   const [lastCheckTimestamp, setLastCheckTimestamp] = useState<number | null>(null);
   const [loggingTimeoutId, setLoggingTimeoutId] = useState<NodeJS.Timeout | null>(null);
-
   useEffect(() => {
     // Check the heartBeat from the server every 22 seconds
     if (loggingTimeoutId) {
@@ -101,6 +100,7 @@ export function ConnectionManagerAuto() {
       newSocket.onmessage = (event) => {
         dispatch(setReadyState(newSocket.readyState));
         const message = event.data;
+
         if (message instanceof Blob) {
           const reader = new FileReader();
           reader.onload = function () {
@@ -112,7 +112,6 @@ export function ConnectionManagerAuto() {
 
               if (parsedObject.type === 'chatMessage') {
                 if (activeChatRef.current === parsedObject.content.chatId) {
-
                   dispatch(addMessage(parsedObject.content))
 
                 } else if (activeChatRef.current !== parsedObject.content.chatId) {
@@ -142,7 +141,6 @@ export function ConnectionManagerAuto() {
                 readyState: newSocket.readyState
               })
               if (parsedObject.connectedUsers.length < 2) {
-                console.log(parsedObject.connectedUsers.length)
                 dispatch(setSocketUrl(null));
 
                 setTimeout(() => {
@@ -166,7 +164,7 @@ export function ConnectionManagerAuto() {
         if (event.wasClean) {
           console.log('Closed cleanly, code=' + event.code + ', reason=' + event.reason);
         } else {
-          console.error('Connection died');
+          // console.error('Connection died');
         }
       };
 
