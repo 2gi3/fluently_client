@@ -12,7 +12,12 @@ import colors from '../../../styles/variables/colors'
 const PostsGallery = () => {
     const { loading, error, posts, refreshData, isValidating } = useGetAllPosts();
 
-
+    useEffect(() => {
+        console.log('adsf')
+        console.log({ posts })
+        console.log({ loading })
+        console.log({ error })
+    }, [posts, loading, error])
     const renderItem = ({ item }: { item: PostT }) => (
         <View
             // @ts-ignore

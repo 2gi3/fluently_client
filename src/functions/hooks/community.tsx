@@ -10,9 +10,10 @@ import { useDispatch } from "react-redux";
 import { fetchSavedPostsFromLocalStorage } from "../../redux/slices/ownPostsSlice";
 
 const baseUrl = process.env.SERVER_URL
+const origin = process.env.ORIGIN || 'http://localhost:8081'
+
 
 export const useCreatePost = () => {
-    const origin = process.env.ORIGIN || 'http://localhost:8081'
     const navigation = useNavigation()
     const createPostEndpoint = `${baseUrl}/api/community/post`
     const [loading, setLoading] = useState(false);
@@ -68,12 +69,17 @@ export const useCreatePost = () => {
 };
 
 export const useGetAllPosts = () => {
-    const navigation = useNavigation()
 
+    const navigation = useNavigation()
     const getAllPostsEndpoint = `${baseUrl}/api/community/post`
 
     const fetcher = async () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
+        console.log({
+            origin,
+            accessToken
+        })
+
         const response = await fetch(getAllPostsEndpoint, {
             method: 'GET',
             headers: {
@@ -84,9 +90,13 @@ export const useGetAllPosts = () => {
         });
         console.log({ allPosts: response })
         if (!response.ok) {
+            console.log('error')
+
             throw new Error('Failed to fetch posts');
         }
         const data = await response.json();
+        console.log({ data })
+
         return data;
     }
     const { data: posts, error, isValidating } = useSWR<void | PostT[] | undefined>(getAllPostsEndpoint, fetcher, {
