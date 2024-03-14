@@ -8,11 +8,11 @@ import { RootState } from '../redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = `${process.env.SERVER_URL}`
+const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 
 export const createNewChatroom = async (user1Id: number, user2Id: number) => {
     const accessToken = await AsyncStorage.getItem('speaky-access-token')
-    const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 
     try {

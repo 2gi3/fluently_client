@@ -8,6 +8,7 @@ import { useState, useEffect, useRef } from "react";
 import { ChatMessageT, ChatroomT, MessageT } from "../../types/chat";
 import { clearChatMessages, setPendingChats } from "../../redux/slices/chatSlice";
 
+const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 export const useGetChats = () => {
     const user = useSelector((state: RootState) => state.user);
@@ -15,7 +16,6 @@ export const useGetChats = () => {
     const dispatch = useDispatch();
     const baseUrl = `${process.env.SERVER_URL}`
     const url = `${baseUrl}/api/chat/${user.id}`
-    const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 
     const fetcher = async () => {

@@ -194,11 +194,34 @@ const ChatScreen = () => {
         )
     } else {
         return (
-            <View>
-                <Text>
-                    {`Say hello to ${user2.name} to start a language exchange`}
-                </Text>
-            </View>
+            <KeyboardAvoidingView
+                // behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={{
+                    flex: 1,
+                    justifyContent: 'space-between'
+                }}
+            >
+                <View>
+                    <Text>
+                        {`Say hello to ${user2.name} to start a language exchange`}
+                    </Text>
+                </View>
+                <SafeAreaView
+                >
+
+                    <ChatInput
+                        onSend={handleSend}
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        messageType={messageType}
+                        setMessageType={setMessageType}
+                        audio={audio}
+                        setAudio={setAudio}
+                        imageUrls={imageUrls}
+                        audioRef={audioRef}
+                    />
+                </SafeAreaView>
+            </KeyboardAvoidingView>
         )
     }
 }

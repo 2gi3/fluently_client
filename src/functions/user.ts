@@ -3,9 +3,10 @@ import { UserT } from "../types/user";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
+const origin = process.env.ORIGIN || 'http://localhost:8081'
+
 export const updateUser = async (payload: Partial<UserT>, endpoint: string) => {
     const accessToken = await AsyncStorage.getItem('speaky-access-token')
-    const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 
     try {
