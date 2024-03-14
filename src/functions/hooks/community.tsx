@@ -75,10 +75,6 @@ export const useGetAllPosts = () => {
 
     const fetcher = async () => {
         const accessToken = await AsyncStorage.getItem('speaky-access-token')
-        console.log({
-            origin,
-            accessToken
-        })
 
         const response = await fetch(getAllPostsEndpoint, {
             method: 'GET',
@@ -88,15 +84,10 @@ export const useGetAllPosts = () => {
                 origin
             }
         });
-        console.log({ allPosts: response })
         if (!response.ok) {
-            console.log('error')
-
             throw new Error('Failed to fetch posts');
         }
         const data = await response.json();
-        console.log({ data })
-
         return data;
     }
     const { data: posts, error, isValidating } = useSWR<void | PostT[] | undefined>(getAllPostsEndpoint, fetcher, {

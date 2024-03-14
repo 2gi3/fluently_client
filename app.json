@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "fluently_client",
-    "slug": "fluently_client",
+    "name": "fluently",
+    "slug": "fluently",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -29,7 +29,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#dddddd"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
@@ -37,7 +40,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "34bf2319-cc11-49c1-8d85-4c5059e1b242"
+        "projectId": "66cc933c-e2a7-435e-863a-9a9a8fe91e48"
       }
     },
     "runtimeVersion": {
@@ -45,6 +48,7 @@
     },
     "updates": {
       "url": "https://u.expo.dev/34bf2319-cc11-49c1-8d85-4c5059e1b242"
-    }
+    },
+    "owner": "2gi3"
   }
 }

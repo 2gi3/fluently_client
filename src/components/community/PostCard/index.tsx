@@ -57,7 +57,7 @@ const PostCard = ({ post }: PostCardPropsT) => {
 
 
     return (
-        <Card >
+        <Card>
 
             <View style={{ marginBottom: sizes.XS, display: 'flex', flexDirection: 'row', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'flex-start', gap: sizes.XS }}>
                 <Avatar

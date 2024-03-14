@@ -12,12 +12,6 @@ import colors from '../../../styles/variables/colors'
 const PostsGallery = () => {
     const { loading, error, posts, refreshData, isValidating } = useGetAllPosts();
 
-    useEffect(() => {
-        console.log('adsf')
-        console.log({ posts })
-        console.log({ loading })
-        console.log({ error })
-    }, [posts, loading, error])
     const renderItem = ({ item }: { item: PostT }) => (
         <View
             // @ts-ignore
@@ -25,7 +19,9 @@ const PostsGallery = () => {
             //     id: item.id!.toString(),
             //     user2id: user.id == item.user2Id ? item.user1Id : item.user2Id,
             // })}
-            style={{ display: 'flex', flexDirection: 'column', gap: 44 }}        >
+            // style={{ display: 'flex', flexDirection: 'column', gap: 44 }} 
+            style={{ flex: 1 }}
+        >
             <PostCard
                 post={item}
             />
@@ -40,7 +36,10 @@ const PostsGallery = () => {
                 <PostsGallerySkeleton />
             </SafeAreaView>
         ) : (
-            <SafeAreaView style={{ flex: 1, backgroundColor: colors.primaryLight, flexDirection: 'row', maxWidth: sizes.XXXL, margin: 'auto' }}>
+            <SafeAreaView style={{
+                flex: 1,
+                backgroundColor: colors.primaryLight
+            }}>
                 <FlatList
                     data={posts!}
                     renderItem={renderItem}
