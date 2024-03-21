@@ -99,18 +99,29 @@ export function ConnectionManagerAuto() {
 
       newSocket.onmessage = (event) => {
         dispatch(setReadyState(newSocket.readyState));
+        console.log('lmno')
+        // console.log({ eventData: JSON.parse(event.data) })
         const message = event.data;
+        console.log('zaqaz')
+        console.log({ message })
+        console.log('poiop')
 
         if (message instanceof Blob) {
+          console.log('blob')
+
           const reader = new FileReader();
           reader.onload = function () {
             const blobData: any = reader.result;
             const textData = new TextDecoder().decode(blobData);
 
             try {
+              console.log('111')
+
               const parsedObject = JSON.parse(textData);
+              console.log('222')
 
               if (parsedObject.type === 'chatMessage') {
+                console.log({ 'Received message ': parsedObject.content })
                 if (activeChatRef.current === parsedObject.content.chatId) {
                   dispatch(addMessage(parsedObject.content))
 
@@ -130,8 +141,18 @@ export function ConnectionManagerAuto() {
           reader.readAsArrayBuffer(message);
         } else {
           // Handle other types of messages
+          // console.log('n1')
+          // const messageNoBlb = JSON.parse(event);
+
+          // console.log(JSON.stringify(message));
+          // console.log('n2')
+
           try {
+            console.log('aaa')
             const parsedObject = JSON.parse(message);
+            console.log({ parsedObject })
+            console.log('bbb')
+
             if (parsedObject.type === 'Check') {
               setLastCheckTimestamp(Date.now)
               dispatch(setReadyState(newSocket.readyState));
@@ -148,10 +169,25 @@ export function ConnectionManagerAuto() {
                   console.log({ readyState: newSocket.readyState })
                 }, 2000);
               }
+            } else if (parsedObject.type === 'chatMessage') {
+              console.log({ 'Received message ': parsedObject.content })
+              if (activeChatRef.current === parsedObject.content.chatId) {
+                dispatch(addMessage(parsedObject.content))
+
+              } else if (activeChatRef.current !== parsedObject.content.chatId) {
+                dispatch(addToPendingChats(parsedObject.content.chatId))
+                notifyUser(`New message: ${parsedObject.content.text}`)
+              } else {
+                console.log({ 'Parsed JSON object: ': parsedObject });
+
+              }
+
             } else {
               console.log({ parsedObject })
             }
+            console.log('hellowho')
             dispatch(setConnectedUsers(parsedObject.userSockets))
+            console.log('world')
           } catch (error) {
             console.error('Error parsing JSON:', error);
           }
