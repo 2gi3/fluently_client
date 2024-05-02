@@ -22,6 +22,8 @@ const ChatsList = ({ loading, error, chatrooms, refreshData, isValidating }: { l
     const user = useSelector((state: RootState) => state.user);
     const activeChat = useSelector((state: RootState) => state.chat.activeChat);
     const [sortedChatrooms, setSortedChatrooms] = useState<ChatroomT[] | null>(null)
+    const pendingChats = useSelector((state: RootState) => state.chat.pendingChats);
+
 
 
     useEffect(() => {
@@ -41,7 +43,7 @@ const ChatsList = ({ loading, error, chatrooms, refreshData, isValidating }: { l
 
             setSortedChatrooms(filteredChatrooms);
         }
-    }, [chatrooms, activeChat]);
+    }, [chatrooms, activeChat, pendingChats]);
 
 
     const renderItem = ({ item }: { item: ChatroomT }) => (

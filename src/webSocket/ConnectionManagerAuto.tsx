@@ -183,7 +183,9 @@ export function ConnectionManagerAuto() {
               }
 
             } else {
+              console.log('else1')
               console.log({ parsedObject })
+              console.log('alse2')
             }
             console.log('hellowho')
             dispatch(setConnectedUsers(parsedObject.userSockets))
