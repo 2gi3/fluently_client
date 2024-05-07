@@ -1,6 +1,6 @@
 import { UserT } from "./user";
 
-export type IconLibraryT = 'Entypo' | 'MaterialIcons';
+export type IconLibraryT = 'Entypo' | 'MaterialIcons' | 'Ionicons';
 
 export interface StatusState {
     loggedIn: boolean;

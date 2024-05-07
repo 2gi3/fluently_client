@@ -27,21 +27,23 @@ const ChatsList = ({ loading, error, chatrooms, refreshData, isValidating }: { l
 
 
     useEffect(() => {
-        refreshData();
-        if (chatrooms) {
+        if (!activeChat) {
+            refreshData();
+            if (chatrooms) {
 
-            const filteredChatrooms = chatrooms.chatrooms
-                .slice()
-                .sort((a: ChatroomT, b: ChatroomT) => {
-                    const aLastMessageId = a.last_message_id ?? Number.MAX_SAFE_INTEGER;
-                    const bLastMessageId = b.last_message_id ?? Number.MAX_SAFE_INTEGER;
-                    return bLastMessageId - aLastMessageId;
-                }).filter((chatroom: ChatroomT) => {
-                    // this will eliminate chatrooms opened by another user that hasn't sent a message yet
-                    return chatroom.user1Id === user.id || chatroom.last_message_id !== null;
-                });
+                const filteredChatrooms = chatrooms.chatrooms
+                    .slice()
+                    .sort((a: ChatroomT, b: ChatroomT) => {
+                        const aLastMessageId = a.last_message_id ?? Number.MAX_SAFE_INTEGER;
+                        const bLastMessageId = b.last_message_id ?? Number.MAX_SAFE_INTEGER;
+                        return bLastMessageId - aLastMessageId;
+                    }).filter((chatroom: ChatroomT) => {
+                        // this will eliminate chatrooms opened by another user that hasn't sent a message yet
+                        return chatroom.user1Id === user.id || chatroom.last_message_id !== null;
+                    });
 
-            setSortedChatrooms(filteredChatrooms);
+                setSortedChatrooms(filteredChatrooms);
+            }
         }
     }, [chatrooms, activeChat, pendingChats]);
 
