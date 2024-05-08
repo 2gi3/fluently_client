@@ -1,6 +1,7 @@
 import React from 'react'
 import { SafeAreaView, View, Text } from "react-native"
 import colors from '../../../styles/variables/colors'
+import TempScreen from '../../../components/learn/courses/MarkdownEditor'
 
 const Courses = () => {
     return (
@@ -12,6 +13,7 @@ const Courses = () => {
                 <Text>
                     A list of all courses
                 </Text>
+                <TempScreen />
             </View>
             {/* <FlatList
                 data={posts!}

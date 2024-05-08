@@ -1,3 +1,21 @@
+To-do list for courses domain
+
+-create front-end 'courses list' page
+-create database table for 'courses' and add mock data
+-create API to query the 'courses' table 
+-create front-end course introduction card that will be displayed in the 'courses list' page 
+-create front-end for course introduction page using 'courses' database table
+-make the front-end form to create a 'course introduction'
+-create API to POST and PATCH the 'courses' table
+
+
+
+
+
+
+
+
+
 - Useful tutorial for OAuth: https://www.youtube.com/watch?v=BDeKTPQzvR4
 
 - For the following command there is no password, just press enter:
