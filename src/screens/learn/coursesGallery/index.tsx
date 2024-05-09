@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { SafeAreaView, View, Text, FlatList, Pressable, ScrollView } from "react-native"
 import colors from '../../../styles/variables/colors'
-import TempScreen from '../../../components/learn/courses/MarkdownEditor'
 import CourseCard from '../../../components/learn/courses/CourseCard'
 import mockCourses from '../../../../mock_data/courses.json'
 import { useNavigation } from '@react-navigation/native'
