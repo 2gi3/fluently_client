@@ -1,7 +1,7 @@
 import React from 'react'
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
 import ChatsList from "../screens/chat/ChatsList"
-import Courses from "../screens/learn/courses"
+import CoursesGallery from "../screens/learn/coursesGallery"
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useCustomTabIcon } from "../functions/hooks/navigation";
@@ -42,7 +42,7 @@ const Tabs = () => {
 
     return (
         <Tabs.Navigator
-            initialRouteName={user.user ? "Community" : "Profile"}
+            initialRouteName={user.user ? "Learn" : "Profile"}
             screenOptions={{
                 tabBarLabel: (route) => <CustomTabLabel label={route.children} position={route.position} />,
                 headerStyle: {
@@ -99,7 +99,7 @@ const Tabs = () => {
 
             {user.user && (
                 <Tabs.Screen
-                    name="Learn" component={Courses} options={({ navigation }) => ({
+                    name="Learn" component={CoursesGallery} options={({ navigation }) => ({
                         tabBarIcon: useCustomTabIcon('Ionicons', 'school'),
                         tabBarLabel: 'Learn',
                         title: 'A clear path towards your goals',
