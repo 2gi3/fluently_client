@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { ScrollView, View } from 'react-native'
 import { globalStyles } from '../../../styles'
-import { Icon, Text } from '@rneui/themed'
+import { Button, Icon, Text } from '@rneui/themed'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import colors from '../../../styles/variables/colors'
 import { sizes } from '../../../styles/variables/measures'
@@ -54,23 +54,48 @@ const CoursePage = () => {
                 </View>
                 <View style={{ marginVertical: sizes.S, backgroundColor: '#cacaca', height: 180, width: 'auto' }}>              </View>
                 <MarkdownDisplay />
+                <View
+                // style={{ position: 'relative', marginHorizontal: sizes.M, marginTop: sizes.S, marginBottom: sizes.M }}
+                >
+                    <Text style={{ fontWeight: 'bold', marginTop: sizes.M, marginBottom: sizes.XS }}>
+                        Goals:
+                    </Text>
+                    <Text>
+                        {
+                            //@ts-ignore
+                            route.params?.courseGoalsMD
+                        }
+                    </Text>
+                </View>
+                <View style={{ position: 'relative', marginTop: sizes.M, backgroundColor: colors.warning, padding: sizes.S }}>
+
+                    <Text style={{ position: 'absolute', top: -8, left: 0, fontWeight: 'bold' }}>Prerequisites:</Text>
+                    <Text >
+
+                        {
+                            //@ts-ignore
+                            route.params?.courseRequirementsMD
+                        }
+                    </Text>
+                    <Icon
+                        name='warning'
+                        type="font-awesome"
+                        size={16}
+                        style={{ marginLeft: 'auto', marginBottom: 0, zIndex: 2 }}
+                    />
+                </View>
             </View>
         </View >
-        <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S }}>
-            <Text>
-                {
-                    //@ts-ignore
-                    route.params?.courseGoalsMD
-                }
-            </Text>
-        </View>
-        <View style={globalStyles.container}>
-            <Text style={{ padding: sizes.S, backgroundColor: colors.warning }}>
-                {
-                    //@ts-ignore
-                    route.params?.courseRequirementsMD
-                }
-            </Text>
+
+        <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.M, flexDirection: 'row', justifyContent: 'center', gap: 2 }}>
+            <Button
+                iconRight
+                // buttonStyle={styles.buttonStylePrimary}
+                title="Start Now"
+                onPress={async () => {
+                    console.log('98709')
+                }}
+            />
         </View>
 
     </ScrollView>
