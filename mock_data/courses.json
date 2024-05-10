@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "id": "abc123",
         "creatorId": 101,
         "mediumLanguage": "English",
         "learningLanguage": "Spanish",
@@ -11,21 +11,41 @@
         "requirementsMD": "No prior knowledge of Spanish is required.",
         "videoUrl": "https://www.example.com/spanish-beginners-intro",
         "imageUrl": "https://www.example.com/spanish-beginners-image.jpg",
-        "type": "Online Course",
         "level": 1,
         "created_at": "2024-05-08T10:00:00Z",
-        "lessonsTitles": [
-            "First mock",
-            "A lorem ipsum",
-            "mocking lessons ane awesome",
-            "sopra la panca la capra campa",
-            "sotto la panca la capra crepa",
-            "dai il pane al cane pazzo",
-            "dai il pane al pazzo cane"
+        "lessons": [
+            {
+                "id": "def456",
+                "title": "First mock"
+            },
+            {
+                "id": "ghi789",
+                "title": "A lorem ipsum"
+            },
+            {
+                "id": "jkl012",
+                "title": "mocking lessons are awesome"
+            },
+            {
+                "id": "mno345",
+                "title": "sopra la panca la capra campa"
+            },
+            {
+                "id": "pqr678",
+                "title": "sotto la panca la capra crepa"
+            },
+            {
+                "id": "stu901",
+                "title": "dai il pane al cane pazzo"
+            },
+            {
+                "id": "vwx234",
+                "title": "dai il pane al pazzo cane"
+            }
         ]
     },
     {
-        "id": 2,
+        "id": "yzx567",
         "creatorId": 102,
         "mediumLanguage": "English",
         "learningLanguage": "French",
@@ -36,18 +56,29 @@
         "requirementsMD": "Basic understanding of French vocabulary is recommended.",
         "videoUrl": "https://www.example.com/french-grammar-masterclass-intro",
         "imageUrl": "https://www.example.com/french-grammar-image.jpg",
-        "type": "Online Course",
         "level": 2,
         "created_at": "2024-05-08T11:30:00Z",
-        "lessonsTitles": [
-            "manco pa capa First ",
-            "Another one lorem ipsum",
-            "dai il pane al cane pazzo",
-            "dai il pane al pazzo cane"
+        "lessons": [
+            {
+                "id": "abc890",
+                "title": "manco pa capa First "
+            },
+            {
+                "id": "def123",
+                "title": "Another one lorem ipsum"
+            },
+            {
+                "id": "ghi456",
+                "title": "dai il pane al cane pazzo"
+            },
+            {
+                "id": "jkl789",
+                "title": "dai il pane al pazzo cane"
+            }
         ]
     },
     {
-        "id": 3,
+        "id": "mno123",
         "creatorId": 103,
         "mediumLanguage": "English",
         "learningLanguage": "Mandarin",
@@ -58,26 +89,61 @@
         "requirementsMD": "No prior knowledge of Mandarin is required.",
         "videoUrl": "https://www.example.com/mandarin-for-travelers-intro",
         "imageUrl": "https://www.example.com/mandarin-for-travelers-image.jpg",
-        "type": "Online Course",
         "level": 3,
         "created_at": "2024-05-08T13:45:00Z",
-        "lessonsTitles": [
-            "third actually mock",
-            "adsfasd adf lorem ipsum",
-            "mocking lessons ane boring",
-            " me so rotto",
-            "sopra la panca la capra campa",
-            "sotto la panca la capra crepa",
-            "dai il pane al cane pazzo",
-            "dai il pane al pazzo cane",
-            "chi fa da se fa per tre",
-            "quando vuelvera",
-            "quando se apre una porta",
-            "se chiude un portone"
+        "lessons": [
+            {
+                "id": "pqr345",
+                "title": "third actually mock"
+            },
+            {
+                "id": "stu678",
+                "title": "adsfasd adf lorem ipsum"
+            },
+            {
+                "id": "vwx901",
+                "title": "mocking lessons are boring"
+            },
+            {
+                "id": "yzx234",
+                "title": " me so rotto"
+            },
+            {
+                "id": "abc567",
+                "title": "sopra la panca la capra campa"
+            },
+            {
+                "id": "def890",
+                "title": "sotto la panca la capra crepa"
+            },
+            {
+                "id": "ghi123",
+                "title": "dai il pane al cane pazzo"
+            },
+            {
+                "id": "jkl456",
+                "title": "dai il pane al pazzo cane"
+            },
+            {
+                "id": "mno789",
+                "title": "chi fa da se fa per tre"
+            },
+            {
+                "id": "pqr012",
+                "title": "quando vuelvera"
+            },
+            {
+                "id": "stu345",
+                "title": "quando se apre una porta"
+            },
+            {
+                "id": "vwx678",
+                "title": "se chiude un portone"
+            }
         ]
     },
     {
-        "id": 4,
+        "id": "yzx890",
         "creatorId": 104,
         "mediumLanguage": "English",
         "learningLanguage": "German",
@@ -88,65 +154,45 @@
         "requirementsMD": "Intermediate level of German proficiency is recommended.",
         "videoUrl": "https://www.example.com/advanced-german-conversation-intro",
         "imageUrl": "https://www.example.com/advanced-german-conversation-image.jpg",
-        "type": "Online Course",
         "level": 4,
         "created_at": "2024-05-08T15:20:00Z",
-        "lessonsTitles": [
-            "ancora dai",
-            "perche sono in aereo",
-            " ce so solo film cinesi",
-            "allora me faccio popo",
-            "tutti i mock up a mano",
-            "third actually mock",
-            "adsfasd adf lorem ipsum",
-            "mocking lessons ane boring",
-            " me so rotto",
-            "sopra la panca la capra campa",
-            "sotto la panca la capra crepa",
-            "dai il pane al cane pazzo",
-            "dai il pane al pazzo cane",
-            "chi fa da se fa per tre",
-            "quando vuelvera",
-            "quando se apre una porta",
-            "se chiude un portone"
-        ]
-    },
-    {
-        "id": 5,
-        "creatorId": 105,
-        "mediumLanguage": "English",
-        "learningLanguage": "Italian",
-        "title": "Italian Cuisine Essentials",
-        "subheading": "Explore the flavors of Italy through its traditional dishes",
-        "introductionMD": "Join us on a culinary journey through Italy as we explore the rich flavors and aromas of Italian cuisine.",
-        "goalsMD": "By the end of this course, you will be able to prepare authentic Italian dishes, understand key cooking techniques, and appreciate the cultural significance of food in Italy.",
-        "requirementsMD": "No prior cooking experience is required.",
-        "videoUrl": "https://www.example.com/italian-cuisine-essentials-intro",
-        "imageUrl": "https://www.example.com/italian-cuisine-essentials-image.jpg",
-        "type": "Online Course",
-        "level": 5,
-        "created_at": "2024-05-08T16:50:00Z",
-        "lessonsTitles": [
-            "si si, proprio a mano",
-            "a mano libera pero",
-            "colla sinistra",
-            "ancora dai",
-            "perche sono in aereo",
-            " ce so solo film cinesi",
-            "allora me faccio popo",
-            "tutti i mock up a mano",
-            "third actually mock",
-            "adsfasd adf lorem ipsum",
-            "mocking lessons ane boring",
-            " me so rotto",
-            "sopra la panca la capra campa",
-            "sotto la panca la capra crepa",
-            "dai il pane al cane pazzo",
-            "dai il pane al pazzo cane",
-            "chi fa da se fa per tre",
-            "quando vuelvera",
-            "quando se apre una porta",
-            "se chiude un portone"
+        "lessons": [
+            {
+                "id": "abc012",
+                "title": "ancora dai"
+            },
+            {
+                "id": "def345",
+                "title": "perche sono in aereo"
+            },
+            {
+                "id": "ghi678",
+                "title": " ce so solo film cinesi"
+            },
+            {
+                "id": "jkl901",
+                "title": "allora me faccio popo"
+            },
+            {
+                "id": "mno234",
+                "title": "tutti i mock up a mano"
+            },
+            {
+                "id": "pqr567",
+                "title": "third actually mock"
+            },
+            {
+                "id": "stu890",
+                "title": "adsfasd adf lorem ipsum"
+            },
+            {
+                "id": "vwx123",
+                "title": "mocking lessons are boring"
+            },
+            {
+                "id": "yzx456",
+                "title": " me so rotto"
+            }
         ]
     }
 ]

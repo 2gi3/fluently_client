@@ -6,7 +6,7 @@ const colors = {
     secondaryLight: '#C8102E10',
     tertiary: '#6EDB89',
     danger: '#dd5e41',
-    warning: '#fffbbb',
+    warning: '#fffccc',
     confirmation: '#7FA2DB',
     primaryFont: '#1c1c1c',
     secondaryFont: '#555555'

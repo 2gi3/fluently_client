@@ -12,7 +12,7 @@ import colors from '../styles/variables/colors'
 import PostsGallery from '../screens/community/postsGallery'
 import CreatePost from '../screens/community/CreatePost'
 import Post from '../screens/community/Post'
-import CoursePage from '../screens/learn/coursePage'
+import CourseIntroduction from '../screens/learn/courseIntroduction'
 
 
 
@@ -37,7 +37,7 @@ const Navigator = () => {
                 <Stack.Screen name='Student' component={PublicProfile} />
                 <Stack.Screen name='Create-post' component={CreatePost} />
                 <Stack.Screen name='Post' component={Post} />
-                <Stack.Screen name='Course' component={CoursePage} />
+                <Stack.Screen name='Course' component={CourseIntroduction} />
 
 
             </Stack.Navigator>

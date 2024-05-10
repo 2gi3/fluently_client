@@ -7,7 +7,7 @@ import colors from '../../../styles/variables/colors'
 import { sizes } from '../../../styles/variables/measures'
 import MarkdownDisplay from '../../../components/learn/courses/MarkdownEditor'
 
-const CoursePage = () => {
+const CourseIntroduction = () => {
     const route = useRoute()
     const navigation = useNavigation()
 
@@ -103,4 +103,4 @@ const CoursePage = () => {
     )
 }
 
-export default CoursePage
+export default CourseIntroduction
