@@ -4,8 +4,9 @@ import React, { useEffect } from 'react'
 import { View } from 'react-native'
 import { sizes } from '../../../../styles/variables/measures'
 import colors from '../../../../styles/variables/colors'
+import { CourseT } from '../../../../types/learning'
 
-const CourseCard = ({ course }) => {
+const CourseCard = ({ course }: { course: CourseT }) => {
 
     return (
         <View>

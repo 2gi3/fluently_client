@@ -1,6 +1,6 @@
 import { UserT } from "./user";
 
-type Course = {
+export type CourseT = {
     id: string;
     creatorId: Pick<UserT, 'name' | 'image'>;
     mediumLanguage: "english" | "thai";
@@ -14,30 +14,30 @@ type Course = {
     imageUrl: string;
     level: number;
     created_at: Date;
-    units: Unit[]
+    units: UnitT[]
 };
 
-type Unit = {
+export type UnitT = {
     id: string;
     courseId: string;
     title: string;
     type: 'learn' | 'exercise';
-    lessons: Lesson[];
+    lessons: LessonT[];
 };
 
-type Lesson = {
+export type LessonT = {
     id: string;
     courseId: string;
     unitId: string;
     title: string;
     videoUrl: string;
-    sections: LessonSection[];
-    summary: LessonSummary | null;
-    vocabulary: LessonVocabulary[];
-    exercises: LessonExercise[];
+    sections: LessonSectionT[];
+    summary: LessonSummaryT | null;
+    vocabulary: LessonVocabularyT[];
+    exercises: LessonExerciseT[];
 };
 
-type LessonSection = {
+export type LessonSectionT = {
     id: string;
     lessonId: string;
     bodyMD: string;
@@ -45,14 +45,14 @@ type LessonSection = {
     noteMD: string;
 };
 
-type LessonSummary = {
+export type LessonSummaryT = {
     id: string;
     lessonId: string;
     summaryMD: string;
     imageUrl: string;
 };
 
-type LessonVocabulary = {
+export type LessonVocabularyT = {
     id: string;
     lessonId: string;
     word: string;
@@ -61,15 +61,15 @@ type LessonVocabulary = {
     imageUrl: string;
 };
 
-type LessonExercise = {
+export type LessonExerciseT = {
     id: string;
     lessonId: string;
     instructionsMD: string;
-    sentences: ExerciseSentence[];
-    keyValuePairs: ExerciseKeyValuePair[];
+    sentences: ExerciseSentenceT[];
+    keyValuePairs: ExerciseKeyValuePairT[];
 };
 
-type ExerciseSentence = {
+export type ExerciseSentenceT = {
     id: string;
     exerciseId: string;
     sentence: string;
@@ -77,7 +77,7 @@ type ExerciseSentence = {
     audioUrl: string;
 };
 
-type ExerciseKeyValuePair = {
+export type ExerciseKeyValuePairT = {
     id: string;
     exerciseId: string;
     key: string;

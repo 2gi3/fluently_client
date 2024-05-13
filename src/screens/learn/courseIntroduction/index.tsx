@@ -6,17 +6,24 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import colors from '../../../styles/variables/colors'
 import { sizes } from '../../../styles/variables/measures'
 import MarkdownDisplay from '../../../components/learn/courses/MarkdownEditor'
+import { UnitT } from '../../../types/learning'
 
 const CourseIntroduction = () => {
     const route = useRoute()
     const navigation = useNavigation()
+    //@ts-ignore
+    const units: any[] = route.params.units.map(unit => ({
+        unitTitle: unit.title,
+        unitLessons: unit.lessons.map(lesson => lesson.title)
+    }));
 
     useEffect(() => {
-        console.log({ par: route.params })
+
         //@ts-ignore
         navigation.setOptions({ title: route.params?.courseTitle, headerTitleAlign: 'center' })
 
     }, [])
+
     return (<ScrollView>
         <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
             <Icon
@@ -24,15 +31,25 @@ const CourseIntroduction = () => {
                 type="font-awesome"
                 style={{ marginRight: sizes.XS }}
             />
-            <View style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }}> </View>
-            <View style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }}> </View>
-            <View style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }}> </View>
-            <View style={{ width: 6, height: 10, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
-            <View style={{ width: 6, height: 10, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
+            {
+                units.map(
+                    unit => {
+                        return (
+                            <View key={unit.unitTitle} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+
+
+                                {unit.unitLessons.map((lesson, index) => (
+                                    <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
+                                ))}
+
+                            </View>
+                        )
+                    }
+                )
+            }
             <Icon
                 name='flag'
                 type="font-awesome"
-                style={{ marginLeft: sizes.XS }}
 
             />
         </View>
@@ -104,3 +121,12 @@ const CourseIntroduction = () => {
 }
 
 export default CourseIntroduction
+
+
+
+
+{/* <View style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }}> </View>
+<View style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }}> </View>
+<View style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }}> </View>
+<View style={{ width: 6, height: 10, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
+<View style={{ width: 6, height: 10, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View> */}
