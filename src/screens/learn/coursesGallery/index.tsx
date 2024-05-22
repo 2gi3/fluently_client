@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { SafeAreaView, View, Text, FlatList, Pressable, ScrollView, ActivityIndicator } from "react-native"
+import { SafeAreaView, View, Text, FlatList, Pressable, ScrollView, ActivityIndicator, ImageBackground } from "react-native"
 import colors from '../../../styles/variables/colors'
 import TempScreen from '../../../components/learn/courses/MarkdownEditor'
 import CourseCard from '../../../components/learn/courses/CourseCard'
@@ -7,6 +7,9 @@ import mockCourses from '../../../../mock_data/courses.json'
 import { useNavigation } from '@react-navigation/native'
 import { useGetAllCourses } from '../../../functions/hooks/learn'
 import CoursesGallerySkeleton from './skeleton'
+import { Card, Tile } from '@rneui/themed'
+import { sizes } from '../../../styles/variables/measures'
+import ErrorPage from '../../../components/ErrorPage'
 const CoursesGallery = () => {
     const navigation = useNavigation()
     const { loading, error, courses, refreshData, isValidating } = useGetAllCourses()
@@ -60,12 +63,7 @@ const CoursesGallery = () => {
 
     if (error) {
         return (
-            <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: colors.primaryLight }}>
-                <Text style={{ color: 'red' }}>Failed to load courses. Please try again later.</Text>
-                <Pressable onPress={refreshData} style={{ marginTop: 20, padding: 10, backgroundColor: colors.primary }}>
-                    <Text style={{ color: 'white' }}>Retry</Text>
-                </Pressable>
-            </SafeAreaView>
+            <ErrorPage onPress={() => refreshData} />
         );
     }
 
