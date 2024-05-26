@@ -43,6 +43,8 @@ const ChatInput = ({
 
 }: ChatInputProps) => {
     const baseUrl = process.env.SERVER_URL
+    console.log({ chatInputUrl: baseUrl })
+
     const origin = process.env.ORIGIN || 'http://localhost:8081'
 
     const {

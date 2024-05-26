@@ -6,6 +6,8 @@ import { Buffer } from "buffer";
 
 
 const baseUrl = process.env.SERVER_URL
+console.log({ authFunctionsURL: baseUrl })
+
 const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 export const useTokenRefresher = () => {

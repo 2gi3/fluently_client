@@ -15,6 +15,9 @@ import { setAmount } from '../../redux/slices/counterSlice';
 
 const socketUrlVar = process.env.WEB_SOCKET_URL
 const serverUrl = process.env.SERVER_URL
+console.log({ userWebSocketURL: socketUrlVar })
+console.log({ userHooksUrlURL: serverUrl })
+
 const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 if (!serverUrl) {
@@ -27,6 +30,8 @@ export const useCheckUserExistence = () => {
     const [emailChecked, setEmailChecked] = useState(false);
     const email = useSelector((state: RootState) => state.newUser.newUser.email);
     const url = process.env.SERVER_URL!
+    console.log({ useCheckUserExistenceURL: url })
+
     useEffect(() => {
         setEmailChecked(false)
     }, [email])
@@ -72,6 +77,8 @@ export const useLogIn = () => {
 
 export const useLogOut = () => {
     const baseUrl = process.env.SERVER_URL
+    console.log({ useLogOutURL: baseUrl })
+
     const dispatch = useDispatch();
 
 

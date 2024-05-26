@@ -16,6 +16,8 @@ import { setUser } from '../../../redux/slices/userSlice'
 const LocationSelector = ({ userId }: { userId: string | number }) => {
     const dispatch = useDispatch()
     const baseUrl = process.env.SERVER_URL
+    console.log({ LocationSelectorUrl: baseUrl })
+
 
     const updateUserEndpoint = `${baseUrl}/api/user/${userId}`
 

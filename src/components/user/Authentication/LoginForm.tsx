@@ -46,6 +46,8 @@ const LoginForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: boo
 
     };
     const baseUrl = process.env.SERVER_URL
+    console.log({ loginUrl: baseUrl })
+
     const [showCount, setShowCount] = useState(false)
 
     const email = newUser.email

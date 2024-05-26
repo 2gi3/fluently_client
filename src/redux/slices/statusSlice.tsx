@@ -5,6 +5,7 @@ import { StatusState } from '../../types';
 
 
 const socketUrlVar = process.env.WEB_SOCKET_URL
+console.log({ statusSliceWebSocketUrl: socketUrlVar })
 
 const initialStatusState: StatusState = {
     loggedIn: false,

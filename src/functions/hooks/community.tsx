@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { fetchSavedPostsFromLocalStorage } from "../../redux/slices/ownPostsSlice";
 
 const baseUrl = process.env.SERVER_URL
+console.log({ createPostUrl: baseUrl })
+
 const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 

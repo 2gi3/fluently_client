@@ -41,6 +41,8 @@ const Dashboard = ({ user }: { user: UserT }) => {
     const [introduction, setIntroduction] = useState<string | null>()
     const [name, setName] = useState<string>('')
     const baseUrl = process.env.SERVER_URL
+    console.log({ dashboardUrl: baseUrl })
+
     const updateUserEndpoint = `${baseUrl}/api/user/${user.id}`
 
 

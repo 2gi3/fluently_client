@@ -10,6 +10,7 @@ export function ConnectionManagerButtons() {
     const dispatch = useDispatch();
     const socketUrl = useSelector((state: RootState) => state.status.socketUrl);
     const socketUrlVar = process.env.WEB_SOCKET_URL
+    console.log({ ConnectionManagerButtonsSocketUrl: socketUrlVar })
 
     const connectSocket = () => {
         if (socketUrl) {

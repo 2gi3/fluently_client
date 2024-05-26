@@ -59,6 +59,8 @@ const SignupForm = ({ toggleLoginState }: { toggleLoginState: (newLoginState: bo
 
     };
     const url = process.env.SERVER_URL!
+    console.log({ createUserUrl: url })
+
     const origin = process.env.ORIGIN || 'http://localhost:8081'
 
     const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);

@@ -10,6 +10,8 @@ import { fetchSavedPostsFromLocalStorage } from "../../redux/slices/ownPostsSlic
 import { CourseT } from "../../types/learning";
 
 const baseUrl = process.env.SERVER_URL
+console.log({ hooksLearnURL: baseUrl })
+
 const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 export const useGetAllCourses = () => {

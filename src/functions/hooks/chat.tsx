@@ -15,6 +15,8 @@ export const useGetChats = () => {
     const activeChat = useSelector((state: RootState) => state.chat.activeChat)
     const dispatch = useDispatch();
     const baseUrl = `${process.env.SERVER_URL}`
+    console.log({ useGetChatsURL: baseUrl })
+
     const url = `${baseUrl}/api/chat/${user.id}`
 
 
@@ -101,6 +103,8 @@ export const useGetMessages = (chatId: string | number) => {
     const dispatch = useDispatch()
     const user = useSelector((state: RootState) => state.user);
     const baseUrl = process.env.SERVER_URL
+    console.log({ useGetMessagesURL: baseUrl })
+
     const url = `${baseUrl}/api/chat/message/${chatId}`
 
     const fetcher = async () => {
@@ -135,6 +139,8 @@ export const useGetMessages = (chatId: string | number) => {
 export const useGetLastMessage = (chatId: string | number) => {
     const user = useSelector((state: RootState) => state.user);
     const baseUrl = process.env.SERVER_URL
+    console.log({ useGetLastMessageURL: baseUrl })
+
     const url = `${baseUrl}/api/chat/last_message/${chatId}`
 
     const fetcher = async () => {

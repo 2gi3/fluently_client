@@ -15,6 +15,7 @@ export function ConnectionManagerAuto() {
   const activeChatRef = useRef<string | number | null>(null);
   const outgoingMessage = useSelector((state: RootState) => state.webSocket.outgoingMessage)
   const socketUrlVar = process.env.WEB_SOCKET_URL
+  console.log({ ConnectionManagerAutoSocketUrl: socketUrlVar })
   const [webSocket, setWebSocket] = useState<null | WebSocket>()
 
   const [lastCheckTimestamp, setLastCheckTimestamp] = useState<number | null>(null);

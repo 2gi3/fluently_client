@@ -8,6 +8,7 @@ import { RootState } from '../redux/store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseUrl = `${process.env.SERVER_URL}`
+console.log({ chatFunctionsURL: baseUrl })
 const origin = process.env.ORIGIN || 'http://localhost:8081'
 
 
@@ -46,6 +47,8 @@ export const createNewChatroom = async (user1Id: number, user2Id: number) => {
 export const createMessage = async ({ chatId, userId, text, status, type, audioUrl, audioDuration, imageUrls }: MessageT) => {
     const accessToken = await AsyncStorage.getItem('speaky-access-token')
     const baseUlr = process.env.SERVER_URL
+    console.log({ createMessageURL: baseUrl })
+
 
     try {
         const response = await fetch(`${baseUlr}/api/chat/message`, {
@@ -87,6 +90,8 @@ export const createMessage = async ({ chatId, userId, text, status, type, audioU
 export const updateMessageStatus = async (messageId: string | number, newStatus: string = 'read') => {
     const accessToken = await AsyncStorage.getItem('speaky-access-token')
     const baseUrl = process.env.SERVER_URL
+    console.log({ updateMessageStatusURL: baseUrl })
+
     const url = `${baseUrl}/api/chat/message/${messageId}`
     try {
         const response = await fetch(url, {
