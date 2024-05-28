@@ -99,12 +99,24 @@ const Tabs = () => {
 
             {user.user && (
                 <Tabs.Screen
-                    name="Learn" component={CoursesGallery} options={({ navigation }) => ({
+                    name="Learn"
+                    component={CoursesGallery}
+                    options={({ navigation }) => ({
                         tabBarIcon: useCustomTabIcon('Ionicons', 'school'),
                         tabBarLabel: 'Learn',
-                        title: 'A clear path towards your goals',
-                        headerTitleAlign: 'center'
+                        title: 'A path to your goal',
+                        headerTitleAlign: 'left',
+                        headerRight: () => (
+                            <TopTabButton
+                                onPress={() => navigation.navigate('Create-course')}
+                                // iconName="plus-box-outline"
+                                // iconName="plus"
+                                label="Create a course"
+                            />
+
+                        )
                     })}
+
                 />
             )}
 
@@ -112,7 +124,9 @@ const Tabs = () => {
 
             {user.user && (
                 <Tabs.Screen
-                    name="Community" component={PostsGallery} options={({ navigation }) => ({
+                    name="Community"
+                    component={PostsGallery}
+                    options={({ navigation }) => ({
                         tabBarIcon: useCustomTabIcon('MaterialIcons', 'people'),
                         tabBarLabel: 'Community',
                         title: 'You are one of Us',
@@ -120,11 +134,14 @@ const Tabs = () => {
                         headerRight: () => (
                             <TopTabButton
                                 onPress={() => navigation.navigate('Create-post')}
-                                iconName="pencil-plus-outline"
+                                // iconName="pencil-plus-outline"
+                                // iconName="plus"
                                 label="Create a post"
                             />
                         )
-                    })}
+                    }
+                    )}
+
                 />
             )}
             <Tabs.Screen

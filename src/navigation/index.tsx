@@ -13,6 +13,7 @@ import PostsGallery from '../screens/community/postsGallery'
 import CreatePost from '../screens/community/CreatePost'
 import Post from '../screens/community/Post'
 import CourseIntroduction from '../screens/learn/courseIntroduction'
+import CreateCourse from '../screens/learn/createCourse'
 
 
 
@@ -38,6 +39,7 @@ const Navigator = () => {
                 <Stack.Screen name='Create-post' component={CreatePost} />
                 <Stack.Screen name='Post' component={Post} />
                 <Stack.Screen name='Course' component={CourseIntroduction} />
+                <Stack.Screen name='Create-course' component={CreateCourse} />
 
 
             </Stack.Navigator>

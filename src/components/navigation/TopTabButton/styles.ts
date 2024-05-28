@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
         borderColor: tertiary
     },
     label: {
-        marginRight: XS
+        // marginRight: XS
     },
     activityIndicator: {
         marginRight: 12

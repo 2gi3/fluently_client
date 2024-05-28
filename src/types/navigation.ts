@@ -13,12 +13,13 @@ export type RootStackParamList = {
     'Create-post': undefined
     Post: undefined
     Course: undefined
+    'Create-course': undefined
 };
 
 export interface TopTabButtonProps {
     onPress: () => void;
     label?: string;
-    iconName: string;
+    iconName?: string;
     disabled?: boolean
     isLoading?: boolean
     type?: "outline" | "solid"

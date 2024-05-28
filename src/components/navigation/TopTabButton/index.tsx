@@ -19,11 +19,13 @@ const TopTabButton = ({ onPress, label, iconName, disabled = false, isLoading = 
                 style={styles.container}
             >
                 {label && <Text style={styles.label}>{label}</Text>}
-                <MaterialCommunityIcons
-                    name={iconName}
-                    size={24}
-                    color={'#8e8e8f'}
-                />
+                {iconName && (
+                    <MaterialCommunityIcons
+                        name={iconName}
+                        size={24}
+                        color={'#8e8e8f'}
+                    />
+                )}
             </Button>
         )
     }
