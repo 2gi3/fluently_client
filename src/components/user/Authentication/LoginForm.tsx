@@ -15,7 +15,7 @@ import styles from "./styles"
 import { globalStyles } from "../../../styles"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { setAccessToken } from "../../../functions/auth"
-import ConfirmationOverlay from "../ConfirmationOverlay"
+import ConfirmationOverlay from "../../ConfirmationOverlay"
 
 
 

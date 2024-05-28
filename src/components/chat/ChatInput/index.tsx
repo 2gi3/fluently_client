@@ -17,9 +17,9 @@ import * as FileSystem from 'expo-file-system';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { SaveFormat, manipulateAsync } from "expo-image-manipulator";
-import ConfirmationOverlay from '../../user/ConfirmationOverlay';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../redux/store';
+import ConfirmationOverlay from '../../ConfirmationOverlay';
 
 
 interface AudioFileT {

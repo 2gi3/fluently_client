@@ -1,41 +1,70 @@
-import React, { ReactNode } from 'react';
-import { SafeAreaView, ScrollView, StatusBar } from 'react-native';
-
+import React, { useEffect, useRef, useState } from 'react';
+import { Text, TextInput, View, StyleSheet } from 'react-native';
 import Markdown from 'react-native-markdown-display';
+import { MarkdownEditorProps } from '../../../../types/learning';
+import { Card } from '@rneui/themed';
+import colors from '../../../../styles/variables/colors';
+import ConfirmationOverlay from '../../../ConfirmationOverlay';
 
-const copy = `# h1 Heading 8-)
 
-**This is some bold text!**
 
-This is normal text
+const MarkdownEditor: React.FC<MarkdownEditorProps> = ({ title, placeholder, numberOfLines, value, maxLength, onChangeText }) => {
+    const [confirmationOverlayVisible, setConfirmationOverlayVisible] = useState(false);
 
-### Development approach
--  Develop one code base which can be deployed on Android, iOS and Web.
+    const prevValueLength = useRef(value.length);
 
-- Divide the project in 4 domains:
-  -  Live chat
-  -  Posts
-  -  Learning
-  -  User
+    useEffect(() => {
+        // Renders the overlay only if value.length is increasing
+        if (value.length > maxLength && value.length > prevValueLength.current) {
+            setConfirmationOverlayVisible(true);
+        }
+        prevValueLength.current = value.length;
+    }, [value, maxLength]);
 
-`;
-
-const MarkdownDisplay: () => ReactNode = () => {
     return (
-        <>
-            <StatusBar barStyle="dark-content" />
-            <SafeAreaView>
-                <ScrollView
-                    contentInsetAdjustmentBehavior="automatic"
-                    style={{ height: '100%' }}
-                >
-                    <Markdown>
-                        {copy}
-                    </Markdown>
-                </ScrollView>
-            </SafeAreaView>
-        </>
+        <Card>
+            <Card.Title>{title}</Card.Title>
+            {value.length > 0 && (
+                <View>
+                    <Text style={{ fontSize: 12 }}>Characters: {value.length} / {maxLength}</Text>
+                </View>
+            )}
+            <TextInput
+                placeholder={placeholder}
+                style={styles.input}
+                multiline={true}
+                numberOfLines={numberOfLines}
+                value={value}
+                onChangeText={onChangeText}
+            />
+            <View
+                // contentInsetAdjustmentBehavior="automatic"
+                style={{ backgroundColor: colors.primaryLight }}
+            >
+                <Markdown>
+                    {value}
+                </Markdown>
+            </View>
+            <ConfirmationOverlay
+                warning={`Please make sure the text is maximum ${maxLength} characters`}
+                isVisible={confirmationOverlayVisible}
+                onBackdropPress={() => setConfirmationOverlayVisible(false)}
+                onConfirm={() => setConfirmationOverlayVisible(false)}
+                consfirmButtonTitle='OK'
+            />
+        </Card>
     );
 };
 
-export default MarkdownDisplay;
+const styles = StyleSheet.create({
+    input: {
+        borderWidth: 1,
+        borderColor: '#ccc',
+        backgroundColor: colors.primaryLight,
+        padding: 8,
+        marginVertical: 10,
+        borderRadius: 5,
+    },
+});
+
+export default MarkdownEditor

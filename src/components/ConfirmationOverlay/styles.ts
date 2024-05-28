@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import { sizes } from "../../../styles/variables/measures";
-import colors from "../../../styles/variables/colors";
+import { sizes } from "../../styles/variables/measures";
+import colors from "../../styles/variables/colors";
 
 
 const { XS, S, M, L, XL } = sizes

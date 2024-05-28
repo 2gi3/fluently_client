@@ -86,4 +86,11 @@ export type ExerciseKeyValuePairT = {
     audioUrl: string;
 };
 
-
+export interface MarkdownEditorProps {
+    title: string;
+    placeholder: string;
+    numberOfLines: number;
+    value: string;
+    maxLength: number;
+    onChangeText: (text: string) => void;
+}

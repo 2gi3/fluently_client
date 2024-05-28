@@ -70,6 +70,7 @@ const ConfirmationOverlay = ({
                 />}
                 <Button
                     title={consfirmButtonTitle}
+                    containerStyle={{ marginLeft: 'auto' }}
                     onPress={() => {
                         onConfirm();
                     }}

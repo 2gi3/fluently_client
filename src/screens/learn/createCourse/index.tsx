@@ -7,6 +7,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { CourseT } from "../../../types/learning";
+import MarkdownDisplay from "../../../components/learn/courses/MarkdownEditor";
+import MarkdownEditor from "../../../components/learn/courses/MarkdownEditor";
 
 const CreateCourse = () => {
     const navigation = useNavigation();
@@ -102,7 +104,7 @@ const CreateCourse = () => {
                     <ListItem.Accordion
                         content={
                             <ListItem.Content>
-                                <ListItem.Title>Learnong language</ListItem.Title>
+                                <ListItem.Title>Learning language</ListItem.Title>
                                 <ListItem.Subtitle>{learningLanguage}</ListItem.Subtitle>
                             </ListItem.Content>
                         }
@@ -183,10 +185,14 @@ const CreateCourse = () => {
                     value={subheading}
                     onChangeText={setSubheading}
                 /> */}
-                <TextInput
-                    placeholder="Introduction"
-                    style={styles.input}
+                <MarkdownEditor
+                    title="Introduction"
+                    placeholder="Max 600 characters"
+                    // style={styles.input}
+                    // multiline={true}
+                    numberOfLines={12}
                     value={introductionMD}
+                    maxLength={600}
                     onChangeText={setIntroductionMD}
                 />
                 <TextInput
