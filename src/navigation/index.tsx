@@ -39,7 +39,10 @@ const Navigator = () => {
                 <Stack.Screen name='Create-post' component={CreatePost} />
                 <Stack.Screen name='Post' component={Post} />
                 <Stack.Screen name='Course' component={CourseIntroduction} />
-                <Stack.Screen name='Create-course' component={CreateCourse} />
+                <Stack.Screen name='Create-course' component={CreateCourse} options={{
+                    title: 'Create a new course',
+                    headerTitleAlign: 'center',
+                }} />
 
 
             </Stack.Navigator>
