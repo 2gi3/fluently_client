@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 import { CourseT } from "../../../types/learning";
 import MarkdownEditor from "../../../components/learn/courses/MarkdownEditor";
+import useImagePicker from "../../../functions/hooks";
+import ConfirmationOverlay from "../../../components/ConfirmationOverlay";
 
 const CreateCourse = () => {
     const navigation = useNavigation();
@@ -19,38 +21,77 @@ const CreateCourse = () => {
     const [goalsMD, setGoalsMD] = useState('');
     const [requirementsMD, setRequirementsMD] = useState('');
     const [videoUrl, setVideoUrl] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    // const [imageUrl, setImageUrl] = useState('');
     const [mediumLanguage, setMediumLanguage] = useState<'english' | 'thai'>('thai');
     const [learningLanguage, setLearningLanguage] = useState<'english' | 'thai'>('english');
     const [level, setLevel] = useState(0);
-    const [expanded, setExpanded] = React.useState(false);
-    const [expandedMedium, setExpandedMedium] = React.useState(false);
-
+    const [expanded, setExpanded] = useState(false);
+    const [expandedMedium, setExpandedMedium] = useState(false);
+    const [overlayMessage, setOverlayMessage] = useState<null | string>(null)
     const randomNumber = Math.floor(Math.random() * 1000000)
+    const [showLevelPicker, setShowLevelPicker] = useState(false)
+    const difficultyLevels = [1, 2, 3, 4, 5, 6]
+
+    const { image, pickImage } = useImagePicker();
+
 
     const handleCreateCourse = () => {
 
+        if (title.length < 4) {
+            setOverlayMessage(
+                'Please make sure the title is at least 4 characters'
+            )
+        } else if (subheading.length < 8) {
+            setOverlayMessage(
+                'Please make sure the subheading is at least 8 characters'
+            )
+        } else if (introductionMD.length < 40) {
+            setOverlayMessage(
+                'Please make sure the introduction is at least 40 characters'
+            )
+        } else if (goalsMD.length < 20) {
+            setOverlayMessage(
+                'Please make sure the goals field is at least 20 characters'
+            )
+        } else if (requirementsMD.length < 20) {
+            setOverlayMessage(
+                'Please make sure the requirements field is at least 20 characters'
+            )
+        } else if (videoUrl.length < 15) {
+            setOverlayMessage(
+                'Please make sure to include the link to the video'
+            )
+        } else if (!image) {
+            setOverlayMessage(
+                'Please add an image'
+            )
+        } else if (level === 0) {
+            setOverlayMessage(
+                'Please select a difficulty level for your course'
+            )
+        } else {
 
-        const newCourse: CourseT = {
-            id: `crs${randomNumber}u${user.id!}d${Date.now()}`,
-            creatorId: user.id!,
-            mediumLanguage,
-            learningLanguage,
-            title,
-            subheading,
-            introductionMD,
-            goalsMD,
-            requirementsMD,
-            videoUrl,
-            imageUrl,
-            level,
-            created_at: new Date(),
-            units: []
-        };
+            const newCourse: CourseT = {
+                id: `crs${randomNumber}u${user.id!}d${Date.now()}`,
+                creatorId: user.id!,
+                mediumLanguage,
+                learningLanguage,
+                title,
+                subheading,
+                introductionMD,
+                goalsMD,
+                requirementsMD,
+                videoUrl,
+                imageUrl: image,
+                level,
+                created_at: new Date(),
+                units: []
+            };
 
-        console.log({
-            newCourse
-        });
+            console.log({
+                newCourse
+            });
+        }
     };
 
     return (
@@ -151,7 +192,7 @@ const CreateCourse = () => {
                     numberOfLines={6}
                     // style={{ padding: title ? sizes.XS : null }}
                     style={{ paddingLeft: 6 }}
-                    onChangeText={setTitle}
+                    onChangeText={setSubheading}
                 />
             </Card>
             {/* <TextInput
@@ -205,30 +246,95 @@ const CreateCourse = () => {
                     value={requirementsMD}
                     onChangeText={setRequirementsMD}
                 /> */}
-            <TextInput
-                placeholder="Video URL"
-                style={styles.input}
-                value={videoUrl}
-                onChangeText={setVideoUrl}
-            />
-            <TextInput
+            <Card>
+                <TextInput
+                    placeholder="Video URL"
+                    style={styles.input}
+                    value={videoUrl}
+                    onChangeText={setVideoUrl}
+                />
+            </Card>
+
+
+            <Card>
+                {image && <Card.Image
+                    style={{ marginBottom: sizes.S }}
+                    source={{ uri: image }}
+                />}
+                <Button
+                    type="outline"
+                    title={image ? 'Change the image' : 'Add an image'}
+                    // loading={false}
+                    // loadingProps={{ size: 'small', color: 'black' }}
+                    // icon={{
+                    //     name: 'plus',
+                    //     type: 'ant-design',
+                    //     size: sizes.M,
+                    //     color: colors.tertiary,
+                    // }}
+                    onPress={pickImage}
+                />
+            </Card>
+
+
+
+
+            {/* <TextInput
                 placeholder="Image URL"
                 style={styles.input}
                 value={imageUrl}
                 onChangeText={setImageUrl}
-            />
-            <TextInput
-                placeholder="Level"
-                style={styles.input}
-                keyboardType="numeric"
-                value={String(level)}
-                onChangeText={(text) => setLevel(Number(text))}
-            />
+            /> */}
+            <Card>
+                <View
+                    style={{
+                        display: 'flex',
+                        gap: 12,
+                        flexDirection: 'row',
+                        flexWrap: 'wrap',
+                        justifyContent: level && level > 0 ? 'space-between' : 'flex-start',
+                        paddingHorizontal: sizes.XS,
+                    }}       >
+                    <Button
+                        type={'outline'}
+                        title={level && level > 0 ? `Level: ${level}` : "Select a level"}
+                        onPress={() => {
+                            setShowLevelPicker(!showLevelPicker)
+
+                        }}
+                    // buttonStyle={{ width: 56 }}
+
+                    />
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: 12 }}>
+                        {showLevelPicker && difficultyLevels.map(level => (
+                            <ListItem key={level}
+                                onPress={() => {
+                                    setLevel(level);
+                                    setShowLevelPicker(false)
+                                }} >
+                                <ListItem.Content style={{ borderWidth: 1, borderStyle: 'solid', borderColor: colors.secondaryFont, borderRadius: 6, paddingVertical: 5, paddingHorizontal: 11, }}>
+                                    <ListItem.Title style={{ fontSize: 14 }}>{level}</ListItem.Title>
+                                </ListItem.Content>
+                            </ListItem>
+
+                        ))}
+                    </View>
+                </View>
+            </Card>
             <Button
                 title="Create Course"
                 onPress={handleCreateCourse}
+                containerStyle={{ marginHorizontal: sizes.S, marginVertical: sizes.M }}
             />
+            <ConfirmationOverlay
+                isVisible={overlayMessage !== null}
+                warning={overlayMessage || ''}
+                onBackdropPress={() => setOverlayMessage(null)}
+                onConfirm={() => setOverlayMessage(null)}
+                consfirmButtonTitle={'ok'}
 
+
+            />
         </ScrollView>
     );
 };
