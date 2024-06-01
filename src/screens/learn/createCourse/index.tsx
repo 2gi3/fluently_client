@@ -10,10 +10,12 @@ import { CourseT } from "../../../types/learning";
 import MarkdownEditor from "../../../components/learn/courses/MarkdownEditor";
 import useImagePicker from "../../../functions/hooks";
 import ConfirmationOverlay from "../../../components/ConfirmationOverlay";
+import { useCreateCourse } from "../../../functions/hooks/learn";
 
 const CreateCourse = () => {
     const navigation = useNavigation();
     const user = useSelector((state: RootState) => state.user);
+    const { createCourse, loading, error, success } = useCreateCourse()
 
     const [title, setTitle] = useState('');
     const [subheading, setSubheading] = useState('');
@@ -91,6 +93,7 @@ const CreateCourse = () => {
             console.log({
                 newCourse
             });
+            createCourse(newCourse)
         }
     };
 

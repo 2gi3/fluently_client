@@ -57,3 +57,58 @@ export const useGetAllCourses = () => {
     return { loading: !courses && !error, error, courses, refreshData, isValidating };
 
 };
+
+export const useCreateCourse = () => {
+    const navigation = useNavigation()
+    const createCourseEndpoint = `${baseUrl}/api/learn/courses`
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<boolean | null>(null);
+
+    const createCourse = async (payload: CourseT) => {
+        console.log({
+            payload,
+            createCourseEndpoint
+        })
+        try {
+            setLoading(true);
+            const accessToken = await AsyncStorage.getItem('speaky-access-token');
+            const response = await fetch(createCourseEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': JSON.parse(accessToken!),
+                    origin
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.ok) {
+                console.log('Course created successfully');
+                setSuccess(true);
+                // @ts-ignore
+                navigation.navigate('Learn')
+
+                // return await response.json();
+            } else {
+                const errorMessage = await response.text();
+                console.error('Failed to create course:', errorMessage);
+
+                if (response.status >= 400 && response.status < 500) {
+                    setError('Client error: ' + errorMessage);
+                } else if (response.status >= 500 && response.status < 600) {
+                    setError('Server error: ' + errorMessage);
+                } else {
+                    setError('Unexpected error: ' + errorMessage);
+                }
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            setError('Network error: ' + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { createCourse, loading, error, success };
+};
