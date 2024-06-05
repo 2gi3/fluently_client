@@ -76,6 +76,7 @@ const CreateCourse = () => {
             const newCourse: CourseT = {
                 id: `crs${randomNumber}u${user.id!}d${Date.now()}`,
                 creatorId: user.id!,
+                public: false,
                 mediumLanguage,
                 learningLanguage,
                 title,
@@ -217,12 +218,12 @@ const CreateCourse = () => {
 
             <MarkdownEditor
                 title="Goals"
-                placeholder="Max 600 characters"
+                placeholder="Max 400 characters"
                 // style={styles.input}
                 // multiline={true}
-                numberOfLines={12}
+                numberOfLines={8}
                 value={goalsMD}
-                maxLength={600}
+                maxLength={400}
                 onChangeText={setGoalsMD}
             />
 
@@ -235,12 +236,12 @@ const CreateCourse = () => {
                 /> */}
             <MarkdownEditor
                 title="Requirements"
-                placeholder="Max 600 characters"
+                placeholder="Max 400 characters"
                 // style={styles.input}
                 // multiline={true}
-                numberOfLines={12}
+                numberOfLines={8}
                 value={requirementsMD}
-                maxLength={600}
+                maxLength={400}
                 onChangeText={setRequirementsMD}
             />
             {/* <TextInput

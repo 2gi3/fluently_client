@@ -74,11 +74,13 @@ const CoursesGallery = () => {
         }}>
             <View>
                 <FlatList
-                    data={mockCourses!}
+                    data={courses!}
                     renderItem={renderItem}
                     keyExtractor={(item, i) => `${item.id}-${i}`}
                 />
             </View>
+
+
             {/* <FlatList
                 data={posts!}
                 renderItem={renderItem}
