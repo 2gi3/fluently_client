@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import { globalStyles } from '../../../styles'
 import { Button, Icon, Text } from '@rneui/themed'
@@ -11,48 +11,63 @@ import { UnitT } from '../../../types/learning'
 const CourseIntroduction = () => {
     const route = useRoute()
     const navigation = useNavigation()
-    //@ts-ignore
-    const units: any[] = route.params.units.map(unit => ({
-        unitTitle: unit.title,
-        unitLessons: unit.lessons.map(lesson => lesson.title)
-    }));
+    const [units, setUnits] = useState<UnitT[] | null>(null)
+
 
     useEffect(() => {
 
         //@ts-ignore
         navigation.setOptions({ title: route.params?.courseTitle, headerTitleAlign: 'center' })
+        //@ts-ignore
 
-    }, [])
+        if (route.params && route.params.units) {
+            //@ts-ignore
+            const units: any[] = route.params.units.map(unit => ({
+                title: unit.title,
+                lessons: unit.lessons.map(lesson => lesson.title)
+            }))
+            setUnits(units)
+        }
+
+    }, [route.params])
 
     return (<ScrollView>
-        <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
-            <Icon
-                name='compass'
-                type="font-awesome"
-                style={{ marginRight: sizes.XS }}
-            />
-            {
-                units.map(
-                    unit => {
-                        return (
-                            <View key={unit.unitTitle} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+        {units ?
+            <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+                <Icon
+                    name='compass'
+                    type="font-awesome"
+                    style={{ marginRight: sizes.XS }}
+                />
+                {
+                    units.map(
+                        unit => {
+                            return (
+                                <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
 
 
-                                {unit.unitLessons.map((lesson, index) => (
-                                    <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
-                                ))}
+                                    {unit.lessons.map((lesson, index) => (
+                                        <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
+                                    ))}
 
-                            </View>
-                        )
-                    }
-                )
-            }
-            <Icon
-                name='flag'
-                type="font-awesome"
+                                </View>
+                            )
+                        }
+                    )
+                }
+                <Icon
+                    name='flag'
+                    type="font-awesome"
 
-            />
-        </View>
+                />
+            </View>
+            :
+            <View>
+                <Text>
+                    Add some units to your course
+                </Text>
+            </View>
+        }
         <View style={globalStyles.container}>
             <View style={{}}>
                 <Text>
@@ -70,7 +85,7 @@ const CourseIntroduction = () => {
                     <View style={{ width: 4, height: 12, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
                 </View>
                 <View style={{ marginVertical: sizes.S, backgroundColor: '#cacaca', height: 180, width: 'auto' }}>              </View>
-                <MarkdownDisplay />
+                {/* <MarkdownDisplay /> */}
                 <View
                 // style={{ position: 'relative', marginHorizontal: sizes.M, marginTop: sizes.S, marginBottom: sizes.M }}
                 >

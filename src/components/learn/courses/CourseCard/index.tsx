@@ -16,7 +16,8 @@ const CourseCard = ({ course }: { course: CourseT }) => {
                     <Card.Image
                         containerStyle={{ flex: 1, maxWidth: sizes.XXL }}
                         source={{
-                            uri: course.imageUrl
+                            // uri: course.imageUrl || '../../../../assets/images/mockImg.jpg'
+                            uri: '../../../../assets/images/mockImg.jpg'
                         }}
                     />
                     <View style={{ flex: 1 }}>
