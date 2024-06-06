@@ -1,10 +1,13 @@
 import { Card } from '@rneui/base'
 import { Badge, Icon, Text } from '@rneui/themed'
 import React, { useEffect } from 'react'
-import { View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { sizes } from '../../../../styles/variables/measures'
 import colors from '../../../../styles/variables/colors'
 import { CourseT } from '../../../../types/learning'
+import DifficultyLevel2 from '../DifficultyLevel'
+// import DifficultyLevel from '../DifficultyLevel'
+// import DifficultyLevel2 from '../DifficultyLevel'
 
 const CourseCard = ({ course }: { course: CourseT }) => {
 
@@ -33,13 +36,16 @@ const CourseCard = ({ course }: { course: CourseT }) => {
                             {course.subheading}
 
                         </Text>
+                        {/* <DifficultyLevel level={course.level} /> */}
+                        {/* <DifficultyLevel2 /> */}
                         <View style={{ marginTop: 'auto', flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
                             <Text style={{ marginRight: 4 }}>Level:</Text>
-                            <View style={{ width: 4, height: 4, backgroundColor: colors.secondaryFont, marginBottom: -2 }}> </View>
-                            <View style={{ width: 4, height: 6, backgroundColor: colors.secondaryFont, marginBottom: -2 }}> </View>
-                            <View style={{ width: 4, height: 8, backgroundColor: colors.secondaryFont, marginBottom: -2 }}> </View>
-                            <View style={{ width: 4, height: 10, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
-                            <View style={{ width: 4, height: 12, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
+                            <View style={[style.solidBar, { height: 2 }]}> </View>
+                            <View style={[style.solidBar, { height: 4 }]}> </View>
+                            <View style={[style.solidBar, { height: 6 }]}> </View>
+                            <View style={[style.outlinedBar, { height: 8 }]}> </View>
+                            <View style={[style.outlinedBar, { height: 10 }]}> </View>
+                            <View style={[style.outlinedBar, { height: 12 }]}> </View>
                         </View>
                     </View>
                 </View>
@@ -48,5 +54,11 @@ const CourseCard = ({ course }: { course: CourseT }) => {
 
     )
 }
+
+const style = StyleSheet.create({
+    solidBar: { width: 4, backgroundColor: colors.secondaryFont, marginBottom: -2 },
+    outlinedBar: { width: 4, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }
+
+})
 
 export default CourseCard

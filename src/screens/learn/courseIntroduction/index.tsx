@@ -62,10 +62,29 @@ const CourseIntroduction = () => {
                 />
             </View>
             :
-            <View>
-                <Text>
-                    Add some units to your course
-                </Text>
+            <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.M, flexDirection: 'row', justifyContent: 'center', gap: 2 }}>
+
+                {route.params && <Button
+                    iconRight
+                    // buttonStyle={styles.buttonStylePrimary}
+                    title="Create some units"
+                    // @ts-ignore
+                    onPress={() => navigation.navigate('Create-courseUnit', {
+                        //@ts-ignore
+                        courseId: route.params!.courseId,
+                        //@ts-ignore
+                        courseTitle: route.params!.courseTitle,
+                        // courseLevel: item.level,
+                        // courseSubheading: item.subheading,
+                        // courseIntroductionMD: item.introductionMD,
+                        // courseGoalsMD: item.goalsMD,
+                        // courseRequirementsMD: item.requirementsMD,
+                        // courseVideoUrl: item.videoUrl,
+                        // courseImageUrl: item.imageUrl,
+                        // courseCreated_at: item.created_at,
+                        // units: item.units
+                    })}
+                />}
             </View>
         }
         <View style={globalStyles.container}>
@@ -128,6 +147,7 @@ const CourseIntroduction = () => {
                     console.log('98709')
                 }}
             />
+
         </View>
 
     </ScrollView>
