@@ -1,19 +1,33 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { ScrollView, View } from 'react-native'
 import { globalStyles } from '../../../styles'
 import { Button, Icon, Text } from '@rneui/themed'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import colors from '../../../styles/variables/colors'
 import { sizes } from '../../../styles/variables/measures'
-import MarkdownDisplay from '../../../components/learn/courses/MarkdownEditor'
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { UnitT } from '../../../types/learning'
+import DifficultyLevel from '../../../components/learn/courses/DifficultyLevel'
+import { Video } from 'expo-av'
+
+
 
 const CourseIntroduction = () => {
     const route = useRoute()
     const navigation = useNavigation()
     const [units, setUnits] = useState<UnitT[] | null>(null)
+    const video = useRef(null)
+    const secondVideo = useRef(null)
+    const [aspectRatio, setAspectRatio] = useState(16 / 9)
+    const [status, setStatus] = useState<any>(null)
+    const [secondStatus, setSecondStatus] = useState(null)
+    const videoSource = 'https://res.cloudinary.com/gippolito/video/upload/v1717578349/fluently/courses/videos/F_lesson_igr39g.mp4'
 
-
+    const handleVideoLoad = (status) => {
+        const { naturalSize } = status
+        const ratio = naturalSize.width / naturalSize.height
+        setAspectRatio(ratio)
+    }
     useEffect(() => {
 
         //@ts-ignore
@@ -43,14 +57,15 @@ const CourseIntroduction = () => {
                     units.map(
                         unit => {
                             return (
-                                <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+                                unit.lessons ?
+                                    <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
 
 
-                                    {unit.lessons.map((lesson, index) => (
-                                        <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
-                                    ))}
+                                        {unit.lessons.map((lesson, index) => (
+                                            <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
+                                        ))}
 
-                                </View>
+                                    </View> : null
                             )
                         }
                     )
@@ -95,18 +110,44 @@ const CourseIntroduction = () => {
                         route.params?.courseSubheading
                     }
                 </Text>
-                <View style={{ marginTop: sizes.S, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
-                    <Text style={{ marginRight: 4 }}>Level:</Text>
-                    <View style={{ width: 4, height: 4, backgroundColor: colors.secondaryFont, marginBottom: -2 }}> </View>
-                    <View style={{ width: 4, height: 6, backgroundColor: colors.secondaryFont, marginBottom: -2 }}> </View>
-                    <View style={{ width: 4, height: 8, backgroundColor: colors.secondaryFont, marginBottom: -2 }}> </View>
-                    <View style={{ width: 4, height: 10, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
-                    <View style={{ width: 4, height: 12, backgroundColor: colors.primaryLight, borderColor: colors.primaryFont, borderStyle: 'solid', borderWidth: 1, marginBottom: -2 }}> </View>
-                </View>
-                <View style={{ marginVertical: sizes.S, backgroundColor: '#cacaca', height: 180, width: 'auto' }}>              </View>
-                {/* <MarkdownDisplay /> */}
+                <DifficultyLevel level={
+                    //@ts-ignore
+                    route.params!.courseLevel
+                } />
+                {/* <View
+                    style={{ marginVertical: sizes.S, backgroundColor: 'green', width: 'auto' }}>
+                </View> */}
+                {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'yellow' }}> */}
+                <Video
+                    ref={video}
+                    style={{
+                        marginVertical: sizes.S,
+                        flex: 1,
+                        alignSelf: 'stretch',
+                        height: 'auto',
+                        maxWidth: 'auto',
+                        aspectRatio: 16 / 9,
+                        backgroundColor: '#red',
+
+                    }}
+                    videoStyle={{
+                        marginVertical: sizes.S,
+                        flex: 1,
+                        alignSelf: 'stretch',
+                        height: 'auto',
+                        maxWidth: 'auto',
+                        aspectRatio: 16 / 9,
+                        backgroundColor: '#red',
+
+                    }}
+                    source={{ uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+                    useNativeControls
+                    isLooping
+                    onPlaybackStatusUpdate={status => setStatus(status)}
+                    onLoad={handleVideoLoad}
+                />
+                {/* </View> */}
                 <View
-                // style={{ position: 'relative', marginHorizontal: sizes.M, marginTop: sizes.S, marginBottom: sizes.M }}
                 >
                     <Text style={{ fontWeight: 'bold', marginTop: sizes.M, marginBottom: sizes.XS }}>
                         Goals:
@@ -154,6 +195,7 @@ const CourseIntroduction = () => {
 
     )
 }
+
 
 export default CourseIntroduction
 

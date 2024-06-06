@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native'
 import { sizes } from '../../../../styles/variables/measures'
 import colors from '../../../../styles/variables/colors'
 import { CourseT } from '../../../../types/learning'
-import DifficultyLevel2 from '../DifficultyLevel'
+import DifficultyLevel from '../DifficultyLevel'
 // import DifficultyLevel from '../DifficultyLevel'
 // import DifficultyLevel2 from '../DifficultyLevel'
 
@@ -36,9 +36,9 @@ const CourseCard = ({ course }: { course: CourseT }) => {
                             {course.subheading}
 
                         </Text>
-                        {/* <DifficultyLevel level={course.level} /> */}
-                        {/* <DifficultyLevel2 /> */}
-                        <View style={{ marginTop: 'auto', flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+
+                        <DifficultyLevel level={course.level} />
+                        {/* <View style={{ marginTop: 'auto', flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
                             <Text style={{ marginRight: 4 }}>Level:</Text>
                             <View style={[style.solidBar, { height: 2 }]}> </View>
                             <View style={[style.solidBar, { height: 4 }]}> </View>
@@ -46,7 +46,7 @@ const CourseCard = ({ course }: { course: CourseT }) => {
                             <View style={[style.outlinedBar, { height: 8 }]}> </View>
                             <View style={[style.outlinedBar, { height: 10 }]}> </View>
                             <View style={[style.outlinedBar, { height: 12 }]}> </View>
-                        </View>
+                        </View> */}
                     </View>
                 </View>
             </Card>

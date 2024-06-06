@@ -23,7 +23,7 @@ export type UnitT = {
     courseId: string;
     title: string;
     type: 'learn' | 'exercise';
-    lessons: LessonT[];
+    lessons?: LessonT[];
 };
 
 export type LessonT = {

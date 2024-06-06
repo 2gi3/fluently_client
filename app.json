@@ -12,7 +12,8 @@
         {
           "photosPermission": "The app accesses your photos to let you set a profile picture."
         }
-      ]
+      ],
+      "expo-video"
     ],
     "splash": {
       "image": "./assets/splash.png",
