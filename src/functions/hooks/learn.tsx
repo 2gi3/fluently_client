@@ -114,7 +114,7 @@ export const useCreateCourse = () => {
 };
 
 export const useCreateCourseUnit = () => {
-    const createCourseUnitEndpoint = `${baseUrl}/api/learn/CourseUnit`
+    const createCourseUnitEndpoint = `${baseUrl}/api/learn/courses/unit`
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<boolean | null>(null);

@@ -1,15 +1,16 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Button, Card, CheckBox, ListItem, Text } from "@rneui/themed";
 import React, { useState } from "react";
-import { View, ScrollView } from "react-native";
+import { View, ScrollView, TextInput } from "react-native";
 import { UnitT } from "../../../types/learning";
 import { sizes } from "../../../styles/variables/measures";
 import ConfirmationOverlay from "../../../components/ConfirmationOverlay";
+import { useCreateCourseUnit } from "../../../functions/hooks/learn";
 
 const CreateCourseUnit = () => {
     const route = useRoute()
     const navigation = useNavigation();
-
+    const { createCourseUnit, loading, error, success } = useCreateCourseUnit()
     const [title, setTitle] = useState('');
     const [type, setType] = useState<'learn' | 'exercise'>('learn');
     const [expanded, setExpanded] = useState(false);
@@ -28,7 +29,7 @@ const CreateCourseUnit = () => {
         } else {
 
             const newUnit: UnitT = {
-                id: `unt${randomNumber}crs${courseID}${Date.now()}`,
+                id: `${courseID}-unt${Date.now()}`,
                 //@ts-ignore
                 courseId: route.params!.courseId,
                 title,
@@ -38,6 +39,7 @@ const CreateCourseUnit = () => {
             console.log({
                 newUnit
             });
+            createCourseUnit(newUnit)
         }
     };
 
@@ -93,6 +95,20 @@ const CreateCourseUnit = () => {
                         />
                     </ListItem>
                 </ListItem.Accordion>
+            </Card>
+            <Card >
+                <Card.Title>Unit title</Card.Title>
+                <TextInput
+                    // autoFocus={true}
+                    placeholder="Maximum 50 characters"
+                    multiline={true}
+                    numberOfLines={3}
+                    // style={{ padding: title ? sizes.XS : null }}
+                    style={{ paddingLeft: 3 }}
+                    onChangeText={setTitle}
+                />
+
+
             </Card>
             <Button
                 title="Create Unit"

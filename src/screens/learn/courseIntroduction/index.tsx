@@ -24,10 +24,13 @@ const CourseIntroduction = () => {
     const videoSource = 'https://res.cloudinary.com/gippolito/video/upload/v1717578349/fluently/courses/videos/F_lesson_igr39g.mp4'
 
     const handleVideoLoad = (status) => {
-        const { naturalSize } = status
-        const ratio = naturalSize.width / naturalSize.height
-        setAspectRatio(ratio)
-    }
+        if (status && status.naturalSize) {
+            const { naturalSize } = status;
+            const ratio = naturalSize.width / naturalSize.height;
+            setAspectRatio(ratio);
+        }
+    };
+
     useEffect(() => {
 
         //@ts-ignore
@@ -38,7 +41,7 @@ const CourseIntroduction = () => {
             //@ts-ignore
             const units: any[] = route.params.units.map(unit => ({
                 title: unit.title,
-                lessons: unit.lessons.map(lesson => lesson.title)
+                lessons: unit.lessons ? unit.lessons.map(lesson => lesson.title) : []
             }))
             setUnits(units)
         }
@@ -46,30 +49,38 @@ const CourseIntroduction = () => {
     }, [route.params])
 
     return (<ScrollView>
-        {units ?
-            <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+        {units && units.length > 0 ?
+            <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
                 <Icon
                     name='compass'
                     type="font-awesome"
                     style={{ marginRight: sizes.XS }}
                 />
-                {
-                    units.map(
-                        unit => {
-                            return (
-                                unit.lessons ?
-                                    <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
-
-
-                                        {unit.lessons.map((lesson, index) => (
-                                            <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
-                                        ))}
-
-                                    </View> : null
-                            )
-                        }
-                    )
-                }
+                {units.map(unit => (
+                    unit.lessons && unit.lessons.length > 0 ?
+                        <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+                            {unit.lessons.map((lesson, index) => (
+                                <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
+                            ))}
+                        </View>
+                        :
+                        <View style={{
+                            marginRight: sizes.XS,
+                            paddingVertical: 4,
+                            alignItems: 'center',
+                            backgroundColor: colors.secondary,
+                            borderRadius: sizes.XS
+                        }}>
+                            <Text style={{ fontSize: 12, color: colors.secondaryFont }}>{unit.title}</Text>
+                            <Button
+                                key={unit.title}
+                                buttonStyle={{ padding: 0 }}
+                                title={'+ lessons'}
+                                titleStyle={{ color: colors.tertiary, fontSize: 14 }}
+                                type='clear'
+                                onPress={() => console.log('Hello world')} />
+                        </View>
+                ))}
                 <Icon
                     name='flag'
                     type="font-awesome"
