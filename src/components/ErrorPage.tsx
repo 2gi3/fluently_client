@@ -7,7 +7,9 @@ import colors from '../styles/variables/colors'
 
 const ErrorPage = ({ message, onPress }: { message?: string, onPress: () => {} }) => {
     useEffect(() => {
-        console.log({ message })
+        if (message) {
+            console.log({ message })
+        }
     }, [message])
     return (
         <SafeAreaView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', }}>
@@ -15,7 +17,8 @@ const ErrorPage = ({ message, onPress }: { message?: string, onPress: () => {} }
                 containerStyle={{ flex: 1, marginTop: sizes.S, maxWidth: sizes.XXL, minHeight: 220 }}
                 imageContainerStyle={{ padding: sizes.S }}
                 imageSrc={{
-                    uri: '../../../../assets/images/error.png'
+                    // '../../assets/images/error.png'                    
+                    uri: 'https://res.cloudinary.com/gippolito/image/upload/v1717763944/fluently/utility/error_guzz9w.png'
                 }}
 
             />

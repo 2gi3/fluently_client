@@ -71,25 +71,28 @@ const CoursesGallery = () => {
     }
 
     return (
-        <ScrollView style={{
-            flex: 1,
-            backgroundColor: colors.primaryLight
-        }}>
-            <View>
-                <FlatList
-                    data={courses!}
-                    renderItem={renderItem}
-                    keyExtractor={(item, i) => `${item.id}-${i}`}
-                />
-            </View>
+        <ErrorPage onPress={() => refreshData} />
+
+        // <ScrollView style={{
+        //     flex: 1,
+        //     backgroundColor: colors.primaryLight
+        // }}>
+        //     <View>
+        //         <FlatList
+        //             data={courses!}
+        //             renderItem={renderItem}
+        //             keyExtractor={(item, i) => `${item.id}-${i}`}
+        //         />
+        //     </View>
 
 
-            {/* <FlatList
-                data={posts!}
-                renderItem={renderItem}
-                keyExtractor={(item, i) => `${item.title}-${i}`}
-            /> */}
-        </ScrollView>)
+        //     {/* <FlatList
+        //         data={posts!}
+        //         renderItem={renderItem}
+        //         keyExtractor={(item, i) => `${item.title}-${i}`}
+        //     /> */}
+        // </ScrollView>
+    )
 }
 
 export default CoursesGallery
