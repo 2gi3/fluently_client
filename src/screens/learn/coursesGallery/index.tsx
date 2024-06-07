@@ -15,10 +15,13 @@ const CoursesGallery = () => {
     const { loading, error, courses, refreshData, isValidating } = useGetAllCourses()
 
     useEffect(() => {
+        console.log(error)
+
+
         console.log({
             backendCourses: courses
         })
-    }, [courses])
+    }, [courses, error])
 
     const renderItem = ({ item }: { item: any }) => (
         <Pressable
@@ -63,7 +66,7 @@ const CoursesGallery = () => {
 
     if (error) {
         return (
-            <ErrorPage onPress={() => refreshData} />
+            <ErrorPage message={error.message} onPress={() => refreshData} />
         );
     }
 

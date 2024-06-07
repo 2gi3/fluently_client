@@ -31,7 +31,8 @@ export const useGetAllCourses = () => {
             }
         });
         if (!response.ok) {
-            throw new Error('Failed to fetch courses');
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Failed to fetch courses');
         }
         const data = await response.json();
         return data;
