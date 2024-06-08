@@ -15,6 +15,8 @@ import Post from '../screens/community/Post'
 import CourseIntroduction from '../screens/learn/courseIntroduction'
 import CreateCourse from '../screens/learn/createCourse'
 import CreateCourseUnit from '../screens/learn/createCourse/createUnit'
+import lessonPage from '../screens/learn/lesson'
+import CreateLesson from '../screens/learn/createCourse/createLesson'
 
 
 
@@ -45,6 +47,9 @@ const Navigator = () => {
                     headerTitleAlign: 'center',
                 }} />
                 <Stack.Screen name='Create-courseUnit' component={CreateCourseUnit} />
+                <Stack.Screen name='Lesson' component={lessonPage} />
+                <Stack.Screen name='Create-lesson' component={CreateLesson} />
+
 
 
 

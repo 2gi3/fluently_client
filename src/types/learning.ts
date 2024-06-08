@@ -28,14 +28,15 @@ export type UnitT = {
 
 export type LessonT = {
     id: string;
+    userId: string | number;
     courseId: string;
     unitId: string;
     title: string;
     videoUrl: string;
-    sections: LessonSectionT[];
-    summary: LessonSummaryT | null;
-    vocabulary: LessonVocabularyT[];
-    exercises: LessonExerciseT[];
+    sections?: LessonSectionT[];
+    summary?: LessonSummaryT | null;
+    vocabulary?: LessonVocabularyT[];
+    exercises?: LessonExerciseT[];
 };
 
 export type LessonSectionT = {

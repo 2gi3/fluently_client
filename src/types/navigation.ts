@@ -15,6 +15,8 @@ export type RootStackParamList = {
     Course: undefined
     'Create-course': undefined
     'Create-courseUnit': undefined
+    'Lesson': undefined
+    'Create-lesson': undefined
 };
 
 export interface TopTabButtonProps {

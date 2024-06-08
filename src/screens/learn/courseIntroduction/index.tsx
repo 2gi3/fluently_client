@@ -41,6 +41,7 @@ const CourseIntroduction = () => {
             //@ts-ignore
             const units: any[] = route.params.units.map(unit => ({
                 title: unit.title,
+                id: unit.id,
                 lessons: unit.lessons ? unit.lessons.map(lesson => lesson.title) : []
             }))
             setUnits(units)
@@ -78,7 +79,13 @@ const CourseIntroduction = () => {
                                 title={'+ lessons'}
                                 titleStyle={{ color: colors.tertiary, fontSize: 14 }}
                                 type='clear'
-                                onPress={() => console.log('Hello world')} />
+                                //@ts-ignore
+                                onPress={() => navigation.navigate('Create-lesson', {
+                                    //@ts-ignore
+                                    courseID: route.params.courseId,
+                                    unitID: unit.id,
+                                    unitTitle: unit.title
+                                })} />
                         </View>
                 ))}
                 <Icon
@@ -93,7 +100,7 @@ const CourseIntroduction = () => {
                 {route.params && <Button
                     iconRight
                     // buttonStyle={styles.buttonStylePrimary}
-                    title="Create some units"
+                    title="Create a unit"
                     // @ts-ignore
                     onPress={() => navigation.navigate('Create-courseUnit', {
                         //@ts-ignore
@@ -196,7 +203,12 @@ const CourseIntroduction = () => {
                 // buttonStyle={styles.buttonStylePrimary}
                 title="Start Now"
                 onPress={async () => {
-                    console.log('98709')
+                    //@ts-ignore
+                    navigation.navigate('Lesson'
+                        // , {
+                        //     courseId: item.id,
+                        // }
+                    )
                 }}
             />
 

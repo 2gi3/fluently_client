@@ -38,15 +38,6 @@ const CourseCard = ({ course }: { course: CourseT }) => {
                         </Text>
 
                         <DifficultyLevel level={course.level} />
-                        {/* <View style={{ marginTop: 'auto', flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
-                            <Text style={{ marginRight: 4 }}>Level:</Text>
-                            <View style={[style.solidBar, { height: 2 }]}> </View>
-                            <View style={[style.solidBar, { height: 4 }]}> </View>
-                            <View style={[style.solidBar, { height: 6 }]}> </View>
-                            <View style={[style.outlinedBar, { height: 8 }]}> </View>
-                            <View style={[style.outlinedBar, { height: 10 }]}> </View>
-                            <View style={[style.outlinedBar, { height: 12 }]}> </View>
-                        </View> */}
                     </View>
                 </View>
             </Card>
