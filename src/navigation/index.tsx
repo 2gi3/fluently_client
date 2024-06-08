@@ -48,7 +48,10 @@ const Navigator = () => {
                 }} />
                 <Stack.Screen name='Create-courseUnit' component={CreateCourseUnit} />
                 <Stack.Screen name='Lesson' component={lessonPage} />
-                <Stack.Screen name='Create-lesson' component={CreateLesson} />
+                <Stack.Screen name='Create-lesson' component={CreateLesson} options={{
+                    title: 'Create a new lesson',
+                    headerTitleAlign: 'center',
+                }} />
 
 
 

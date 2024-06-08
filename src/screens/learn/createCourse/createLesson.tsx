@@ -5,7 +5,7 @@ import { View, ScrollView, TextInput } from "react-native";
 import { LessonT, UnitT } from "../../../types/learning";
 import { sizes } from "../../../styles/variables/measures";
 import ConfirmationOverlay from "../../../components/ConfirmationOverlay";
-import { useCreateCourseUnit } from "../../../functions/hooks/learn";
+import { useCreateCourseUnit, useCreateLesson } from "../../../functions/hooks/learn";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/store";
 
@@ -13,10 +13,9 @@ const CreateLesson = () => {
     const route = useRoute()
     const navigation = useNavigation();
     const user = useSelector((state: RootState) => state.user);
-    // const { createCourseUnit, loading, error, success } = useCreateCourseUnit()
+    const { createLesson, loading, error, success } = useCreateLesson()
     const [title, setTitle] = useState('');
     const [videoUrl, setVideoUrl] = useState<string | null>(null);
-    const [expanded, setExpanded] = useState(false);
     const [overlayMessage, setOverlayMessage] = useState<null | string>(null)
     // const randomNumber = Math.floor(Math.random() * 1000000)
     //@ts-ignore
@@ -25,8 +24,6 @@ const CreateLesson = () => {
     const courseID = route.params!.courseID
     //@ts-ignore
     const unitTitle = route.params.unitTitle
-
-    console.log({ params: route.params })
 
 
     const handleCreateLesson = () => {
@@ -53,7 +50,7 @@ const CreateLesson = () => {
             console.log({
                 newLesson
             });
-            // createCourseUnit(newUnit)
+            createLesson(newLesson)
         }
     };
 

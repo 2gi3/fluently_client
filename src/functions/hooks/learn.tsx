@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useDispatch } from "react-redux";
 import { fetchSavedPostsFromLocalStorage } from "../../redux/slices/ownPostsSlice";
-import { CourseT, UnitT } from "../../types/learning";
+import { CourseT, LessonT, UnitT } from "../../types/learning";
 
 const baseUrl = process.env.SERVER_URL
 console.log({ hooksLearnURL: baseUrl })
@@ -161,4 +161,53 @@ export const useCreateCourseUnit = () => {
     };
 
     return { createCourseUnit, loading, error, success };
+};
+
+export const useCreateLesson = () => {
+    const createLessonEndpoint = `${baseUrl}/api/learn/courses/unit/lesson`
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<boolean | null>(null);
+
+    const createLesson = async (payload: LessonT) => {
+        console.log({ payload })
+        try {
+            setLoading(true);
+            setSuccess(null)
+            const accessToken = await AsyncStorage.getItem('speaky-access-token');
+            const response = await fetch(createLessonEndpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': JSON.parse(accessToken!),
+                    origin
+                },
+                body: JSON.stringify(payload),
+            });
+
+            if (response.ok) {
+                console.log('Lesson created successfully');
+                setSuccess(true);
+                return await response.json();
+            } else {
+                const errorMessage = await response.text();
+                console.error('Failed to create Lesson:', errorMessage);
+
+                if (response.status >= 400 && response.status < 500) {
+                    setError('Client error: ' + errorMessage);
+                } else if (response.status >= 500 && response.status < 600) {
+                    setError('Server error: ' + errorMessage);
+                } else {
+                    setError('Unexpected error: ' + errorMessage);
+                }
+            }
+        } catch (error) {
+            console.error('Network error:', error);
+            setError('Network error: ' + error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { createLesson, loading, error, success };
 };
