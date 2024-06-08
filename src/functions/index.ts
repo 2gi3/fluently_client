@@ -3,3 +3,4 @@ export const replaceHttpWithWs = (inputString: string): string => {
     const result = inputString.replace(pattern, 'wss:');
     return result;
 }
+

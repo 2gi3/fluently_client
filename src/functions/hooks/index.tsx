@@ -125,4 +125,21 @@ export const useStopWatch = () => {
     };
 };
 
+// export const useVideoLoad = () => {
+//     const [aspectRatio, setAspectRatio] = useState(16 / 9)
+
+//     const handleVideoLoad = (status: any) => {
+//         if (status && status.naturalSize) {
+//             const { naturalSize } = status;
+//             const ratio = naturalSize.width / naturalSize.height;
+//             setAspectRatio(ratio);
+//         }
+//     };
+//     return {
+//         aspectRatio,
+//         handleVideoLoad
+//     }
+
+// };
+
 export default useImagePicker;
