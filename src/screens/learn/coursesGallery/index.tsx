@@ -28,6 +28,7 @@ const CoursesGallery = () => {
             // @ts-ignore
             onPress={() => navigation.navigate('Course', {
                 courseId: item.id,
+                courseCreator: item.creatorId,
                 courseTitle: item.title,
                 courseLevel: item.level,
                 courseSubheading: item.subheading,

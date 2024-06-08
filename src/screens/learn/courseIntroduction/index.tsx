@@ -9,12 +9,15 @@ import { useVideoPlayer, VideoView } from 'expo-video';
 import { UnitT } from '../../../types/learning'
 import DifficultyLevel from '../../../components/learn/courses/DifficultyLevel'
 import { Video } from 'expo-av'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/store'
 
 
 
 const CourseIntroduction = () => {
     const route = useRoute()
     const navigation = useNavigation()
+    const user = useSelector((state: RootState) => state.user);
     const [units, setUnits] = useState<UnitT[] | null>(null)
     const video = useRef(null)
     const secondVideo = useRef(null)
@@ -22,7 +25,8 @@ const CourseIntroduction = () => {
     const [status, setStatus] = useState<any>(null)
     const [secondStatus, setSecondStatus] = useState(null)
     const videoSource = 'https://res.cloudinary.com/gippolito/video/upload/v1717578349/fluently/courses/videos/F_lesson_igr39g.mp4'
-
+    //@ts-ignore
+    const courseCreator = route.params?.courseCreator
     const handleVideoLoad = (status) => {
         if (status && status.naturalSize) {
             const { naturalSize } = status;
@@ -33,8 +37,11 @@ const CourseIntroduction = () => {
 
     useEffect(() => {
 
-        //@ts-ignore
-        navigation.setOptions({ title: route.params?.courseTitle, headerTitleAlign: 'center' })
+        navigation.setOptions({
+            //@ts-ignore
+            title: route.params?.courseTitle,
+            headerTitleAlign: 'center'
+        })
         //@ts-ignore
 
         if (route.params && route.params.units) {
@@ -59,10 +66,34 @@ const CourseIntroduction = () => {
                 />
                 {units.map(unit => (
                     unit.lessons && unit.lessons.length > 0 ?
-                        <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
-                            {unit.lessons.map((lesson, index) => (
-                                <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
-                            ))}
+                        <View style={{
+                            marginRight: sizes.XS,
+                            // paddingVertical: 4,
+                            alignItems: 'center',
+                            // backgroundColor: colors.secondary,
+                            // borderRadius: sizes.XS
+                        }}>
+                            <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
+
+                                {unit.lessons.map((lesson, index) => (
+                                    <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
+                                ))}
+                            </View>
+                            {courseCreator === user.id && (
+                                <Button
+                                    key={unit.title}
+                                    buttonStyle={{ padding: 0 }}
+                                    title={'+ lessons'}
+                                    titleStyle={{ color: colors.tertiary, fontSize: 14 }}
+                                    type='clear'
+                                    //@ts-ignore
+                                    onPress={() => navigation.navigate('Create-lesson', {
+                                        //@ts-ignore
+                                        courseID: route.params.courseId,
+                                        unitID: unit.id,
+                                        unitTitle: unit.title
+                                    })} />
+                            )}
                         </View>
                         :
                         <View style={{
