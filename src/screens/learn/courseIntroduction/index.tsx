@@ -104,19 +104,21 @@ const CourseIntroduction = () => {
                             borderRadius: sizes.XS
                         }}>
                             <Text style={{ fontSize: 12, color: colors.secondaryFont }}>{unit.title}</Text>
-                            <Button
-                                key={unit.title}
-                                buttonStyle={{ padding: 0 }}
-                                title={'+ lessons'}
-                                titleStyle={{ color: colors.tertiary, fontSize: 14 }}
-                                type='clear'
-                                //@ts-ignore
-                                onPress={() => navigation.navigate('Create-lesson', {
+                            {courseCreator === user.id && (
+                                <Button
+                                    key={unit.title}
+                                    buttonStyle={{ padding: 0 }}
+                                    title={'+ lessons'}
+                                    titleStyle={{ color: colors.tertiary, fontSize: 14 }}
+                                    type='clear'
                                     //@ts-ignore
-                                    courseID: route.params.courseId,
-                                    unitID: unit.id,
-                                    unitTitle: unit.title
-                                })} />
+                                    onPress={() => navigation.navigate('Create-lesson', {
+                                        //@ts-ignore
+                                        courseID: route.params.courseId,
+                                        unitID: unit.id,
+                                        unitTitle: unit.title
+                                    })} />
+                            )}
                         </View>
                 ))}
                 <Icon
