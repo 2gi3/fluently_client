@@ -11,6 +11,7 @@ import DifficultyLevel from '../../../components/learn/courses/DifficultyLevel'
 import { Video } from 'expo-av'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
+import TopTabButton from '../../../components/navigation/TopTabButton'
 
 
 
@@ -19,6 +20,7 @@ const CourseIntroduction = () => {
     const navigation = useNavigation()
     const user = useSelector((state: RootState) => state.user);
     const [units, setUnits] = useState<UnitT[] | null>(null)
+    const [firstLessonId, setFirstLessonId] = useState<string | null>()
     const video = useRef(null)
     const secondVideo = useRef(null)
     const [aspectRatio, setAspectRatio] = useState(16 / 9)
@@ -35,23 +37,36 @@ const CourseIntroduction = () => {
         }
     };
 
+
     useEffect(() => {
 
         navigation.setOptions({
             //@ts-ignore
             title: route.params?.courseTitle,
-            headerTitleAlign: 'center'
+            headerTitleAlign: 'center',
         })
-        //@ts-ignore
 
+        //@ts-ignore
         if (route.params && route.params.units) {
             //@ts-ignore
             const units: any[] = route.params.units.map(unit => ({
                 title: unit.title,
                 id: unit.id,
-                lessons: unit.lessons ? unit.lessons.map(lesson => lesson.title) : []
+                lessons: unit.lessons ? unit.lessons.map(lesson => ({
+                    title: lesson.title,
+                    id: lesson.id
+                })) : []
             }))
             setUnits(units)
+            if (units.length > 0) {
+                if (units[0].lessons.length > 0) {
+                    const firstLesson = units[0].lessons[units[0].lessons.length - 1]
+                    setFirstLessonId(firstLesson.id)
+                } else {
+                    const firstLesson = units[0].lessons[0]
+                    setFirstLessonId(firstLesson.id)
+                }
+            }
         }
 
     }, [route.params])
@@ -59,11 +74,11 @@ const CourseIntroduction = () => {
     return (<ScrollView>
         {units && units.length > 0 ?
             <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                <Icon
+                {courseCreator !== user.id && <Icon
                     name='compass'
                     type="font-awesome"
                     style={{ marginRight: sizes.XS }}
-                />
+                />}
                 {units.map(unit => (
                     unit.lessons && unit.lessons.length > 0 ?
                         <View style={{
@@ -121,16 +136,31 @@ const CourseIntroduction = () => {
                             )}
                         </View>
                 ))}
-                <Icon
-                    name='flag'
-                    type="font-awesome"
+                {route.params && courseCreator === user.id ? <Button
+                    iconRight
+                    // buttonStyle={styles.buttonStylePrimary}
+                    title="+ unit"
+                    // @ts-ignore
+                    onPress={() => navigation.navigate('Create-courseUnit', {
+                        //@ts-ignore
+                        courseId: route.params!.courseId,
+                        //@ts-ignore
+                        courseTitle: route.params!.courseTitle,
 
+                    })}
                 />
+                    :
+                    <Icon
+                        name='flag'
+                        type="font-awesome"
+
+                    />
+                }
             </View>
             :
             <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.M, flexDirection: 'row', justifyContent: 'center', gap: 2 }}>
 
-                {route.params && <Button
+                {route.params && courseCreator === user.id && <Button
                     iconRight
                     // buttonStyle={styles.buttonStylePrimary}
                     title="Create a unit"
@@ -140,15 +170,7 @@ const CourseIntroduction = () => {
                         courseId: route.params!.courseId,
                         //@ts-ignore
                         courseTitle: route.params!.courseTitle,
-                        // courseLevel: item.level,
-                        // courseSubheading: item.subheading,
-                        // courseIntroductionMD: item.introductionMD,
-                        // courseGoalsMD: item.goalsMD,
-                        // courseRequirementsMD: item.requirementsMD,
-                        // courseVideoUrl: item.videoUrl,
-                        // courseImageUrl: item.imageUrl,
-                        // courseCreated_at: item.created_at,
-                        // units: item.units
+
                     })}
                 />}
             </View>
@@ -238,9 +260,9 @@ const CourseIntroduction = () => {
                 onPress={async () => {
                     //@ts-ignore
                     navigation.navigate('Lesson'
-                        // , {
-                        //     courseId: item.id,
-                        // }
+                        , {
+                            lessonId: firstLessonId,
+                        }
                     )
                 }}
             />
