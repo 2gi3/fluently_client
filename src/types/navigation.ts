@@ -12,11 +12,11 @@ export type RootStackParamList = {
     Community: undefined
     'Create-post': undefined
     Post: undefined
-    Course: undefined
+    Course: { courseId: string; courseTitle: string };
     'Create-course': undefined
-    'Create-courseUnit': undefined
+    'Create-courseUnit': { courseId: string; courseTitle: string };
     'Lesson': undefined
-    'Create-lesson': undefined
+    'Create-lesson': { courseID: string; unitID: string; unitTitle: string; };
 };
 
 export interface TopTabButtonProps {

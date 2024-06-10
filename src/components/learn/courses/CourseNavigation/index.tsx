@@ -5,22 +5,25 @@ import { UnitT } from '../../../../types/learning';
 import { UserT } from '../../../../types/user';
 import { sizes } from '../../../../styles/variables/measures';
 import colors from '../../../../styles/variables/colors';
+import { NavigationProp, RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { RootStackParamList } from '../../../../types/navigation';
 
 interface CourseNavigationProps {
     units: UnitT[] | null;
     courseCreator: string;
     user: UserT;
-    navigation: any;
-    route: any;
 }
 
 const CourseNavigation: React.FC<CourseNavigationProps> = ({
     units,
     courseCreator,
-    user,
-    navigation,
-    route,
+    user
 }) => {
+    const route = useRoute<RouteProp<RootStackParamList, 'Course'>>()
+    const navigation = useNavigation<NavigationProp<RootStackParamList>>()
+    const courseId = route.params?.courseId
+    const courseTitle = route.params?.courseTitle
+
     return (
         <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
             {courseCreator !== user.id && <Icon
@@ -40,7 +43,7 @@ const CourseNavigation: React.FC<CourseNavigationProps> = ({
                                     <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
                                 ))}
                             </View>
-                            {courseCreator === user.id && (
+                            {courseCreator === user.id && route.params && (
                                 <Button
                                     key={unit.title}
                                     buttonStyle={{ padding: 0 }}
@@ -48,7 +51,7 @@ const CourseNavigation: React.FC<CourseNavigationProps> = ({
                                     titleStyle={{ color: colors.tertiary, fontSize: 14 }}
                                     type='clear'
                                     onPress={() => navigation.navigate('Create-lesson', {
-                                        courseID: route.params.courseId,
+                                        courseID: courseId,
                                         unitID: unit.id,
                                         unitTitle: unit.title
                                     })} />
@@ -63,7 +66,7 @@ const CourseNavigation: React.FC<CourseNavigationProps> = ({
                             borderRadius: sizes.XS
                         }}>
                             <Text style={{ fontSize: 12, color: colors.secondaryFont }}>{unit.title}</Text>
-                            {courseCreator === user.id && (
+                            {courseCreator === user.id && route.params && (
                                 <Button
                                     key={unit.title}
                                     buttonStyle={{ padding: 0 }}
@@ -71,7 +74,7 @@ const CourseNavigation: React.FC<CourseNavigationProps> = ({
                                     titleStyle={{ color: colors.tertiary, fontSize: 14 }}
                                     type='clear'
                                     onPress={() => navigation.navigate('Create-lesson', {
-                                        courseID: route.params.courseId,
+                                        courseID: courseId,
                                         unitID: unit.id,
                                         unitTitle: unit.title
                                     })} />
@@ -84,22 +87,18 @@ const CourseNavigation: React.FC<CourseNavigationProps> = ({
                         iconRight
                         title="Create a unit"
                         onPress={() => navigation.navigate('Create-courseUnit', {
-                            courseId: route.params.courseId,
-                            courseTitle: route.params.courseTitle,
+                            courseId: courseId,
+                            courseTitle: courseTitle,
                         })}
                     />}
                 </View>
             }
             {route.params && courseCreator === user.id ? <Button
                 iconRight
-                // buttonStyle={styles.buttonStylePrimary}
                 title="+ unit"
-                // @ts-ignore
                 onPress={() => navigation.navigate('Create-courseUnit', {
-                    //@ts-ignore
-                    courseId: route.params!.courseId,
-                    //@ts-ignore
-                    courseTitle: route.params!.courseTitle,
+                    courseId: courseId,
+                    courseTitle: courseTitle,
 
                 })}
             />

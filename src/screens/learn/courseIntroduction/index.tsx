@@ -78,8 +78,6 @@ const CourseIntroduction = () => {
                 units={units}
                 courseCreator={courseCreator}
                 user={user}
-                navigation={navigation}
-                route={route}
             />
         )}
         <View style={globalStyles.container}>
