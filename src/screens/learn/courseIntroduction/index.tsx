@@ -12,6 +12,7 @@ import { Video } from 'expo-av'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/store'
 import TopTabButton from '../../../components/navigation/TopTabButton'
+import CourseNavigation from '../../../components/learn/courses/CourseNavigation'
 
 
 
@@ -72,109 +73,15 @@ const CourseIntroduction = () => {
     }, [route.params])
 
     return (<ScrollView>
-        {units && units.length > 0 ?
-            <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.S, flexDirection: 'row', alignItems: 'center', gap: 2 }}>
-                {courseCreator !== user.id && <Icon
-                    name='compass'
-                    type="font-awesome"
-                    style={{ marginRight: sizes.XS }}
-                />}
-                {units.map(unit => (
-                    unit.lessons && unit.lessons.length > 0 ?
-                        <View style={{
-                            marginRight: sizes.XS,
-                            // paddingVertical: 4,
-                            alignItems: 'center',
-                            // backgroundColor: colors.secondary,
-                            // borderRadius: sizes.XS
-                        }}>
-                            <View key={unit.title} style={{ marginRight: sizes.XS, flexDirection: 'row', alignItems: 'baseline', gap: 2 }}>
-
-                                {unit.lessons.map((lesson, index) => (
-                                    <View key={index} style={{ width: 6, height: 10, backgroundColor: colors.confirmation, marginBottom: -2 }} />
-                                ))}
-                            </View>
-                            {courseCreator === user.id && (
-                                <Button
-                                    key={unit.title}
-                                    buttonStyle={{ padding: 0 }}
-                                    title={'+ lessons'}
-                                    titleStyle={{ color: colors.tertiary, fontSize: 14 }}
-                                    type='clear'
-                                    //@ts-ignore
-                                    onPress={() => navigation.navigate('Create-lesson', {
-                                        //@ts-ignore
-                                        courseID: route.params.courseId,
-                                        unitID: unit.id,
-                                        unitTitle: unit.title
-                                    })} />
-                            )}
-                        </View>
-                        :
-                        <View style={{
-                            marginRight: sizes.XS,
-                            paddingVertical: 4,
-                            alignItems: 'center',
-                            backgroundColor: colors.secondary,
-                            borderRadius: sizes.XS
-                        }}>
-                            <Text style={{ fontSize: 12, color: colors.secondaryFont }}>{unit.title}</Text>
-                            {courseCreator === user.id && (
-                                <Button
-                                    key={unit.title}
-                                    buttonStyle={{ padding: 0 }}
-                                    title={'+ lessons'}
-                                    titleStyle={{ color: colors.tertiary, fontSize: 14 }}
-                                    type='clear'
-                                    //@ts-ignore
-                                    onPress={() => navigation.navigate('Create-lesson', {
-                                        //@ts-ignore
-                                        courseID: route.params.courseId,
-                                        unitID: unit.id,
-                                        unitTitle: unit.title
-                                    })} />
-                            )}
-                        </View>
-                ))}
-                {route.params && courseCreator === user.id ? <Button
-                    iconRight
-                    // buttonStyle={styles.buttonStylePrimary}
-                    title="+ unit"
-                    // @ts-ignore
-                    onPress={() => navigation.navigate('Create-courseUnit', {
-                        //@ts-ignore
-                        courseId: route.params!.courseId,
-                        //@ts-ignore
-                        courseTitle: route.params!.courseTitle,
-
-                    })}
-                />
-                    :
-                    <Icon
-                        name='flag'
-                        type="font-awesome"
-
-                    />
-                }
-            </View>
-            :
-            <View style={{ marginHorizontal: sizes.M, marginVertical: sizes.M, flexDirection: 'row', justifyContent: 'center', gap: 2 }}>
-
-                {route.params && courseCreator === user.id && <Button
-                    iconRight
-                    // buttonStyle={styles.buttonStylePrimary}
-                    title="Create a unit"
-                    // @ts-ignore
-                    onPress={() => navigation.navigate('Create-courseUnit', {
-                        //@ts-ignore
-                        courseId: route.params!.courseId,
-                        //@ts-ignore
-                        courseTitle: route.params!.courseTitle,
-
-                    })}
-                />}
-            </View>
-        }
+        {units && units.length > 0 && (
+            <CourseNavigation
+                units={units}
+                courseCreator={courseCreator}
+                user={user}
+                navigation={navigation}
+                route={route}
+            />
+        )}
         <View style={globalStyles.container}>
             <View style={{}}>
                 <Text>
